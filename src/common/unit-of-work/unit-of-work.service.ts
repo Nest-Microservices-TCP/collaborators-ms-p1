@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, QueryRunner } from 'typeorm';
-import { RoomsStatesRepository } from '../../rooms-states/repositories/rooms-state.repository';
 import { IUnitForWork } from './interfaces/unit-of-work.interface';
+import { AreasRepository } from 'src/areas/repositories/areas.repository';
 
 @Injectable()
 export class UnitOfWork implements IUnitForWork {
@@ -9,7 +9,7 @@ export class UnitOfWork implements IUnitForWork {
 
   constructor(
     private readonly dataSource: DataSource,
-    private readonly roomsStatesRepository: RoomsStatesRepository,
+    private readonly areasRepository: AreasRepository,
   ) {
     this.queryRunner = this.dataSource.createQueryRunner();
   }
@@ -31,7 +31,7 @@ export class UnitOfWork implements IUnitForWork {
     }
   }
 
-  getRoomsStatesRepository(): RoomsStatesRepository {
-    return this.roomsStatesRepository;
+  getAreasRepository(): AreasRepository {
+    return this.areasRepository;
   }
 }
