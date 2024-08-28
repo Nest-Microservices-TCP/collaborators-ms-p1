@@ -11,7 +11,7 @@ import { envs } from 'src/config';
       username: envs.postgresDBUsername,
       password: envs.postgresDBPassword,
       database: envs.postgresDatabase,
-      entities: [],
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: envs.postgresDBSynchronize,
     }),
   ],
