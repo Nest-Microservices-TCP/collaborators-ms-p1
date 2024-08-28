@@ -1,4 +1,4 @@
-import { DataSource, QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
@@ -10,12 +10,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   constructor(
     @InjectRepository(CollaboratorEntity)
     private readonly defaultRepository: Repository<CollaboratorEntity>,
-    private readonly dataSource: DataSource,
   ) {
     this.collaboratorsRepository = this.defaultRepository;
   }
 
-  setQueryRunner(queryRunner: QueryRunner) {
+  setQueryRunner(queryRunner: QueryRunner): void {
     if (queryRunner) {
       this.collaboratorsRepository =
         queryRunner.manager.getRepository(CollaboratorEntity);
