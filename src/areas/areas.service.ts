@@ -18,4 +18,15 @@ export class AreasService {
       });
     }
   }
+
+  async findAll(): Promise<AreaEntity[]> {
+    try {
+      return await this.areasRepository.findAll();
+    } catch (error) {
+      throw new RpcException({
+        code: 500,
+        message: `Error to get all areas: ${error}`,
+      });
+    }
+  }
 }
