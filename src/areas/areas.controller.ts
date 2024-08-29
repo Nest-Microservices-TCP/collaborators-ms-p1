@@ -12,4 +12,8 @@ export class AreasController {
   async save(@Payload() request: CreateAreaDto): Promise<AreaEntity> {
     return this.areasService.save(request);
   }
+
+  async findAll(): Promise<AreaEntity[]> {
+    return this.areasService.findAll();
+  }
 }
