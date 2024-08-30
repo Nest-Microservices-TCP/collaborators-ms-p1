@@ -1,12 +1,7 @@
-import { CreateAreaDto } from 'src/areas/dto/create-area.dto';
+import { UpdateAreaDto } from 'src/areas/dto/update-area.dto';
+import { IBaseRepository } from 'src/common/interfaces';
+import { CreateAreaDto } from 'src/areas/dto';
 import { AreaEntity } from 'src/areas/entities/area.entity';
-import { QueryRunner } from 'typeorm';
 
-export interface IAreasRepository {
-  setQueryRunner(queryRunner: QueryRunner): void;
-  findAll(): Promise<AreaEntity[]>;
-  findOneById(id: string): Promise<AreaEntity>;
-  create(request: Partial<AreaEntity>): AreaEntity;
-  save(request: CreateAreaDto): Promise<AreaEntity>;
-  deleteById(id: string): Promise<AreaEntity>;
-}
+export interface IAreasRepository
+  extends IBaseRepository<AreaEntity, CreateAreaDto, UpdateAreaDto> {}
