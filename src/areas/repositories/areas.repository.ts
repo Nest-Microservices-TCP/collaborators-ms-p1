@@ -1,8 +1,9 @@
+import { UpdateAreaDto } from '../dto/update-area.dto';
 import { QueryRunner, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IAreasRepository } from './interfaces/areas.repository.interface';
 import { CreateAreaDto } from '../dto/create-area.dto';
 import { AreaEntity } from '../entities/area.entity';
-import { IAreasRepository } from './interfaces/areas.repository.interface';
-import { InjectRepository } from '@nestjs/typeorm';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -36,6 +37,11 @@ export class AreasRepository implements IAreasRepository {
 
   save(request: CreateAreaDto): Promise<AreaEntity> {
     return this.areasRepository.save(request);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(request: UpdateAreaDto): Promise<AreaEntity> {
+    throw new Error('Method not implemented.');
   }
 
   async deleteById(id: string): Promise<AreaEntity> {
