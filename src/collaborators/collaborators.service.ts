@@ -3,6 +3,7 @@ import { CollaboratorsRepository } from './repositories/collaborators.repository
 import { CollaboratorEntity } from './entities/collaborator.entity';
 import { RpcException } from '@nestjs/microservices';
 import { FindOneCollaboratorById } from './dto/find-one-collaborator-by-id.dto';
+import { CreateCollaboratorDto } from './dto';
 
 @Injectable()
 export class CollaboratorsService {
@@ -32,6 +33,17 @@ export class CollaboratorsService {
       throw new RpcException({
         code: 500,
         message: `Error to get the collaborator with the provided ID: ${error}`,
+      });
+    }
+  }
+
+  async save(request: CreateCollaboratorDto) {
+    try {
+      return this.collaboratorsRepository.save(request);
+    } catch (error) {
+      throw new RpcException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: `Error to save collaborator: ${error}`,
       });
     }
   }
