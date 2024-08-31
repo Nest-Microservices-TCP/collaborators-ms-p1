@@ -60,6 +60,12 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   async deleteById(id: string): Promise<CollaboratorEntity> {
     const collaborator = await this.findOneById(id);
 
+    if (!collaborator) {
+      throw new NotFoundException(
+        'The collaborator with provided ID do not exists',
+      );
+    }
+
     await this.collaboratorsRepository.delete(id);
 
     return collaborator;
