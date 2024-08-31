@@ -3,6 +3,7 @@ import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateCollaboratorDto } from '../dto/update-collaborator.dto';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -39,7 +40,12 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.collaboratorsRepository.save(request);
   }
 
-  async deletedById(id: string): Promise<CollaboratorEntity> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
+    throw new Error('Method not implemented.');
+  }
+
+  async deleteById(id: string): Promise<CollaboratorEntity> {
     const collaborator = await this.findOneById(id);
 
     await this.collaboratorsRepository.delete(id);
