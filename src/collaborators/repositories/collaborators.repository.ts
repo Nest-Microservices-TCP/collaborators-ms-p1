@@ -4,6 +4,7 @@ import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateCollaboratorDto } from '../dto/update-collaborator.dto';
+import { NotFoundException } from '@nestjs/common';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -40,9 +41,20 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.collaboratorsRepository.save(request);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
-    throw new Error('Method not implemented.');
+  async update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
+    const { collaboratorId } = request;
+
+    const collaborator = await this.findOneById(collaboratorId);
+
+    if (!collaborator) {
+      throw new NotFoundException(
+        'The collaborator with provided ID do not exists',
+      );
+    }
+
+    Object.assign(collaborator, request);
+
+    return await this.collaboratorsRepository.save(collaborator);
   }
 
   async deleteById(id: string): Promise<CollaboratorEntity> {
