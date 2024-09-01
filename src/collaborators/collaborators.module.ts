@@ -3,10 +3,10 @@ import { CollaboratorsController } from './collaborators.controller';
 import { CollaboratorsService } from './collaborators.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CollaboratorEntity } from './entities/collaborator.entity';
-
+import { CollaboratorsRepository } from './repositories/collaborators.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([CollaboratorEntity])],
   controllers: [CollaboratorsController],
-  providers: [CollaboratorsService],
+  providers: [CollaboratorsService, CollaboratorsRepository],
 })
 export class CollaboratorsModule {}
