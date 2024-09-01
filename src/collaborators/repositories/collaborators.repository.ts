@@ -4,7 +4,7 @@ import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateCollaboratorDto } from '../dto/update-collaborator.dto';
-import { NotFoundException } from '@nestjs/common';
+import { EntityNotFoundException } from 'src/common/exceptions/custom';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -47,9 +47,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     const collaborator = await this.findOneById(collaboratorId);
 
     if (!collaborator) {
-      throw new NotFoundException(
-        'The collaborator with provided ID do not exists',
-      );
+      throw new EntityNotFoundException('collaboratorId');
     }
 
     Object.assign(collaborator, request);
@@ -61,9 +59,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     const collaborator = await this.findOneById(id);
 
     if (!collaborator) {
-      throw new NotFoundException(
-        'The collaborator with provided ID do not exists',
-      );
+      throw new EntityNotFoundException('collaboratorId');
     }
 
     await this.collaboratorsRepository.delete(id);
