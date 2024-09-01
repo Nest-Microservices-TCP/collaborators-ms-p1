@@ -13,7 +13,7 @@ export class CollaboratorEntity extends BaseEntity {
 
   @Column({
     name: 'last_name',
-    type: 'text',
+    type: 'varchar',
     length: 255,
     nullable: false,
   })
