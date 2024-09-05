@@ -25,8 +25,9 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   findAll(): Promise<PositionEntity[]> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.find();
   }
+
   findOneById(id: string): Promise<PositionEntity> {
     throw new Error('Method not implemented.');
   }
