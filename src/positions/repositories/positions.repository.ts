@@ -1,13 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { QueryRunner } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { CreatePositionDto, UpdatePositionDto } from '../dto';
 import { PositionEntity } from '../entities/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export class PositionsRepository implements IPositionsRepository {
-  setQueryRunner(queryRunner: QueryRunner): void {
-    throw new Error('Method not implemented.');
+  private positionsRepository: Repository<PositionEntity>;
+
+  constructor(
+    @InjectRepository(PositionEntity)
+    private readonly defaultRepository: Repository<PositionEntity>,
+  ) {
+    this.positionsRepository = this.defaultRepository;
   }
+
+  setQueryRunner(queryRunner: QueryRunner): void {
+    if (queryRunner) {
+      this.positionsRepository =
+        queryRunner.manager.getRepository(PositionEntity);
+    } else {
+      this.positionsRepository = this.defaultRepository;
+    }
+  }
+
   findAll(): Promise<PositionEntity[]> {
     throw new Error('Method not implemented.');
   }
