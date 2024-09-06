@@ -9,4 +9,8 @@ export class PositionsController {
   findAll(): Promise<PositionEntity[]> {
     return this.positionsService.findAll();
   }
+
+  findOneById(id: string): Promise<PositionEntity> {
+    return this.positionsService.findOneById(id);
+  }
 }
