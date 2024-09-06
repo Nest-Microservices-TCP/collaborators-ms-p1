@@ -2,7 +2,7 @@ import { PositionsRepository } from './repositories/positions.repository';
 import { PositionEntity } from './entities/position.entity';
 import { Injectable } from '@nestjs/common';
 import { HandleRpcExceptions } from 'src/common/decorators';
-import { CreatePositionDto } from './dto';
+import { CreatePositionDto, UpdatePositionDto } from './dto';
 
 @Injectable()
 export class PositionsService {
@@ -21,5 +21,10 @@ export class PositionsService {
   @HandleRpcExceptions()
   save(request: CreatePositionDto): Promise<PositionEntity> {
     return this.positionsRepository.save(request);
+  }
+
+  @HandleRpcExceptions()
+  update(request: UpdatePositionDto): Promise<PositionEntity> {
+    return this.positionsRepository.update(request);
   }
 }
