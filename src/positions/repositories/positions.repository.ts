@@ -4,6 +4,7 @@ import { CreatePositionDto, UpdatePositionDto } from '../dto';
 import { PositionEntity } from '../entities/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConflictException } from '@nestjs/common';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<PositionEntity>;
@@ -36,9 +37,22 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.create(request);
   }
 
-  save(request: CreatePositionDto): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+  async save(request: CreatePositionDto): Promise<PositionEntity> {
+    const { name } = request;
+
+    const position = await this.positionsRepository.findOne({
+      where: { name },
+    });
+
+    if (position) {
+      throw new ConflictException(
+        `Already exists a position with name: ${name}`,
+      );
+    }
+
+    return this.positionsRepository.save(request);
   }
+
   update(request: UpdatePositionDto): Promise<PositionEntity> {
     throw new Error('Method not implemented.');
   }
