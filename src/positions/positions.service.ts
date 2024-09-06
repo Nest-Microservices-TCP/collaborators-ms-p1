@@ -11,4 +11,9 @@ export class PositionsService {
   findAll(): Promise<PositionEntity[]> {
     return this.positionsRepository.findAll();
   }
+
+  @HandleRpcExceptions()
+  findOneById(id: string): Promise<PositionEntity> {
+    return this.positionsRepository.findOneById(id);
+  }
 }
