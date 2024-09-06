@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { PositionsService } from './positions.service';
 import { PositionEntity } from './entities/position.entity';
-import { CreatePositionDto } from './dto';
+import { CreatePositionDto, UpdatePositionDto } from './dto';
 
 @Controller()
 export class PositionsController {
@@ -17,5 +17,9 @@ export class PositionsController {
 
   save(request: CreatePositionDto): Promise<PositionEntity> {
     return this.positionsService.save(request);
+  }
+
+  update(request: UpdatePositionDto): Promise<PositionEntity> {
+    return this.positionsService.update(request);
   }
 }
