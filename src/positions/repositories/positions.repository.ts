@@ -29,7 +29,7 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   findOneById(id: string): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.findOne({ where: { id } });
   }
   create(request: Partial<PositionEntity>): PositionEntity {
     throw new Error('Method not implemented.');
