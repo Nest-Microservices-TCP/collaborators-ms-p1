@@ -5,6 +5,7 @@ import { PositionEntity } from '../entities/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConflictException } from '@nestjs/common';
+import { EntityNotFoundException } from 'src/common/exceptions/custom';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<PositionEntity>;
@@ -29,6 +30,7 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.find();
   }
 
+  //TODO: Refactorizar a que se rompa cuando no existe
   findOneById(id: string): Promise<PositionEntity> {
     return this.positionsRepository.findOne({ where: { id } });
   }
@@ -53,9 +55,20 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(request);
   }
 
-  update(request: UpdatePositionDto): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+  async update(request: UpdatePositionDto): Promise<PositionEntity> {
+    const { positionId } = request;
+
+    const position = await this.findOneById(positionId);
+
+    if (!position) {
+      throw new EntityNotFoundException('position');
+    }
+
+    Object.assign(position, request);
+
+    return this.positionsRepository.save(position);
   }
+
   deleteById(id: string): Promise<PositionEntity> {
     throw new Error('Method not implemented.');
   }
