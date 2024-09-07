@@ -1,23 +1,18 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AreaEntity } from './entities/area.entity';
 import { CreateAreaDto } from './dto';
 import { RpcException } from '@nestjs/microservices';
 import { AreasRepository } from './repositories/areas.repository';
 import { UpdateAreaDto } from './dto/update-area.dto';
+import { HandleRpcExceptions } from 'src/common/decorators';
 
 @Injectable()
 export class AreasService {
   constructor(private readonly areasRepository: AreasRepository) {}
 
+  @HandleRpcExceptions()
   async save(request: CreateAreaDto): Promise<AreaEntity> {
-    try {
-      return await this.areasRepository.save(request);
-    } catch (error) {
-      throw new RpcException({
-        code: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: `Error to save the area: ${error}`,
-      });
-    }
+    return await this.areasRepository.save(request);
   }
 
   async findAll(): Promise<AreaEntity[]> {
