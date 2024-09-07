@@ -39,9 +39,14 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(request);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(request: UpdateAreaDto): Promise<AreaEntity> {
-    throw new Error('Method not implemented.');
+  async update(request: UpdateAreaDto): Promise<AreaEntity> {
+    const { areaId } = request;
+
+    const area = await this.findOneById(areaId);
+
+    Object.assign(area, request);
+
+    return this.areasRepository.save(area);
   }
 
   async deleteById(id: string): Promise<AreaEntity> {
