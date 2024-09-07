@@ -3,6 +3,7 @@ import { CreateAreaDto } from './dto';
 import { Controller } from '@nestjs/common';
 import { AreasService } from './areas.service';
 import { AreaEntity } from './entities/area.entity';
+import { UpdateAreaDto } from './dto/update-area.dto';
 
 @Controller()
 export class AreasController {
@@ -15,5 +16,9 @@ export class AreasController {
 
   async findAll(): Promise<AreaEntity[]> {
     return this.areasService.findAll();
+  }
+
+  async update(request: UpdateAreaDto): Promise<AreaEntity> {
+    return this.areasService.update(request);
   }
 }
