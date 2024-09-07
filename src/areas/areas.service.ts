@@ -3,6 +3,7 @@ import { AreaEntity } from './entities/area.entity';
 import { CreateAreaDto } from './dto';
 import { RpcException } from '@nestjs/microservices';
 import { AreasRepository } from './repositories/areas.repository';
+import { UpdateAreaDto } from './dto/update-area.dto';
 
 @Injectable()
 export class AreasService {
@@ -28,5 +29,9 @@ export class AreasService {
         message: `Error to get all areas: ${error}`,
       });
     }
+  }
+
+  async update(request: UpdateAreaDto): Promise<AreaEntity> {
+    return this.areasRepository.update(request);
   }
 }
