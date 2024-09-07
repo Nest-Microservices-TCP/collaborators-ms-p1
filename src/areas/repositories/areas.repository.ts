@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
 import { CreateAreaDto } from '../dto/create-area.dto';
 import { AreaEntity } from '../entities/area.entity';
+import { ConflictException } from '@nestjs/common';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -35,7 +36,19 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.create(request);
   }
 
-  save(request: CreateAreaDto): Promise<AreaEntity> {
+  async save(request: CreateAreaDto): Promise<AreaEntity> {
+    const { name } = request;
+
+    const area = await this.areasRepository.findOne({
+      where: { name },
+    });
+
+    if (area) {
+      throw new ConflictException(
+        `The area with name: '${name}' already exists`,
+      );
+    }
+
     return this.areasRepository.save(request);
   }
 
