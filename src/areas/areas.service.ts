@@ -26,6 +26,11 @@ export class AreasService {
     }
   }
 
+  @HandleRpcExceptions()
+  async findOneById(id: string): Promise<AreaEntity> {
+    return this.areasRepository.findOneById(id);
+  }
+
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasRepository.update(request);
   }
