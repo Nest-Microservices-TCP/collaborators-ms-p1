@@ -5,6 +5,7 @@ import { IAreasRepository } from './interfaces/areas.repository.interface';
 import { CreateAreaDto } from '../dto/create-area.dto';
 import { AreaEntity } from '../entities/area.entity';
 import { ConflictException } from '@nestjs/common';
+import { EntityNotFoundException } from 'src/common/exceptions/custom';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -28,8 +29,14 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.find();
   }
 
-  findOneById(id: string): Promise<AreaEntity> {
-    return this.areasRepository.findOne({ where: { id } });
+  async findOneById(id: string): Promise<AreaEntity> {
+    const area = await this.areasRepository.findOne({ where: { id } });
+
+    if (!area) {
+      throw new EntityNotFoundException('areaId');
+    }
+
+    return area;
   }
 
   create(request: Partial<AreaEntity>): AreaEntity {
