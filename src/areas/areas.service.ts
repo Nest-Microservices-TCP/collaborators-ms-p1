@@ -28,4 +28,9 @@ export class AreasService {
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasRepository.update(request);
   }
+
+  @HandleRpcExceptions()
+  async deleteById(id: string): Promise<AreaEntity> {
+    return this.areasRepository.deleteById(id);
+  }
 }
