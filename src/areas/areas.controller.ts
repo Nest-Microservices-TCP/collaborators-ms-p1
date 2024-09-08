@@ -26,4 +26,9 @@ export class AreasController {
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasService.update(request);
   }
+
+  @MessagePattern({ cmd: 'delete.area.by.id' })
+  async deleteById(id: string): Promise<AreaEntity> {
+    return this.areasService.deleteById(id);
+  }
 }
