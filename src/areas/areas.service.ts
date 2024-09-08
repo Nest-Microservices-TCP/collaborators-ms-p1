@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AreaEntity } from './entities/area.entity';
 import { CreateAreaDto } from './dto';
-import { RpcException } from '@nestjs/microservices';
 import { AreasRepository } from './repositories/areas.repository';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { HandleRpcExceptions } from 'src/common/decorators';
@@ -15,15 +14,9 @@ export class AreasService {
     return await this.areasRepository.save(request);
   }
 
+  @HandleRpcExceptions()
   async findAll(): Promise<AreaEntity[]> {
-    try {
-      return await this.areasRepository.findAll();
-    } catch (error) {
-      throw new RpcException({
-        code: 500,
-        message: `Error to get all areas: ${error}`,
-      });
-    }
+    return await this.areasRepository.findAll();
   }
 
   @HandleRpcExceptions()
@@ -31,6 +24,7 @@ export class AreasService {
     return this.areasRepository.findOneById(id);
   }
 
+  @HandleRpcExceptions()
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasRepository.update(request);
   }
