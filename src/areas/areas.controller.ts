@@ -24,6 +24,7 @@ export class AreasController {
     return this.areasService.findOneById(id);
   }
 
+  @MessagePattern({ cmd: 'update.area' })
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasService.update(request);
   }
