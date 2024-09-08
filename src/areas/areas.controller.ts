@@ -18,6 +18,11 @@ export class AreasController {
     return this.areasService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find-one-area-by-id' })
+  async findOneById(id: string): Promise<AreaEntity> {
+    return this.areasService.findOneById(id);
+  }
+
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasService.update(request);
   }
