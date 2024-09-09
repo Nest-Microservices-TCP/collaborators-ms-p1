@@ -1,10 +1,12 @@
-import { QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateCollaboratorDto } from '../dto/update-collaborator.dto';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import { Status } from 'src/common/enums/status.enum';
+import { InternalServerErrorException } from '@nestjs/common';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -26,11 +28,23 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   }
 
   findAll(): Promise<CollaboratorEntity[]> {
-    return this.collaboratorsRepository.find();
+    return this.collaboratorsRepository.find({
+      where: {
+        status: Status.ACTIVE,
+      },
+    });
   }
 
   findOneById(id: string): Promise<CollaboratorEntity> {
-    return this.collaboratorsRepository.findOne({ where: { id } });
+    const collaborator = this.collaboratorsRepository.findOne({
+      where: { id },
+    });
+
+    if (!collaborator) {
+      throw new EntityNotFoundException('collaboratorId');
+    }
+
+    return collaborator;
   }
 
   create(request: Partial<CollaboratorEntity>): CollaboratorEntity {
@@ -46,24 +60,28 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
 
     const collaborator = await this.findOneById(collaboratorId);
 
-    if (!collaborator) {
-      throw new EntityNotFoundException('collaboratorId');
-    }
-
     Object.assign(collaborator, request);
 
     return await this.collaboratorsRepository.save(collaborator);
   }
 
   async deleteById(id: string): Promise<CollaboratorEntity> {
-    const collaborator = await this.findOneById(id);
+    const { id: collaboratorId } = await this.findOneById(id);
 
-    if (!collaborator) {
-      throw new EntityNotFoundException('collaboratorId');
+    const result: UpdateResult = await this.collaboratorsRepository.update(
+      collaboratorId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result.affected !== 1) {
+      throw new InternalServerErrorException(
+        'Error to delete the collaborator, try later',
+      );
     }
 
-    await this.collaboratorsRepository.delete(id);
-
-    return collaborator;
+    return this.findOneById(collaboratorId);
   }
 }
