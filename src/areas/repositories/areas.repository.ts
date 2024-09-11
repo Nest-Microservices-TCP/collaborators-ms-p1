@@ -1,11 +1,15 @@
 import { UpdateAreaDto } from '../dto/update-area.dto';
-import { QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
 import { CreateAreaDto } from '../dto/create-area.dto';
 import { AreaEntity } from '../entities/area.entity';
-import { ConflictException } from '@nestjs/common';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import { Status } from 'src/common/enums/status.enum';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -26,7 +30,11 @@ export class AreasRepository implements IAreasRepository {
   }
 
   findAll(): Promise<AreaEntity[]> {
-    return this.areasRepository.find();
+    return this.areasRepository.find({
+      where: {
+        status: Status.ACTIVE,
+      },
+    });
   }
 
   async findOneById(id: string): Promise<AreaEntity> {
@@ -72,8 +80,15 @@ export class AreasRepository implements IAreasRepository {
   async deleteById(id: string): Promise<AreaEntity> {
     const area = await this.findOneById(id);
 
-    await this.areasRepository.delete({ id });
+    const result: UpdateResult = await this.areasRepository.update(area.id, {
+      status: Status.DELETED,
+      deletedAt: new Date(),
+    });
 
-    return area;
+    if (result.affected !== 1) {
+      throw new InternalServerErrorException('Error to update area, try later');
+    }
+
+    return this.findOneById(area.id);
   }
 }
