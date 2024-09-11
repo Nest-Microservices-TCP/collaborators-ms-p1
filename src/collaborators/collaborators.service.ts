@@ -1,10 +1,10 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CollaboratorsRepository } from './repositories/collaborators.repository';
 import { CollaboratorEntity } from './entities/collaborator.entity';
-import { RpcException } from '@nestjs/microservices';
 import { FindOneCollaboratorById } from './dto/find-one-collaborator-by-id.dto';
 import { CreateCollaboratorDto } from './dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
+import { HandleRpcExceptions } from 'src/common/decorators';
 
 @Injectable()
 export class CollaboratorsService {
@@ -12,51 +12,32 @@ export class CollaboratorsService {
     private readonly collaboratorsRepository: CollaboratorsRepository,
   ) {}
 
+  @HandleRpcExceptions()
   async findAll(): Promise<CollaboratorEntity[]> {
-    try {
-      return this.collaboratorsRepository.findAll();
-    } catch (error) {
-      throw new RpcException({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: `Error to get all collaborators: ${error}`,
-      });
-    }
+    return this.collaboratorsRepository.findAll();
   }
 
+  @HandleRpcExceptions()
   async findOneById(
     request: FindOneCollaboratorById,
   ): Promise<CollaboratorEntity> {
-    const { collaborator_id } = request;
+    const { collaboratorId } = request;
 
-    try {
-      return await this.collaboratorsRepository.findOneById(collaborator_id);
-    } catch (error) {
-      throw new RpcException({
-        code: 500,
-        message: `Error to get the collaborator with the provided ID: ${error}`,
-      });
-    }
+    return await this.collaboratorsRepository.findOneById(collaboratorId);
   }
 
+  @HandleRpcExceptions()
   async save(request: CreateCollaboratorDto): Promise<CollaboratorEntity> {
-    try {
-      return this.collaboratorsRepository.save(request);
-    } catch (error) {
-      throw new RpcException({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: `Error to save collaborator: ${error}`,
-      });
-    }
+    return this.collaboratorsRepository.save(request);
   }
 
+  @HandleRpcExceptions()
   async update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
-    try {
-      return this.collaboratorsRepository.update(request);
-    } catch (error) {
-      throw new RpcException({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: `Error to update collaborator: ${error}`,
-      });
-    }
+    return this.collaboratorsRepository.update(request);
+  }
+
+  @HandleRpcExceptions()
+  async deleteById(id: string): Promise<CollaboratorEntity> {
+    return this.collaboratorsRepository.deleteById(id);
   }
 }
