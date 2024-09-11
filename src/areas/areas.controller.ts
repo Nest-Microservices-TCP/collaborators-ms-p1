@@ -19,18 +19,18 @@ export class AreasController {
     return this.areasService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find-one-area-by-id' })
-  async findOneById(id: string): Promise<AreaEntity> {
+  @MessagePattern({ cmd: 'find.one.area.by.id' })
+  async findOneById(@Payload('id') id: string): Promise<AreaEntity> {
     return this.areasService.findOneById(id);
   }
 
   @MessagePattern({ cmd: 'update.area' })
-  async update(request: UpdateAreaDto): Promise<AreaEntity> {
+  async update(@Payload() request: UpdateAreaDto): Promise<AreaEntity> {
     return this.areasService.update(request);
   }
 
   @MessagePattern({ cmd: 'delete.area.by.id' })
-  async deleteById(id: string): Promise<AreaEntity> {
+  async deleteById(@Payload('id') id: string): Promise<AreaEntity> {
     return this.areasService.deleteById(id);
   }
 }
