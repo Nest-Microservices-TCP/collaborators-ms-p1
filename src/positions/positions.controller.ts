@@ -18,6 +18,7 @@ export class PositionsController {
     return this.positionsService.findOneById(id);
   }
 
+  @MessagePattern({ cmd: 'save.position' })
   save(request: CreatePositionDto): Promise<PositionEntity> {
     return this.positionsService.save(request);
   }
