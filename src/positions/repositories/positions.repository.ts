@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreatePositionDto, UpdatePositionDto } from '../dto';
 import { PositionEntity } from '../entities/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConflictException } from '@nestjs/common';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums/status.enum';
 
@@ -35,6 +38,7 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
+  //TODO: También debería no devolver eliminados
   async findOneById(id: string): Promise<PositionEntity> {
     const position = await this.positionsRepository.findOne({ where: { id } });
 
@@ -45,7 +49,6 @@ export class PositionsRepository implements IPositionsRepository {
     return position;
   }
 
-  //TODO: Manejar posiciones repetidas
   create(request: Partial<PositionEntity>): PositionEntity {
     return this.positionsRepository.create(request);
   }
@@ -71,16 +74,28 @@ export class PositionsRepository implements IPositionsRepository {
 
     const position = await this.findOneById(positionId);
 
-    if (!position) {
-      throw new EntityNotFoundException('position');
-    }
-
     Object.assign(position, request);
 
     return this.positionsRepository.save(position);
   }
 
-  deleteById(id: string): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+  async deleteById(id: string): Promise<PositionEntity> {
+    const position = await this.findOneById(id);
+
+    const result: UpdateResult = await this.positionsRepository.update(
+      position.id,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result.affected === 0) {
+      throw new InternalServerErrorException(
+        'Error to delete the positions, try later',
+      );
+    }
+
+    return this.findOneById(position.id);
   }
 }
