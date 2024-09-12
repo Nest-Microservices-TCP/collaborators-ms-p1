@@ -6,6 +6,7 @@ import { IPositionsRepository } from './interfaces/positions.repository.interfac
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConflictException } from '@nestjs/common';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import { Status } from 'src/common/enums/status.enum';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<PositionEntity>;
@@ -27,14 +28,24 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   findAll(): Promise<PositionEntity[]> {
-    return this.positionsRepository.find();
+    return this.positionsRepository.find({
+      where: {
+        status: Status.ACTIVE,
+      },
+    });
   }
 
-  //TODO: Refactorizar a que se rompa cuando no existe
-  findOneById(id: string): Promise<PositionEntity> {
-    return this.positionsRepository.findOne({ where: { id } });
+  async findOneById(id: string): Promise<PositionEntity> {
+    const position = await this.positionsRepository.findOne({ where: { id } });
+
+    if (!position) {
+      throw new EntityNotFoundException('positionId');
+    }
+
+    return position;
   }
 
+  //TODO: Manejar posiciones repetidas
   create(request: Partial<PositionEntity>): PositionEntity {
     return this.positionsRepository.create(request);
   }
