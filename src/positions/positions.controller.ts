@@ -22,4 +22,8 @@ export class PositionsController {
   update(request: UpdatePositionDto): Promise<PositionEntity> {
     return this.positionsService.update(request);
   }
+
+  deleteById(id: string): Promise<PositionEntity> {
+    return this.positionsService.deleteById(id);
+  }
 }
