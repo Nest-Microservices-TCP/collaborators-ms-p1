@@ -28,6 +28,7 @@ export class PositionsController {
     return this.positionsService.update(request);
   }
 
+  @MessagePattern({ cmd: 'delete.position.by.id' })
   deleteById(id: string): Promise<PositionEntity> {
     return this.positionsService.deleteById(id);
   }
