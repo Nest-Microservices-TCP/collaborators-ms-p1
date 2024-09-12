@@ -13,6 +13,7 @@ export class PositionsController {
     return this.positionsService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find.one.position.by.id' })
   findOneById(id: string): Promise<PositionEntity> {
     return this.positionsService.findOneById(id);
   }
