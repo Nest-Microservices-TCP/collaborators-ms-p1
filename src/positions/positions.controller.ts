@@ -23,6 +23,7 @@ export class PositionsController {
     return this.positionsService.save(request);
   }
 
+  @MessagePattern({ cmd: 'update.position' })
   update(request: UpdatePositionDto): Promise<PositionEntity> {
     return this.positionsService.update(request);
   }
