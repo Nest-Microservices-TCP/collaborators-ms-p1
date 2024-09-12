@@ -27,4 +27,9 @@ export class PositionsService {
   update(request: UpdatePositionDto): Promise<PositionEntity> {
     return this.positionsRepository.update(request);
   }
+
+  @HandleRpcExceptions()
+  deleteById(id: string): Promise<PositionEntity> {
+    return this.positionsRepository.deleteById(id);
+  }
 }
