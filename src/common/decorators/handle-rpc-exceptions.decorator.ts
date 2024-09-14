@@ -14,7 +14,7 @@ export function HandleRpcExceptions() {
         return await originalMethod.apply(this, args);
       } catch (error) {
         throw new RpcException({
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          status: error.status ?? HttpStatus.INTERNAL_SERVER_ERROR,
           message: `Error to ${propertyKey}: ${error.message || error}`,
         });
       }
