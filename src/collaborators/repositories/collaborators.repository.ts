@@ -35,13 +35,13 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  findOneById(id: string): Promise<CollaboratorEntity> {
-    const collaborator = this.collaboratorsRepository.findOne({
+  async findOneById(id: string): Promise<CollaboratorEntity> {
+    const collaborator = await this.collaboratorsRepository.findOne({
       where: { id },
     });
 
     if (!collaborator) {
-      throw new EntityNotFoundException('collaboratorId');
+      throw new EntityNotFoundException('collaborator');
     }
 
     return collaborator;
