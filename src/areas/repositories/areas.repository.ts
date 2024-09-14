@@ -41,7 +41,7 @@ export class AreasRepository implements IAreasRepository {
     const area = await this.areasRepository.findOne({ where: { id } });
 
     if (!area) {
-      throw new EntityNotFoundException('areaId');
+      throw new EntityNotFoundException('area');
     }
 
     return area;
