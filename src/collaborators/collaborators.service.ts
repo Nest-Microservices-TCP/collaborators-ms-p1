@@ -23,7 +23,7 @@ export class CollaboratorsService {
   ): Promise<CollaboratorEntity> {
     const { collaboratorId } = request;
 
-    return await this.collaboratorsRepository.findOneById(collaboratorId);
+    return this.collaboratorsRepository.findOneById(collaboratorId);
   }
 
   @HandleRpcExceptions()
