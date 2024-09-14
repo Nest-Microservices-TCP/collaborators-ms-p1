@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { PositionsService } from './positions.service';
 import { PositionEntity } from './entities/position.entity';
 import { CreatePositionDto, UpdatePositionDto } from './dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class PositionsController {
@@ -14,22 +14,22 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'find.one.position.by.id' })
-  findOneById(id: string): Promise<PositionEntity> {
+  findOneById(@Payload('id') id: string): Promise<PositionEntity> {
     return this.positionsService.findOneById(id);
   }
 
   @MessagePattern({ cmd: 'save.position' })
-  save(request: CreatePositionDto): Promise<PositionEntity> {
+  save(@Payload() request: CreatePositionDto): Promise<PositionEntity> {
     return this.positionsService.save(request);
   }
 
   @MessagePattern({ cmd: 'update.position' })
-  update(request: UpdatePositionDto): Promise<PositionEntity> {
+  update(@Payload() request: UpdatePositionDto): Promise<PositionEntity> {
     return this.positionsService.update(request);
   }
 
   @MessagePattern({ cmd: 'delete.position.by.id' })
-  deleteById(id: string): Promise<PositionEntity> {
+  deleteById(@Payload('id') id: string): Promise<PositionEntity> {
     return this.positionsService.deleteById(id);
   }
 }
