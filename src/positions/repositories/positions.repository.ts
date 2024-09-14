@@ -43,7 +43,7 @@ export class PositionsRepository implements IPositionsRepository {
     const position = await this.positionsRepository.findOne({ where: { id } });
 
     if (!position) {
-      throw new EntityNotFoundException('positionId');
+      throw new EntityNotFoundException('position');
     }
 
     return position;
