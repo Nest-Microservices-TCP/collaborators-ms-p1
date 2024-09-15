@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AreaEntity } from './entities/area.entity';
-import { CreateAreaDto } from './dto';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { AreasRepository } from './repositories/areas.repository';
-import { UpdateAreaDto } from './dto/update-area.dto';
 import { HandleRpcExceptions } from 'src/common/decorators';
+import { plainToInstance } from 'class-transformer';
+import { AreaResponseDto } from './dto/response/area-response.dto';
 
 @Injectable()
 export class AreasService {
@@ -20,8 +21,12 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(id: string): Promise<AreaEntity> {
-    return this.areasRepository.findOneById(id);
+  async findOneById(id: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.findOneById(id);
+
+    return plainToInstance(AreaResponseDto, area, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()
