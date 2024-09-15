@@ -1,9 +1,9 @@
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateAreaDto } from './dto';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { Controller } from '@nestjs/common';
 import { AreasService } from './areas.service';
 import { AreaEntity } from './entities/area.entity';
-import { UpdateAreaDto } from './dto/update-area.dto';
+import { AreaResponseDto } from './dto/response/area-response.dto';
 
 @Controller()
 export class AreasController {
@@ -20,7 +20,7 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'find.one.area.by.id' })
-  async findOneById(@Payload('id') id: string): Promise<AreaEntity> {
+  async findOneById(@Payload('id') id: string): Promise<AreaResponseDto> {
     return this.areasService.findOneById(id);
   }
 
