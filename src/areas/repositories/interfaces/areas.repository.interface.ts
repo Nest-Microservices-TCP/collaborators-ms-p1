@@ -1,6 +1,5 @@
-import { UpdateAreaDto } from 'src/areas/dto/update-area.dto';
+import { CreateAreaDto, UpdateAreaDto } from 'src/areas/dto/request';
 import { IBaseRepository } from 'src/common/interfaces';
-import { CreateAreaDto } from 'src/areas/dto';
 import { AreaEntity } from 'src/areas/entities/area.entity';
 
 export interface IAreasRepository
