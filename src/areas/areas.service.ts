@@ -20,8 +20,12 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async findAll(): Promise<AreaEntity[]> {
-    return await this.areasRepository.findAll();
+  async findAll(): Promise<AreaResponseDto[]> {
+    const areas = await this.areasRepository.findAll();
+
+    return plainToInstance(AreaResponseDto, areas, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()
