@@ -38,8 +38,12 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async update(request: UpdateAreaDto): Promise<AreaEntity> {
-    return this.areasRepository.update(request);
+  async update(request: UpdateAreaDto): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.update(request);
+
+    return plainToInstance(AreaResponseDto, area, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

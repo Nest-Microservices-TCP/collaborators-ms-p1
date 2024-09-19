@@ -25,7 +25,7 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'update.area' })
-  async update(@Payload() request: UpdateAreaDto): Promise<AreaEntity> {
+  async update(@Payload() request: UpdateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.update(request);
   }
 
