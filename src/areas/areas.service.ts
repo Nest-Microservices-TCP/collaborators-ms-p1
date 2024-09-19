@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { AreaEntity } from './entities/area.entity';
 import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { AreasRepository } from './repositories/areas.repository';
 import { HandleRpcExceptions } from 'src/common/decorators';
@@ -47,7 +46,11 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(id: string): Promise<AreaEntity> {
-    return this.areasRepository.deleteById(id);
+  async deleteById(id: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.deleteById(id);
+
+    return plainToInstance(AreaResponseDto, area, {
+      excludeExtraneousValues: true,
+    });
   }
 }
