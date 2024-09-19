@@ -11,8 +11,12 @@ export class AreasService {
   constructor(private readonly areasRepository: AreasRepository) {}
 
   @HandleRpcExceptions()
-  async save(request: CreateAreaDto): Promise<AreaEntity> {
-    return await this.areasRepository.save(request);
+  async save(request: CreateAreaDto): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.save(request);
+
+    return plainToInstance(AreaResponseDto, area, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

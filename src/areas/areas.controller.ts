@@ -10,7 +10,7 @@ export class AreasController {
   constructor(private readonly areasService: AreasService) {}
 
   @MessagePattern({ cmd: 'save.area' })
-  async save(@Payload() request: CreateAreaDto): Promise<AreaEntity> {
+  async save(@Payload() request: CreateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.save(request);
   }
 
