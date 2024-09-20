@@ -21,7 +21,7 @@ export class CollaboratorsController {
   @MessagePattern({ cmd: 'find.one.collaborator.by.id' })
   async findOneById(
     @Payload() request: FindOneCollaboratorById,
-  ): Promise<CollaboratorEntity> {
+  ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.findOneById(request);
   }
 

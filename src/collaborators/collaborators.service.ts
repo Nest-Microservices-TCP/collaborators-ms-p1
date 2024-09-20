@@ -28,10 +28,15 @@ export class CollaboratorsService {
   @HandleRpcExceptions()
   async findOneById(
     request: FindOneCollaboratorById,
-  ): Promise<CollaboratorEntity> {
+  ): Promise<CollaboratorResponseDto> {
     const { collaboratorId } = request;
 
-    return this.collaboratorsRepository.findOneById(collaboratorId);
+    const collaborator =
+      await this.collaboratorsRepository.findOneById(collaboratorId);
+
+    return plainToInstance(CollaboratorResponseDto, collaborator, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()
