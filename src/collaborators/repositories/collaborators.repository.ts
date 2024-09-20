@@ -1,12 +1,11 @@
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
-import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 import { CollaboratorEntity } from '../entities/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateCollaboratorDto } from '../dto/update-collaborator.dto';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums/status.enum';
 import { InternalServerErrorException } from '@nestjs/common';
+import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
