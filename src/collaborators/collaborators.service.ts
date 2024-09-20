@@ -40,8 +40,12 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async save(request: CreateCollaboratorDto): Promise<CollaboratorEntity> {
-    return this.collaboratorsRepository.save(request);
+  async save(request: CreateCollaboratorDto): Promise<CollaboratorResponseDto> {
+    const collaborator = await this.collaboratorsRepository.save(request);
+
+    return plainToInstance(CollaboratorResponseDto, collaborator, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

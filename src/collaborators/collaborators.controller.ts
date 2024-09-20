@@ -28,7 +28,7 @@ export class CollaboratorsController {
   @MessagePattern({ cmd: 'save.collaborator' })
   async save(
     @Payload() request: CreateCollaboratorDto,
-  ): Promise<CollaboratorEntity> {
+  ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.save(request);
   }
 
