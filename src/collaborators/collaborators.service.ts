@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CollaboratorsRepository } from './repositories/collaborators.repository';
 import { CollaboratorEntity } from './entities/collaborator.entity';
 import { HandleRpcExceptions } from 'src/common/decorators';
+import { CollaboratorResponseDto } from './dto/response';
+import { plainToInstance } from 'class-transformer';
 import {
   CreateCollaboratorDto,
   FindOneCollaboratorById,
@@ -15,8 +17,12 @@ export class CollaboratorsService {
   ) {}
 
   @HandleRpcExceptions()
-  async findAll(): Promise<CollaboratorEntity[]> {
-    return this.collaboratorsRepository.findAll();
+  async findAll(): Promise<CollaboratorResponseDto[]> {
+    const collaborators = await this.collaboratorsRepository.findAll();
+
+    return plainToInstance(CollaboratorResponseDto, collaborators, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

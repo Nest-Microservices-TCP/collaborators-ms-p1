@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { CollaboratorsService } from './collaborators.service';
 import { CollaboratorEntity } from './entities/collaborator.entity';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CollaboratorResponseDto } from './dto/response';
 import {
   CreateCollaboratorDto,
   FindOneCollaboratorById,
@@ -13,7 +14,7 @@ export class CollaboratorsController {
   constructor(private readonly collaboratorsService: CollaboratorsService) {}
 
   @MessagePattern({ cmd: 'find.all.collaborators' })
-  async findAll(): Promise<CollaboratorEntity[]> {
+  async findAll(): Promise<CollaboratorResponseDto[]> {
     return this.collaboratorsService.findAll();
   }
 
