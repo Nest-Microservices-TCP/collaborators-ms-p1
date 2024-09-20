@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CollaboratorsRepository } from './repositories/collaborators.repository';
 import { CollaboratorEntity } from './entities/collaborator.entity';
-import { FindOneCollaboratorById } from './dto/find-one-collaborator-by-id.dto';
-import { CreateCollaboratorDto } from './dto';
-import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 import { HandleRpcExceptions } from 'src/common/decorators';
+import {
+  CreateCollaboratorDto,
+  FindOneCollaboratorById,
+  UpdateCollaboratorDto,
+} from './dto/request';
 
 @Injectable()
 export class CollaboratorsService {
