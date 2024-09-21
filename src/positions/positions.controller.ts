@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { PositionsService } from './positions.service';
 import { PositionEntity } from './entities/position.entity';
-import { CreatePositionDto, UpdatePositionDto } from './dto';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
