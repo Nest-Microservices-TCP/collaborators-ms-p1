@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common';
 import { CollaboratorsService } from './collaborators.service';
-import { CollaboratorEntity } from './entities/collaborator.entity';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CollaboratorResponseDto } from './dto/response';
 import {
