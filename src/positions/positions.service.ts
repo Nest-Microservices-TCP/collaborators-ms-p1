@@ -2,7 +2,7 @@ import { PositionsRepository } from './repositories/positions.repository';
 import { PositionEntity } from './entities/position.entity';
 import { Injectable } from '@nestjs/common';
 import { HandleRpcExceptions } from 'src/common/decorators';
-import { CreatePositionDto, UpdatePositionDto } from './dto';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 
 @Injectable()
 export class PositionsService {
