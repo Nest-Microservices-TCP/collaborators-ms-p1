@@ -49,8 +49,14 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
-    return this.collaboratorsRepository.update(request);
+  async update(
+    request: UpdateCollaboratorDto,
+  ): Promise<CollaboratorResponseDto> {
+    const collaborator = await this.collaboratorsRepository.update(request);
+
+    return plainToInstance(CollaboratorResponseDto, collaborator, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()
