@@ -40,7 +40,9 @@ export class CollaboratorsController {
   }
 
   @MessagePattern({ cmd: 'delete.collaborator.by.id' })
-  async deleteById(@Payload('id') id: string): Promise<CollaboratorEntity> {
+  async deleteById(
+    @Payload('id') id: string,
+  ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.deleteById(id);
   }
 }

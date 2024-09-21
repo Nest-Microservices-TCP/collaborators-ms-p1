@@ -60,7 +60,11 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(id: string): Promise<CollaboratorEntity> {
-    return this.collaboratorsRepository.deleteById(id);
+  async deleteById(id: string): Promise<CollaboratorResponseDto> {
+    const collaborator = await this.collaboratorsRepository.deleteById(id);
+
+    return plainToInstance(CollaboratorResponseDto, collaborator, {
+      excludeExtraneousValues: true,
+    });
   }
 }
