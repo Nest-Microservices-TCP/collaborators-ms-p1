@@ -29,8 +29,12 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  save(request: CreatePositionDto): Promise<PositionEntity> {
-    return this.positionsRepository.save(request);
+  async save(request: CreatePositionDto): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.save(request);
+
+    return plainToInstance(PositionResponseDto, position, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

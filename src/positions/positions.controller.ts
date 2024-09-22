@@ -20,7 +20,7 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'save.position' })
-  save(@Payload() request: CreatePositionDto): Promise<PositionEntity> {
+  save(@Payload() request: CreatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.save(request);
   }
 
