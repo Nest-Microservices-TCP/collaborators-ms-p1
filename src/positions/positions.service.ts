@@ -38,8 +38,12 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  update(request: UpdatePositionDto): Promise<PositionEntity> {
-    return this.positionsRepository.update(request);
+  async update(request: UpdatePositionDto): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.update(request);
+
+    return plainToInstance(PositionResponseDto, position, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()
