@@ -3,13 +3,14 @@ import { PositionsService } from './positions.service';
 import { PositionEntity } from './entities/position.entity';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { PositionResponseDto } from './dto/response';
 
 @Controller()
 export class PositionsController {
   constructor(private readonly positionsService: PositionsService) {}
 
   @MessagePattern({ cmd: 'find.all.positions' })
-  findAll(): Promise<PositionEntity[]> {
+  findAll(): Promise<PositionResponseDto[]> {
     return this.positionsService.findAll();
   }
 
