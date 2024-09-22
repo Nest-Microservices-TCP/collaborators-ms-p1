@@ -20,8 +20,12 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  findOneById(id: string): Promise<PositionEntity> {
-    return this.positionsRepository.findOneById(id);
+  async findOneById(id: string): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.findOneById(id);
+
+    return plainToInstance(PositionResponseDto, position, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @HandleRpcExceptions()

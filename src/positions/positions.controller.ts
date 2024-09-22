@@ -15,7 +15,7 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'find.one.position.by.id' })
-  findOneById(@Payload('id') id: string): Promise<PositionEntity> {
+  findOneById(@Payload('id') id: string): Promise<PositionResponseDto> {
     return this.positionsService.findOneById(id);
   }
 
