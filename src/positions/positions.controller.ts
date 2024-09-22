@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common';
 import { PositionsService } from './positions.service';
-import { PositionEntity } from './entities/position.entity';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PositionResponseDto } from './dto/response';
@@ -30,7 +29,7 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'delete.position.by.id' })
-  deleteById(@Payload('id') id: string): Promise<PositionEntity> {
+  deleteById(@Payload('id') id: string): Promise<PositionResponseDto> {
     return this.positionsService.deleteById(id);
   }
 }
