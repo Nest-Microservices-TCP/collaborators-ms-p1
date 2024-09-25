@@ -4,6 +4,7 @@ import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
 import { WorkShiftEntity } from '../entities/work-shift.entity';
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Status } from 'src/common/enums';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShiftEntity>;
@@ -25,7 +26,9 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   findAll(): Promise<WorkShiftEntity[]> {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.find({
+      where: { status: Status.ACTIVE },
+    });
   }
 
   findOneById(id: string): Promise<WorkShiftEntity> {
