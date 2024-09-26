@@ -45,7 +45,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   create(request: Partial<WorkShiftEntity>): WorkShiftEntity {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.create(request);
   }
 
   save(request: CreateWorkShiftDto): Promise<WorkShiftEntity> {
