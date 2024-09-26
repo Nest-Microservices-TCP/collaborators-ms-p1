@@ -16,4 +16,13 @@ export class WorkShiftsService {
       excludeExtraneousValues: true,
     });
   }
+
+  @HandleRpcExceptions()
+  async findOneById(id: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.findOneById(id);
+
+    return plainToInstance(WorkShiftResponseDto, workShift, {
+      excludeExtraneousValues: true,
+    });
+  }
 }
