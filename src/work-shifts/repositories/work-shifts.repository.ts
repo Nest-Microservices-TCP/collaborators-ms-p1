@@ -53,8 +53,14 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(request);
   }
 
-  update(request: UpdateWorkShiftDto): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+  async update(request: UpdateWorkShiftDto): Promise<WorkShiftEntity> {
+    const { workShiftId } = request;
+
+    const workShift = await this.findOneById(workShiftId);
+
+    Object.assign(workShift, request);
+
+    return this.workShiftsRepository.save(workShift);
   }
 
   deleteById(id: string): Promise<WorkShiftEntity> {
