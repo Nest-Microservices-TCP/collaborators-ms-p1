@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { WorkShiftResponseDto } from './dto/response';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { WorkShiftsService } from './work-shifts.service';
+import { CreateWorkShiftDto } from './dto/request';
 
 @Controller()
 export class WorkShiftsController {
@@ -15,5 +16,10 @@ export class WorkShiftsController {
   @MessagePattern({ cmd: 'find.one.work.shift.by.id' })
   findOneById(@Payload('id') id: string): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.findOneById(id);
+  }
+
+  @MessagePattern({ cmd: 'save.work.shift' })
+  save(@Payload() request: CreateWorkShiftDto): Promise<WorkShiftResponseDto> {
+    return this.workShiftsService.save(request);
   }
 }
