@@ -49,7 +49,8 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   save(request: CreateWorkShiftDto): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+    //TODO: En lugar de validar duplicados, definir restricciones unique en la entidad
+    return this.workShiftsRepository.save(request);
   }
 
   update(request: UpdateWorkShiftDto): Promise<WorkShiftEntity> {
