@@ -44,4 +44,13 @@ export class WorkShiftsService {
       excludeExtraneousValues: true,
     });
   }
+
+  @HandleRpcExceptions()
+  async deleteById(id: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.deleteById(id);
+
+    return plainToInstance(WorkShiftResponseDto, workShift, {
+      excludeExtraneousValues: true,
+    });
+  }
 }
