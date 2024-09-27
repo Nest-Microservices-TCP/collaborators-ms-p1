@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
 import { WorkShiftEntity } from '../entities/work-shift.entity';
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import { InternalServerErrorException } from '@nestjs/common';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShiftEntity>;
@@ -63,7 +64,23 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(workShift);
   }
 
-  deleteById(id: string): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+  async deleteById(id: string): Promise<WorkShiftEntity> {
+    const workShift = await this.findOneById(id);
+
+    const result: UpdateResult = await this.workShiftsRepository.update(
+      workShift.id,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result.affected !== 1) {
+      throw new InternalServerErrorException(
+        'Error to delete workShift, try again',
+      );
+    }
+
+    return this.findOneById(id);
   }
 }
