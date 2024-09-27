@@ -29,4 +29,9 @@ export class WorkShiftsController {
   ): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.update(request);
   }
+
+  @MessagePattern({ cmd: 'delete.work.shift.by.id' })
+  deleteById(@Payload('id') id: string): Promise<WorkShiftResponseDto> {
+    return this.workShiftsService.deleteById(id);
+  }
 }
