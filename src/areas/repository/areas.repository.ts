@@ -1,7 +1,6 @@
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
-import { AreaEntity } from '../entities/area.entity';
 import {
   ConflictException,
   InternalServerErrorException,
@@ -9,6 +8,7 @@ import {
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums/status.enum';
 import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
+import { AreaEntity } from '../entity/area.entity';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
