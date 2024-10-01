@@ -3,7 +3,7 @@ import {
   CreatePositionDto,
   UpdatePositionDto,
 } from 'src/positions/dto/request';
-import { PositionEntity } from 'src/positions/entities/position.entity';
+import { PositionEntity } from 'src/positions/entity/position.entity';
 
 export interface IPositionsRepository
   extends IBaseRepository<

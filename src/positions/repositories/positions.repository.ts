@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
-import { PositionEntity } from '../entities/position.entity';
+import { PositionEntity } from '../entity/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
