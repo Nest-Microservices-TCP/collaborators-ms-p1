@@ -1,5 +1,5 @@
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
-import { CollaboratorEntity } from '../entities/collaborator.entity';
+import { CollaboratorEntity } from '../entity/collaborator.entity';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';

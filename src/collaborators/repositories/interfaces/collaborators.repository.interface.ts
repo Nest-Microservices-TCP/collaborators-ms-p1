@@ -1,4 +1,4 @@
-import { CollaboratorEntity } from 'src/collaborators/entities/collaborator.entity';
+import { CollaboratorEntity } from 'src/collaborators/entity/collaborator.entity';
 import { IBaseRepository } from 'src/common/interfaces';
 import {
   CreateCollaboratorDto,
