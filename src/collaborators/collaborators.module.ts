@@ -3,7 +3,7 @@ import { CollaboratorsController } from './collaborators.controller';
 import { CollaboratorsService } from './collaborators.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CollaboratorEntity } from './entity/collaborator.entity';
-import { CollaboratorsRepository } from './repositories/collaborators.repository';
+import { CollaboratorsRepository } from './repository/collaborators.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([CollaboratorEntity])],
   controllers: [CollaboratorsController],

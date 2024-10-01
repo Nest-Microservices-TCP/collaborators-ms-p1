@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, QueryRunner } from 'typeorm';
 import { IUnitForWork } from './interfaces/unit-of-work.interface';
 import { AreasRepository } from 'src/areas/repository/areas.repository';
-import { CollaboratorsRepository } from 'src/collaborators/repositories/collaborators.repository';
+import { CollaboratorsRepository } from 'src/collaborators/repository/collaborators.repository';
 
 @Injectable()
 export class UnitOfWork implements IUnitForWork {

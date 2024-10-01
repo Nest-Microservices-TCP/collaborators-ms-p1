@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CollaboratorsRepository } from './repositories/collaborators.repository';
+import { CollaboratorsRepository } from './repository/collaborators.repository';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { CollaboratorResponseDto } from './dto/response';
 import { plainToInstance } from 'class-transformer';
