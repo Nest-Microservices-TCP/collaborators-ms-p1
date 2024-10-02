@@ -1,4 +1,4 @@
-import { PositionsRepository } from './repositories/positions.repository';
+import { PositionsRepository } from './repository/positions.repository';
 import { Injectable } from '@nestjs/common';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
