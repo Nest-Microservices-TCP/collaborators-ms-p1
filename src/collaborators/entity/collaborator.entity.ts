@@ -49,11 +49,24 @@ export class CollaboratorEntity extends BaseEntity {
   })
   direction: string;
 
+  /**
+   * @precision Cantidad total de dígitos que se pueden almacenar,
+   * tanto a la izquierda como a la derecha del punto decimal
+   *
+   * @scale Cantidad de dígitos que se almacenan a la derecha del
+   * punto decimal
+   *
+   * Por ejemplo, aquí se define que se puede almacenar hasta 10
+   * dígitos en total, con 2 de ellos después del punto decimal
+   *
+   * 99999999.99
+   */
   @Column({
     name: 'salary',
     type: 'numeric',
-    precision: 10,
+    precision: 9,
     scale: 2,
+    default: 0,
     nullable: true,
   })
   salary: number;
