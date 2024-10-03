@@ -1,8 +1,13 @@
 import { BaseEntity } from 'src/common/entity/BaseEntity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'collaborators' })
 export class CollaboratorEntity extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid', {
+    name: 'collaborator_id',
+  })
+  collaborator_id: string;
+
   @Column({
     name: 'name',
     type: 'varchar',
