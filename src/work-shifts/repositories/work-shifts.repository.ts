@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
-import { WorkShiftEntity } from '../entities/work-shift.entity';
+import { WorkShiftEntity } from '../entity/work-shift.entity';
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';

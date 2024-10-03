@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkShiftsService } from './work-shifts.service';
-import { WorkShiftEntity } from './entities/work-shift.entity';
+import { WorkShiftEntity } from './entity/work-shift.entity';
 import { WorkShiftsController } from './work-shifts.controller';
 import { WorkShiftsRepository } from './repositories/work-shifts.repository';
 

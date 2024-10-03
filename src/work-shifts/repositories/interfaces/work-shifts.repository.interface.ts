@@ -1,4 +1,4 @@
-import { WorkShiftEntity } from 'src/work-shifts/entities/work-shift.entity';
+import { WorkShiftEntity } from 'src/work-shifts/entity/work-shift.entity';
 import { IBaseRepository } from 'src/common/interfaces';
 import {
   CreateWorkShiftDto,
