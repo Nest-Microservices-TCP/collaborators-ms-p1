@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { WorkShiftResponseDto } from './dto/response';
-import { WorkShiftsRepository } from './repositories/work-shifts.repository';
+import { WorkShiftsRepository } from './repository/work-shifts.repository';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { Injectable } from '@nestjs/common';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
