@@ -1,15 +1,7 @@
-import {
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  Column,
-} from 'typeorm';
+import { UpdateDateColumn, CreateDateColumn, Column } from 'typeorm';
 import { Status } from '../enums/status.enum';
 
 export abstract class BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
   createdAt: Date;
 
