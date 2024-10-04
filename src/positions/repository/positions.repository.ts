@@ -39,8 +39,10 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   //TODO: También debería no devolver eliminados
-  async findOneById(id: string): Promise<PositionEntity> {
-    const position = await this.positionsRepository.findOne({ where: { id } });
+  async findOneById(position_id: string): Promise<PositionEntity> {
+    const position = await this.positionsRepository.findOne({
+      where: { position_id },
+    });
 
     if (!position) {
       throw new EntityNotFoundException('position');
@@ -79,11 +81,11 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(position);
   }
 
-  async deleteById(id: string): Promise<PositionEntity> {
-    const position = await this.findOneById(id);
+  async deleteById(position_id: string): Promise<PositionEntity> {
+    const position = await this.findOneById(position_id);
 
     const result: UpdateResult = await this.positionsRepository.update(
-      position.id,
+      position.position_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -96,6 +98,6 @@ export class PositionsRepository implements IPositionsRepository {
       );
     }
 
-    return this.findOneById(position.id);
+    return this.findOneById(position.position_id);
   }
 }
