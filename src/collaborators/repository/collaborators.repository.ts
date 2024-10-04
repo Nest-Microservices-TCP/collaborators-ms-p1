@@ -34,9 +34,9 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  async findOneById(id: string): Promise<CollaboratorEntity> {
+  async findOneById(collaborator_id: string): Promise<CollaboratorEntity> {
     const collaborator = await this.collaboratorsRepository.findOne({
-      where: { id },
+      where: { collaborator_id },
     });
 
     if (!collaborator) {
@@ -64,11 +64,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return await this.collaboratorsRepository.save(collaborator);
   }
 
-  async deleteById(id: string): Promise<CollaboratorEntity> {
-    const { id: collaboratorId } = await this.findOneById(id);
+  async deleteById(collaborator_id: string): Promise<CollaboratorEntity> {
+    await this.findOneById(collaborator_id);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
-      collaboratorId,
+      collaborator_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -81,6 +81,6 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       );
     }
 
-    return this.findOneById(collaboratorId);
+    return this.findOneById(collaborator_id);
   }
 }
