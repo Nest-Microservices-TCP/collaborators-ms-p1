@@ -1,14 +1,14 @@
+import { Status } from 'src/common/enums/status.enum';
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
-import {
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
-import { Status } from 'src/common/enums/status.enum';
 import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
 import { AreaEntity } from '../entity/area.entity';
+import {
+  InternalServerErrorException,
+  ConflictException,
+} from '@nestjs/common';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -36,8 +36,8 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findOneById(id: string): Promise<AreaEntity> {
-    const area = await this.areasRepository.findOne({ where: { id } });
+  async findOneById(area_id: string): Promise<AreaEntity> {
+    const area = await this.areasRepository.findOne({ where: { area_id } });
 
     if (!area) {
       throw new EntityNotFoundException('area');
@@ -76,18 +76,21 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(area);
   }
 
-  async deleteById(id: string): Promise<AreaEntity> {
-    const area = await this.findOneById(id);
+  async deleteById(area_id: string): Promise<AreaEntity> {
+    const area = await this.findOneById(area_id);
 
-    const result: UpdateResult = await this.areasRepository.update(area.id, {
-      status: Status.DELETED,
-      deletedAt: new Date(),
-    });
+    const result: UpdateResult = await this.areasRepository.update(
+      area.area_id,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
 
     if (result.affected !== 1) {
       throw new InternalServerErrorException('Error to update area, try later');
     }
 
-    return this.findOneById(area.id);
+    return this.findOneById(area.area_id);
   }
 }
