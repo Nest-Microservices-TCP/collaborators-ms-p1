@@ -33,9 +33,9 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     });
   }
 
-  async findOneById(id: string): Promise<WorkShiftEntity> {
+  async findOneById(workShiftId: string): Promise<WorkShiftEntity> {
     const workShift = await this.workShiftsRepository.findOne({
-      where: { id },
+      where: { workShiftId },
     });
 
     if (!workShift) {
@@ -64,11 +64,11 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(workShift);
   }
 
-  async deleteById(id: string): Promise<WorkShiftEntity> {
-    const workShift = await this.findOneById(id);
+  async deleteById(workShiftId: string): Promise<WorkShiftEntity> {
+    const workShift = await this.findOneById(workShiftId);
 
     const result: UpdateResult = await this.workShiftsRepository.update(
-      workShift.id,
+      workShift.workShiftId,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -81,6 +81,6 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
       );
     }
 
-    return this.findOneById(id);
+    return this.findOneById(workShiftId);
   }
 }
