@@ -1,8 +1,8 @@
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { Controller } from '@nestjs/common';
 import { AreasService } from './areas.service';
-import { AreaResponseDto } from './dto/response/area-response.dto';
+import { AreaResponseDto } from './dto/response';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 
 @Controller()
 export class AreasController {
