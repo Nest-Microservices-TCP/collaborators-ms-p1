@@ -6,7 +6,7 @@ export class CollaboratorEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'collaborator_id',
   })
-  collaborator_id: string;
+  collaboratorId: string;
 
   @Column({
     name: 'name',
