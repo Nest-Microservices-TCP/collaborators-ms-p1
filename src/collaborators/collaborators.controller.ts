@@ -1,11 +1,11 @@
 import { Controller } from '@nestjs/common';
+import { CollaboratorResponseDto } from './dto/response';
 import { CollaboratorsService } from './collaborators.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CollaboratorResponseDto } from './dto/response';
 import {
   CreateCollaboratorDto,
-  FindOneCollaboratorById,
   UpdateCollaboratorDto,
+  FindOneCollaboratorById,
 } from './dto/request';
 
 @Controller()
