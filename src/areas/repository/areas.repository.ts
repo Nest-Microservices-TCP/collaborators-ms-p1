@@ -36,8 +36,10 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findOneById(area_id: string): Promise<AreaEntity> {
-    const area = await this.areasRepository.findOne({ where: { area_id } });
+  async findOneById(areaId: string): Promise<AreaEntity> {
+    const area = await this.areasRepository.findOne({
+      where: { areaId },
+    });
 
     if (!area) {
       throw new EntityNotFoundException('area');
@@ -76,11 +78,11 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(area);
   }
 
-  async deleteById(area_id: string): Promise<AreaEntity> {
-    const area = await this.findOneById(area_id);
+  async deleteById(areaId: string): Promise<AreaEntity> {
+    const area = await this.findOneById(areaId);
 
     const result: UpdateResult = await this.areasRepository.update(
-      area.area_id,
+      area.areaId,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -91,6 +93,6 @@ export class AreasRepository implements IAreasRepository {
       throw new InternalServerErrorException('Error to update area, try later');
     }
 
-    return this.findOneById(area.area_id);
+    return this.findOneById(area.areaId);
   }
 }
