@@ -6,7 +6,7 @@ export class AreaEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'area_id',
   })
-  area_id: string;
+  areaId: string;
 
   @Column({
     name: 'name',
