@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { AreaResponseDto } from './dto/response';
+import { plainToInstance } from 'class-transformer';
+import { HandleRpcExceptions } from 'src/common/decorators';
 import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { AreasRepository } from './repository/areas.repository';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { plainToInstance } from 'class-transformer';
-import { AreaResponseDto } from './dto/response/area-response.dto';
 
 @Injectable()
 export class AreasService {
