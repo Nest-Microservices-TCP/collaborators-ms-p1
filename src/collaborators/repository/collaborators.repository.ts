@@ -1,11 +1,11 @@
+import { Status } from 'src/common/enums';
+import { InjectRepository } from '@nestjs/typeorm';
+import { InternalServerErrorException } from '@nestjs/common';
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CollaboratorEntity } from '../entity/collaborator.entity';
-import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
-import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundException } from 'src/common/exceptions/custom';
-import { Status } from 'src/common/enums/status.enum';
-import { InternalServerErrorException } from '@nestjs/common';
 import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
+import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -34,9 +34,9 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  async findOneById(collaborator_id: string): Promise<CollaboratorEntity> {
+  async findOneById(collaboratorId: string): Promise<CollaboratorEntity> {
     const collaborator = await this.collaboratorsRepository.findOne({
-      where: { collaborator_id },
+      where: { collaboratorId },
     });
 
     if (!collaborator) {
@@ -64,11 +64,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return await this.collaboratorsRepository.save(collaborator);
   }
 
-  async deleteById(collaborator_id: string): Promise<CollaboratorEntity> {
-    await this.findOneById(collaborator_id);
+  async deleteById(collaboratorId: string): Promise<CollaboratorEntity> {
+    await this.findOneById(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
-      collaborator_id,
+      collaboratorId,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -81,6 +81,6 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       );
     }
 
-    return this.findOneById(collaborator_id);
+    return this.findOneById(collaboratorId);
   }
 }
