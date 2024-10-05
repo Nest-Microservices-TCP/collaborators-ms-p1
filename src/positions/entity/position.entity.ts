@@ -6,7 +6,7 @@ export class PositionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'position_id',
   })
-  position_id: string;
+  positionId: string;
 
   @Column({
     name: 'name',
