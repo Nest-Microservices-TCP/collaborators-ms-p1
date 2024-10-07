@@ -39,9 +39,9 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   //TODO: También debería no devolver eliminados
-  async findOneById(position_id: string): Promise<PositionEntity> {
+  async findOneById(positionId: string): Promise<PositionEntity> {
     const position = await this.positionsRepository.findOne({
-      where: { position_id },
+      where: { positionId },
     });
 
     if (!position) {
@@ -85,7 +85,7 @@ export class PositionsRepository implements IPositionsRepository {
     const position = await this.findOneById(position_id);
 
     const result: UpdateResult = await this.positionsRepository.update(
-      position.position_id,
+      position.positionId,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -98,6 +98,6 @@ export class PositionsRepository implements IPositionsRepository {
       );
     }
 
-    return this.findOneById(position.position_id);
+    return this.findOneById(position.positionId);
   }
 }
