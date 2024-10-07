@@ -19,8 +19,10 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'find.one.area.by.id' })
-  async findOneById(@Payload('id') id: string): Promise<AreaResponseDto> {
-    return this.areasService.findOneById(id);
+  async findOneById(
+    @Payload('areaId') areaId: string,
+  ): Promise<AreaResponseDto> {
+    return this.areasService.findOneById(areaId);
   }
 
   @MessagePattern({ cmd: 'update.area' })
@@ -29,7 +31,9 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'delete.area.by.id' })
-  async deleteById(@Payload('id') id: string): Promise<AreaResponseDto> {
-    return this.areasService.deleteById(id);
+  async deleteById(
+    @Payload('areaId') areaId: string,
+  ): Promise<AreaResponseDto> {
+    return this.areasService.deleteById(areaId);
   }
 }
