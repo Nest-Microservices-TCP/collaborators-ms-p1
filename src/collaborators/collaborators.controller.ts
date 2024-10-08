@@ -40,8 +40,8 @@ export class CollaboratorsController {
 
   @MessagePattern({ cmd: 'delete.collaborator.by.id' })
   async deleteById(
-    @Payload('id') id: string,
+    @Payload('collaboratorId') collaboratorId: string,
   ): Promise<CollaboratorResponseDto> {
-    return this.collaboratorsService.deleteById(id);
+    return this.collaboratorsService.deleteById(collaboratorId);
   }
 }
