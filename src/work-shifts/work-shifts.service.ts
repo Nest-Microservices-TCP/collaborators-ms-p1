@@ -19,8 +19,8 @@ export class WorkShiftsService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(id: string): Promise<WorkShiftResponseDto> {
-    const workShift = await this.workShiftsRepository.findOneById(id);
+  async findOneById(workShiftId: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.findOneById(workShiftId);
 
     return plainToInstance(WorkShiftResponseDto, workShift, {
       excludeExtraneousValues: true,
@@ -46,8 +46,8 @@ export class WorkShiftsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(id: string): Promise<WorkShiftResponseDto> {
-    const workShift = await this.workShiftsRepository.deleteById(id);
+  async deleteById(workShiftId: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.deleteById(workShiftId);
 
     return plainToInstance(WorkShiftResponseDto, workShift, {
       excludeExtraneousValues: true,
