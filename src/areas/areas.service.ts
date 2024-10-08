@@ -28,8 +28,8 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(id: string): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.findOneById(id);
+  async findOneById(areaId: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.findOneById(areaId);
 
     return plainToInstance(AreaResponseDto, area, {
       excludeExtraneousValues: true,
@@ -46,8 +46,8 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(id: string): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.deleteById(id);
+  async deleteById(areaId: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.deleteById(areaId);
 
     return plainToInstance(AreaResponseDto, area, {
       excludeExtraneousValues: true,
