@@ -14,8 +14,10 @@ export class WorkShiftsController {
   }
 
   @MessagePattern({ cmd: 'find.one.work.shift.by.id' })
-  findOneById(@Payload('id') id: string): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.findOneById(id);
+  findOneById(
+    @Payload('workShiftId') workShiftId: string,
+  ): Promise<WorkShiftResponseDto> {
+    return this.workShiftsService.findOneById(workShiftId);
   }
 
   @MessagePattern({ cmd: 'save.work.shift' })
@@ -31,7 +33,9 @@ export class WorkShiftsController {
   }
 
   @MessagePattern({ cmd: 'delete.work.shift.by.id' })
-  deleteById(@Payload('id') id: string): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.deleteById(id);
+  deleteById(
+    @Payload('workShiftId') workShiftId: string,
+  ): Promise<WorkShiftResponseDto> {
+    return this.workShiftsService.deleteById(workShiftId);
   }
 }
