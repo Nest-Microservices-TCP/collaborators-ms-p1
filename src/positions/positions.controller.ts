@@ -14,8 +14,10 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'find.one.position.by.id' })
-  findOneById(@Payload('id') id: string): Promise<PositionResponseDto> {
-    return this.positionsService.findOneById(id);
+  findOneById(
+    @Payload('positionId') positionId: string,
+  ): Promise<PositionResponseDto> {
+    return this.positionsService.findOneById(positionId);
   }
 
   @MessagePattern({ cmd: 'save.position' })
@@ -29,7 +31,9 @@ export class PositionsController {
   }
 
   @MessagePattern({ cmd: 'delete.position.by.id' })
-  deleteById(@Payload('id') id: string): Promise<PositionResponseDto> {
-    return this.positionsService.deleteById(id);
+  deleteById(
+    @Payload('positionId') positionId: string,
+  ): Promise<PositionResponseDto> {
+    return this.positionsService.deleteById(positionId);
   }
 }
