@@ -19,8 +19,8 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(id: string): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.findOneById(id);
+  async findOneById(positionId: string): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.findOneById(positionId);
 
     return plainToInstance(PositionResponseDto, position, {
       excludeExtraneousValues: true,
@@ -46,8 +46,8 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(id: string): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.deleteById(id);
+  async deleteById(positionId: string): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.deleteById(positionId);
 
     return plainToInstance(PositionResponseDto, position, {
       excludeExtraneousValues: true,
