@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  FailedDeleteException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
+import { Status } from 'src/common/enums';
+import { InjectRepository } from '@nestjs/typeorm';
+import { WorkShiftEntity } from '../entity/work-shift.entity';
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
-import { WorkShiftEntity } from '../entity/work-shift.entity';
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Status } from 'src/common/enums';
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
-import { InternalServerErrorException } from '@nestjs/common';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShiftEntity>;
@@ -76,9 +77,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     );
 
     if (result.affected !== 1) {
-      throw new InternalServerErrorException(
-        'Error to delete workShift, try again',
-      );
+      throw new FailedDeleteException('work-shift');
     }
 
     return this.findOneById(workShiftId);
