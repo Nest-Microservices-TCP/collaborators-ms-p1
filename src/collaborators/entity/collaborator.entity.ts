@@ -36,6 +36,7 @@ export class CollaboratorEntity extends BaseEntity {
     type: 'varchar',
     length: 25,
     nullable: true,
+    unique: true,
   })
   phone: string;
 
@@ -44,6 +45,7 @@ export class CollaboratorEntity extends BaseEntity {
     type: 'varchar',
     length: 255,
     nullable: true,
+    unique: true,
   })
   email: string;
 
