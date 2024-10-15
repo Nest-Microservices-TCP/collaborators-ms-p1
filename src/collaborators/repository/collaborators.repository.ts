@@ -1,9 +1,11 @@
+import {
+  FailedDeleteException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InternalServerErrorException } from '@nestjs/common';
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CollaboratorEntity } from '../entity/collaborator.entity';
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
 import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
@@ -76,9 +78,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     );
 
     if (result.affected !== 1) {
-      throw new InternalServerErrorException(
-        'Error to delete the collaborator, try later',
-      );
+      throw new FailedDeleteException('collaborator');
     }
 
     return this.findOneById(collaboratorId);
