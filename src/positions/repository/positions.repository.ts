@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  FailedDeleteException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ConflictException } from '@nestjs/common';
+import { Status } from 'src/common/enums/status.enum';
+import { PositionEntity } from '../entity/position.entity';
 import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
-import { PositionEntity } from '../entity/position.entity';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import {
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
-import { Status } from 'src/common/enums/status.enum';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<PositionEntity>;
@@ -93,9 +92,7 @@ export class PositionsRepository implements IPositionsRepository {
     );
 
     if (result.affected === 0) {
-      throw new InternalServerErrorException(
-        'Error to delete the positions, try later',
-      );
+      throw new FailedDeleteException('position');
     }
 
     return this.findOneById(position.positionId);
