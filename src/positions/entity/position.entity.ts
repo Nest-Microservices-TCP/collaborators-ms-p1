@@ -13,6 +13,7 @@ export class PositionEntity extends BaseEntity {
     type: 'varchar',
     length: 255,
     nullable: false,
+    unique: true,
   })
   name: string;
 
