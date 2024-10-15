@@ -1,14 +1,14 @@
-import { Status } from 'src/common/enums/status.enum';
-import { QueryRunner, Repository, UpdateResult } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { IAreasRepository } from './interfaces/areas.repository.interface';
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
-import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
-import { AreaEntity } from '../entity/area.entity';
 import {
-  InternalServerErrorException,
-  ConflictException,
-} from '@nestjs/common';
+  FailedDeleteException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AreaEntity } from '../entity/area.entity';
+import { ConflictException } from '@nestjs/common';
+import { Status } from 'src/common/enums/status.enum';
+import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
+import { QueryRunner, Repository, UpdateResult } from 'typeorm';
+import { IAreasRepository } from './interfaces/areas.repository.interface';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -53,6 +53,7 @@ export class AreasRepository implements IAreasRepository {
   }
 
   async save(request: CreateAreaDto): Promise<AreaEntity> {
+    //TODO: Do not handle the duplicates because this properties was marked as unique
     const { name } = request;
 
     const area = await this.areasRepository.findOne({
@@ -90,7 +91,7 @@ export class AreasRepository implements IAreasRepository {
     );
 
     if (result.affected !== 1) {
-      throw new InternalServerErrorException('Error to update area, try later');
+      throw new FailedDeleteException('area');
     }
 
     return this.findOneById(area.areaId);
