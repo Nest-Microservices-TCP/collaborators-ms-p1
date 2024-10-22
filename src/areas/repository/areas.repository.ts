@@ -1,5 +1,13 @@
 import {
+  In,
+  Repository,
+  QueryRunner,
+  UpdateResult,
+  FindOptionsWhere,
+} from 'typeorm';
+import {
   FailedDeleteException,
+  FailedRestoreException,
   EntityNotFoundException,
 } from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +15,6 @@ import { AreaEntity } from '../entity/area.entity';
 import { ConflictException } from '@nestjs/common';
 import { Status } from 'src/common/enums/status.enum';
 import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
-import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
 
 export class AreasRepository implements IAreasRepository {
@@ -95,5 +102,103 @@ export class AreasRepository implements IAreasRepository {
     }
 
     return this.findOneById(area.areaId);
+  }
+
+  findByIds(areasIds: string[]): Promise<AreaEntity[]> {
+    return this.areasRepository.find({
+      where: {
+        areaId: In(areasIds),
+      },
+    });
+  }
+
+  async findByCriteria(
+    criteria: FindOptionsWhere<AreaEntity>,
+  ): Promise<AreaEntity> {
+    const area = await this.areasRepository.findOne({ where: criteria });
+
+    if (!area) {
+      throw new EntityNotFoundException('area');
+    }
+
+    return area;
+  }
+
+  //TODO: Probar con tipado de keyof si nos da auto-completado
+  // async findWithRelations(relations: (keyof AreaEntity)[]): Promise<AreaEntity[]> {
+  //   return this.areasRepository.find({
+  //     relations: relations as string[],
+  //   });
+  // }
+
+  findWithRelations(relations: string[]): Promise<AreaEntity[]> {
+    return this.areasRepository.find({
+      relations, // { relations: ['employees'] }
+    });
+  }
+
+  count(criteria: FindOptionsWhere<AreaEntity>): Promise<number> {
+    return this.areasRepository.count({ where: criteria });
+  }
+
+  paginate(page: number, limit: number): Promise<[AreaEntity[], number]> {
+    return this.areasRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+  }
+
+  async softDelete(areaId: string): Promise<AreaEntity> {
+    const area = await this.findOneById(areaId);
+
+    const result: UpdateResult = await this.areasRepository.update(
+      area.areaId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result.affected !== 1) {
+      throw new FailedDeleteException('area');
+    }
+
+    return this.findOneById(area.areaId);
+  }
+
+  async restore(areaId: string): Promise<AreaEntity> {
+    const area = await this.findOneById(areaId);
+
+    const result: UpdateResult = await this.areasRepository.update(
+      area?.areaId,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('area');
+    }
+
+    return this.findOneById(areaId);
+  }
+
+  async exists(criteria: FindOptionsWhere<AreaEntity>): Promise<boolean> {
+    const count = await this.areasRepository.count({ where: criteria });
+
+    return count > 0;
+  }
+
+  bulkSave(entities: AreaEntity[]): Promise<AreaEntity[]> {
+    return this.areasRepository.save(entities);
+  }
+
+  bulkUpdate(entities: AreaEntity[]): Promise<AreaEntity[]> {
+    return this.areasRepository.save(entities);
+  }
+
+  customQuery(query: string, params: any[]): Promise<any> {
+    return this.areasRepository.query(query, params);
   }
 }
