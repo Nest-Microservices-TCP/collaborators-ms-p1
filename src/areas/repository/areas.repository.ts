@@ -12,7 +12,6 @@ import {
 } from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AreaEntity } from '../entity/area.entity';
-import { ConflictException } from '@nestjs/common';
 import { Status } from 'src/common/enums/status.enum';
 import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
 import { IAreasRepository } from './interfaces/areas.repository.interface';
@@ -60,19 +59,6 @@ export class AreasRepository implements IAreasRepository {
   }
 
   async save(request: CreateAreaDto): Promise<AreaEntity> {
-    //TODO: Do not handle the duplicates because this properties was marked as unique
-    const { name } = request;
-
-    const area = await this.areasRepository.findOne({
-      where: { name },
-    });
-
-    if (area) {
-      throw new ConflictException(
-        `The area with name: '${name}' already exists`,
-      );
-    }
-
     return this.areasRepository.save(request);
   }
 
