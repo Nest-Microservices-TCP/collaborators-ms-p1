@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { AreasService } from './areas.service';
 import { AreaResponseDto } from './dto/response';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateAreaDto, UpdateAreaDto } from './dto/request';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AreasController {
@@ -35,5 +35,10 @@ export class AreasController {
     @Payload('areaId') areaId: string,
   ): Promise<AreaResponseDto> {
     return this.areasService.deleteById(areaId);
+  }
+
+  @MessagePattern({ cmd: 'find.areas.by.ids' })
+  async findByIds(@Payload() areasIds: string[]): Promise<AreaResponseDto[]> {
+    return this.areasService.findByIds(areasIds);
   }
 }
