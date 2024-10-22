@@ -53,4 +53,13 @@ export class AreasService {
       excludeExtraneousValues: true,
     });
   }
+
+  @HandleRpcExceptions()
+  async findByIds(areasIds: string[]): Promise<AreaResponseDto[]> {
+    const areas = await this.areasRepository.findByIds(areasIds);
+
+    return plainToInstance(AreaResponseDto, areas, {
+      excludeExtraneousValues: true,
+    });
+  }
 }
