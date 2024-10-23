@@ -106,11 +106,15 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   }
 
   findWithRelations(relations: string[]): Promise<CollaboratorEntity[]> {
-    throw new Error('Method not implemented.');
+    return this.collaboratorsRepository.find({
+      relations,
+    });
   }
+
   count(criteria: FindOptionsWhere<CollaboratorEntity>): Promise<number> {
-    throw new Error('Method not implemented.');
+    return this.collaboratorsRepository.count({ where: criteria });
   }
+
   paginate(
     page: number,
     limit: number,
