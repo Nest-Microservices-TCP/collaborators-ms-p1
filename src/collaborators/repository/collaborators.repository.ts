@@ -1,10 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  In,
+  Repository,
+  QueryRunner,
+  UpdateResult,
+  FindOptionsWhere,
+} from 'typeorm';
 import {
   FailedDeleteException,
   EntityNotFoundException,
 } from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryRunner, Repository, UpdateResult } from 'typeorm';
 import { CollaboratorEntity } from '../entity/collaborator.entity';
 import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
@@ -82,5 +89,50 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     }
 
     return this.findOneById(collaboratorId);
+  }
+
+  findByIds(collaboratorsIds: string[]): Promise<CollaboratorEntity[]> {
+    return this.collaboratorsRepository.find({
+      where: {
+        collaboratorId: In(collaboratorsIds),
+      },
+    });
+  }
+
+  findByCriteria(
+    criteria: FindOptionsWhere<CollaboratorEntity>,
+  ): Promise<CollaboratorEntity> {
+    return this.collaboratorsRepository.findOne({ where: criteria });
+  }
+
+  findWithRelations(relations: string[]): Promise<CollaboratorEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  count(criteria: FindOptionsWhere<CollaboratorEntity>): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  paginate(
+    page: number,
+    limit: number,
+  ): Promise<[CollaboratorEntity[], number]> {
+    throw new Error('Method not implemented.');
+  }
+  softDelete(id: string): Promise<CollaboratorEntity> {
+    throw new Error('Method not implemented.');
+  }
+  restore(id: string): Promise<CollaboratorEntity> {
+    throw new Error('Method not implemented.');
+  }
+  exists(criteria: FindOptionsWhere<CollaboratorEntity>): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  bulkSave(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  bulkUpdate(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  customQuery(query: string, params: any[]): Promise<any> {
+    throw new Error('Method not implemented.');
   }
 }
