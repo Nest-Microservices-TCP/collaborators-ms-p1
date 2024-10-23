@@ -1,12 +1,12 @@
-import { Controller } from '@nestjs/common';
-import { CollaboratorResponseDto } from './dto/response';
-import { CollaboratorsService } from './collaborators.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateCollaboratorDto,
   UpdateCollaboratorDto,
   FindOneCollaboratorById,
 } from './dto/request';
+import { Controller } from '@nestjs/common';
+import { CollaboratorResponseDto } from './dto/response';
+import { CollaboratorsService } from './collaborators.service';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class CollaboratorsController {
@@ -43,5 +43,12 @@ export class CollaboratorsController {
     @Payload('collaboratorId') collaboratorId: string,
   ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.deleteById(collaboratorId);
+  }
+
+  @MessagePattern({ cmd: 'find.collaborators.by.ids' })
+  async findByIds(
+    @Payload() collaboratorsIds: string[],
+  ): Promise<CollaboratorResponseDto[]> {
+    return this.collaboratorsService.findByIds(collaboratorsIds);
   }
 }
