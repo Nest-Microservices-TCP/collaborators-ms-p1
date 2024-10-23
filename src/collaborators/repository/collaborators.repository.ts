@@ -9,6 +9,8 @@ import {
 import {
   FailedDeleteException,
   EntityNotFoundException,
+  FailedSoftDeleteException,
+  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 import { Status } from 'src/common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -133,11 +135,40 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return count > 0;
   }
 
-  softDelete(id: string): Promise<CollaboratorEntity> {
-    throw new Error('Method not implemented.');
+  async softDelete(collaboratorId: string): Promise<CollaboratorEntity> {
+    await this.findOneById(collaboratorId);
+
+    const result: UpdateResult = await this.collaboratorsRepository.update(
+      collaboratorId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedSoftDeleteException('collaborator');
+    }
+
+    return this.findOneById(collaboratorId);
   }
-  restore(id: string): Promise<CollaboratorEntity> {
-    throw new Error('Method not implemented.');
+
+  async restore(collaboratorId: string): Promise<CollaboratorEntity> {
+    await this.findOneById(collaboratorId);
+
+    const result: UpdateResult = await this.collaboratorsRepository.update(
+      collaboratorId,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('collaborator');
+    }
+
+    return this.findOneById(collaboratorId);
   }
 
   bulkSave(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
