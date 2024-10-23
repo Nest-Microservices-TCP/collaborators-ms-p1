@@ -7,7 +7,7 @@ export interface IBaseRepository<T, CreateDto, UpdateDto> {
   create(request: Partial<T>): T;
   save(request: CreateDto): Promise<T>;
   update(request: UpdateDto): Promise<T>;
-  deleteById(id: string): Promise<T>;
+  remove(id: string): Promise<T>;
 
   findByIds(ids: string[]): Promise<T[]>;
   findByCriteria(criteria: FindOptionsWhere<T>): Promise<T>;
