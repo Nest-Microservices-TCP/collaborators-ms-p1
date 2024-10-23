@@ -171,12 +171,16 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.findOneById(collaboratorId);
   }
 
-  bulkSave(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
-    throw new Error('Method not implemented.');
+  bulkSave(collaborators: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
+    return this.collaboratorsRepository.save(collaborators);
   }
-  bulkUpdate(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
-    throw new Error('Method not implemented.');
+
+  bulkUpdate(
+    collaborators: CollaboratorEntity[],
+  ): Promise<CollaboratorEntity[]> {
+    return this.collaboratorsRepository.save(collaborators);
   }
+
   customQuery(query: string, params: any[]): Promise<any> {
     throw new Error('Method not implemented.');
   }
