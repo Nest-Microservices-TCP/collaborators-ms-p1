@@ -119,17 +119,27 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     page: number,
     limit: number,
   ): Promise<[CollaboratorEntity[], number]> {
-    throw new Error('Method not implemented.');
+    return this.collaboratorsRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
+
+  async exists(
+    criteria: FindOptionsWhere<CollaboratorEntity>,
+  ): Promise<boolean> {
+    const count = await this.collaboratorsRepository.count({ where: criteria });
+
+    return count > 0;
+  }
+
   softDelete(id: string): Promise<CollaboratorEntity> {
     throw new Error('Method not implemented.');
   }
   restore(id: string): Promise<CollaboratorEntity> {
     throw new Error('Method not implemented.');
   }
-  exists(criteria: FindOptionsWhere<CollaboratorEntity>): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
+
   bulkSave(entities: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
     throw new Error('Method not implemented.');
   }
