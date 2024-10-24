@@ -1,4 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
+import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
+import { CollaboratorEntity } from '../entity/collaborator.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Status } from 'src/common/enums';
 import {
   In,
   Repository,
@@ -7,16 +11,11 @@ import {
   FindOptionsWhere,
 } from 'typeorm';
 import {
-  FailedDeleteException,
+  FailedRemoveException,
+  FailedRestoreException,
   EntityNotFoundException,
   FailedSoftDeleteException,
-  FailedRestoreException,
 } from 'src/common/exceptions/custom';
-import { Status } from 'src/common/enums';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CollaboratorEntity } from '../entity/collaborator.entity';
-import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
-import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<CollaboratorEntity>;
@@ -75,7 +74,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return await this.collaboratorsRepository.save(collaborator);
   }
 
-  async deleteById(collaboratorId: string): Promise<CollaboratorEntity> {
+  async remove(collaboratorId: string): Promise<CollaboratorEntity> {
     await this.findOneById(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
@@ -87,7 +86,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     );
 
     if (result.affected !== 1) {
-      throw new FailedDeleteException('collaborator');
+      throw new FailedRemoveException('collaborator');
     }
 
     return this.findOneById(collaboratorId);
