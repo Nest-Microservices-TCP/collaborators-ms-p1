@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  FailedDeleteException,
   EntityNotFoundException,
+  FailedRemoveException,
 } from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConflictException } from '@nestjs/common';
 import { Status } from 'src/common/enums/status.enum';
 import { PositionEntity } from '../entity/position.entity';
-import { QueryRunner, Repository, UpdateResult } from 'typeorm';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 
@@ -37,7 +42,6 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  //TODO: También debería no devolver eliminados
   async findOneById(positionId: string): Promise<PositionEntity> {
     const position = await this.positionsRepository.findOne({
       where: { positionId },
@@ -55,18 +59,6 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   async save(request: CreatePositionDto): Promise<PositionEntity> {
-    const { name } = request;
-
-    const position = await this.positionsRepository.findOne({
-      where: { name },
-    });
-
-    if (position) {
-      throw new ConflictException(
-        `Already exists a position with name: ${name}`,
-      );
-    }
-
     return this.positionsRepository.save(request);
   }
 
@@ -80,21 +72,52 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(position);
   }
 
-  async deleteById(position_id: string): Promise<PositionEntity> {
-    const position = await this.findOneById(position_id);
+  async remove(positionId: string): Promise<PositionEntity> {
+    await this.findOneById(positionId);
 
-    const result: UpdateResult = await this.positionsRepository.update(
-      position.positionId,
-      {
-        status: Status.DELETED,
-        deletedAt: new Date(),
-      },
-    );
+    const result: DeleteResult =
+      await this.positionsRepository.delete(positionId);
 
-    if (result.affected === 0) {
-      throw new FailedDeleteException('position');
+    if (result?.affected === 0) {
+      throw new FailedRemoveException('position');
     }
 
-    return this.findOneById(position.positionId);
+    return this.findOneById(positionId);
+  }
+
+  findByIds(ids: string[]): Promise<PositionEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  findByCriteria(
+    criteria: FindOptionsWhere<PositionEntity>,
+  ): Promise<PositionEntity> {
+    throw new Error('Method not implemented.');
+  }
+  findWithRelations(relations: string[]): Promise<PositionEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  count(criteria: FindOptionsWhere<PositionEntity>): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  paginate(page: number, limit: number): Promise<[PositionEntity[], number]> {
+    throw new Error('Method not implemented.');
+  }
+  softDelete(id: string): Promise<PositionEntity> {
+    throw new Error('Method not implemented.');
+  }
+  restore(id: string): Promise<PositionEntity> {
+    throw new Error('Method not implemented.');
+  }
+  exists(criteria: FindOptionsWhere<PositionEntity>): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  bulkSave(entities: PositionEntity[]): Promise<PositionEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  bulkUpdate(entities: PositionEntity[]): Promise<PositionEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  customQuery(query: string, params: any[]): Promise<any> {
+    throw new Error('Method not implemented.');
   }
 }
