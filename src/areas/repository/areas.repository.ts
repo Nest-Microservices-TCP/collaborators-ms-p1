@@ -3,12 +3,14 @@ import {
   Repository,
   QueryRunner,
   UpdateResult,
+  DeleteResult,
   FindOptionsWhere,
 } from 'typeorm';
 import {
-  FailedDeleteException,
+  FailedRemoveException,
   FailedRestoreException,
   EntityNotFoundException,
+  FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AreaEntity } from '../entity/area.entity';
@@ -72,22 +74,16 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(area);
   }
 
-  async deleteById(areaId: string): Promise<AreaEntity> {
-    const area = await this.findOneById(areaId);
+  async remove(areaId: string): Promise<AreaEntity> {
+    await this.findOneById(areaId);
 
-    const result: UpdateResult = await this.areasRepository.update(
-      area.areaId,
-      {
-        status: Status.DELETED,
-        deletedAt: new Date(),
-      },
-    );
+    const result: DeleteResult = await this.areasRepository.delete(areaId);
 
-    if (result.affected !== 1) {
-      throw new FailedDeleteException('area');
+    if (result?.affected === 0) {
+      throw new FailedRemoveException('area');
     }
 
-    return this.findOneById(area.areaId);
+    return this.findOneById(areaId);
   }
 
   findByIds(areasIds: string[]): Promise<AreaEntity[]> {
@@ -146,7 +142,7 @@ export class AreasRepository implements IAreasRepository {
     );
 
     if (result.affected !== 1) {
-      throw new FailedDeleteException('area');
+      throw new FailedSoftDeleteException('area');
     }
 
     return this.findOneById(area.areaId);
