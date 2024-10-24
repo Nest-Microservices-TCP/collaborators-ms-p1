@@ -38,11 +38,11 @@ export class CollaboratorsController {
     return this.collaboratorsService.update(request);
   }
 
-  @MessagePattern({ cmd: 'delete.collaborator.by.id' })
-  async deleteById(
+  @MessagePattern({ cmd: 'remove.collaborator.by.id' })
+  async remove(
     @Payload('collaboratorId') collaboratorId: string,
   ): Promise<CollaboratorResponseDto> {
-    return this.collaboratorsService.deleteById(collaboratorId);
+    return this.collaboratorsService.remove(collaboratorId);
   }
 
   @MessagePattern({ cmd: 'find.collaborators.by.ids' })
