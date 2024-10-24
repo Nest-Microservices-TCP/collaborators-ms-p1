@@ -109,17 +109,25 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   paginate(page: number, limit: number): Promise<[PositionEntity[], number]> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
+
+  async exists(criteria: FindOptionsWhere<PositionEntity>): Promise<boolean> {
+    const count = await this.positionsRepository.count({ where: criteria });
+
+    return count > 0;
+  }
+
   softDelete(id: string): Promise<PositionEntity> {
     throw new Error('Method not implemented.');
   }
   restore(id: string): Promise<PositionEntity> {
     throw new Error('Method not implemented.');
   }
-  exists(criteria: FindOptionsWhere<PositionEntity>): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
+
   bulkSave(entities: PositionEntity[]): Promise<PositionEntity[]> {
     throw new Error('Method not implemented.');
   }
