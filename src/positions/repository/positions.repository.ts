@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  EntityNotFoundException,
-  FailedRemoveException,
-} from 'src/common/exceptions/custom';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Status } from 'src/common/enums/status.enum';
+import { IPositionsRepository } from './interfaces/positions.repository.interface';
+import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
 import { PositionEntity } from '../entity/position.entity';
+import { Status } from 'src/common/enums/status.enum';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
+  In,
+  Repository,
+  QueryRunner,
   DeleteResult,
   FindOptionsWhere,
-  QueryRunner,
-  Repository,
 } from 'typeorm';
-import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
-import { IPositionsRepository } from './interfaces/positions.repository.interface';
+import {
+  FailedRemoveException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<PositionEntity>;
@@ -85,14 +86,20 @@ export class PositionsRepository implements IPositionsRepository {
     return this.findOneById(positionId);
   }
 
-  findByIds(ids: string[]): Promise<PositionEntity[]> {
-    throw new Error('Method not implemented.');
+  findByIds(positionsIds: string[]): Promise<PositionEntity[]> {
+    return this.positionsRepository.find({
+      where: {
+        positionId: In(positionsIds),
+      },
+    });
   }
+
   findByCriteria(
     criteria: FindOptionsWhere<PositionEntity>,
   ): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.findOne({ where: criteria });
   }
+
   findWithRelations(relations: string[]): Promise<PositionEntity[]> {
     throw new Error('Method not implemented.');
   }
