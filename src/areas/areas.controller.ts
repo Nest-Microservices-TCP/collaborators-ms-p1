@@ -1,8 +1,8 @@
-import { Controller } from '@nestjs/common';
-import { AreasService } from './areas.service';
-import { AreaResponseDto } from './dto/response';
-import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
+import { AreaResponseDto } from './dto/response';
+import { AreasService } from './areas.service';
+import { Controller } from '@nestjs/common';
 
 @Controller()
 export class AreasController {
@@ -30,11 +30,9 @@ export class AreasController {
     return this.areasService.update(request);
   }
 
-  @MessagePattern({ cmd: 'delete.area.by.id' })
-  async deleteById(
-    @Payload('areaId') areaId: string,
-  ): Promise<AreaResponseDto> {
-    return this.areasService.deleteById(areaId);
+  @MessagePattern({ cmd: 'remove.area.by.id' })
+  async remove(@Payload('areaId') areaId: string): Promise<AreaResponseDto> {
+    return this.areasService.remove(areaId);
   }
 
   @MessagePattern({ cmd: 'find.areas.by.ids' })

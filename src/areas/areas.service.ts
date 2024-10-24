@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { AreaResponseDto } from './dto/response';
-import { plainToInstance } from 'class-transformer';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { AreasRepository } from './repository/areas.repository';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
+import { HandleRpcExceptions } from 'src/common/decorators';
+import { plainToInstance } from 'class-transformer';
+import { AreaResponseDto } from './dto/response';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AreasService {
@@ -46,8 +46,8 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(areaId: string): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.deleteById(areaId);
+  async remove(areaId: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.remove(areaId);
 
     return plainToInstance(AreaResponseDto, area, {
       excludeExtraneousValues: true,
