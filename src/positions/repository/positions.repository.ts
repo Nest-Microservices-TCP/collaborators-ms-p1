@@ -10,10 +10,13 @@ import {
   QueryRunner,
   DeleteResult,
   FindOptionsWhere,
+  UpdateResult,
 } from 'typeorm';
 import {
   FailedRemoveException,
   EntityNotFoundException,
+  FailedSoftDeleteException,
+  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 
 export class PositionsRepository implements IPositionsRepository {
@@ -121,11 +124,40 @@ export class PositionsRepository implements IPositionsRepository {
     return count > 0;
   }
 
-  softDelete(id: string): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+  async softDelete(positionId: string): Promise<PositionEntity> {
+    await this.findOneById(positionId);
+
+    const result: UpdateResult = await this.positionsRepository.update(
+      positionId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result.affected === 0) {
+      throw new FailedSoftDeleteException('position');
+    }
+
+    return this.findOneById(positionId);
   }
-  restore(id: string): Promise<PositionEntity> {
-    throw new Error('Method not implemented.');
+
+  async restore(positionId: string): Promise<PositionEntity> {
+    await this.findOneById(positionId);
+
+    const result: UpdateResult = await this.positionsRepository.update(
+      positionId,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('position');
+    }
+
+    return this.findOneById(positionId);
   }
 
   bulkSave(entities: PositionEntity[]): Promise<PositionEntity[]> {
