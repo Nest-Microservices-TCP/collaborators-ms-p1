@@ -160,12 +160,14 @@ export class PositionsRepository implements IPositionsRepository {
     return this.findOneById(positionId);
   }
 
-  bulkSave(entities: PositionEntity[]): Promise<PositionEntity[]> {
-    throw new Error('Method not implemented.');
+  bulkSave(positions: PositionEntity[]): Promise<PositionEntity[]> {
+    return this.positionsRepository.save(positions);
   }
-  bulkUpdate(entities: PositionEntity[]): Promise<PositionEntity[]> {
-    throw new Error('Method not implemented.');
+
+  bulkUpdate(positions: PositionEntity[]): Promise<PositionEntity[]> {
+    return this.positionsRepository.save(positions);
   }
+
   customQuery(query: string, params: any[]): Promise<any> {
     throw new Error('Method not implemented.');
   }
