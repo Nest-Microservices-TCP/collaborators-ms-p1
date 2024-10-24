@@ -1,13 +1,13 @@
+import { CollaboratorsRepository } from './repository/collaborators.repository';
+import { HandleRpcExceptions } from 'src/common/decorators';
+import { CollaboratorResponseDto } from './dto/response';
+import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
 import {
   CreateCollaboratorDto,
   UpdateCollaboratorDto,
   FindOneCollaboratorById,
 } from './dto/request';
-import { Injectable } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
-import { CollaboratorResponseDto } from './dto/response';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { CollaboratorsRepository } from './repository/collaborators.repository';
 
 @Injectable()
 export class CollaboratorsService {
@@ -59,9 +59,9 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(collaboratorId: string): Promise<CollaboratorResponseDto> {
+  async remove(collaboratorId: string): Promise<CollaboratorResponseDto> {
     const collaborator =
-      await this.collaboratorsRepository.deleteById(collaboratorId);
+      await this.collaboratorsRepository.remove(collaboratorId);
 
     return plainToInstance(CollaboratorResponseDto, collaborator, {
       excludeExtraneousValues: true,
