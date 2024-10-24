@@ -101,11 +101,13 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   findWithRelations(relations: string[]): Promise<PositionEntity[]> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.find({ relations });
   }
+
   count(criteria: FindOptionsWhere<PositionEntity>): Promise<number> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.count({ where: criteria });
   }
+
   paginate(page: number, limit: number): Promise<[PositionEntity[], number]> {
     throw new Error('Method not implemented.');
   }
