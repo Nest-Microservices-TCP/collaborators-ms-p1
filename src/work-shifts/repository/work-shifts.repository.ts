@@ -9,6 +9,7 @@ import {
   QueryRunner,
   FindOptionsWhere,
   DeleteResult,
+  In,
 } from 'typeorm';
 import {
   FailedRemoveException,
@@ -84,14 +85,20 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.findOneById(workShiftId);
   }
 
-  findByIds(ids: string[]): Promise<WorkShiftEntity[]> {
-    throw new Error('Method not implemented.');
+  findByIds(workShiftsIds: string[]): Promise<WorkShiftEntity[]> {
+    return this.workShiftsRepository.find({
+      where: {
+        workShiftId: In(workShiftsIds),
+      },
+    });
   }
+
   findByCriteria(
     criteria: FindOptionsWhere<WorkShiftEntity>,
   ): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.findOne({ where: criteria });
   }
+
   findWithRelations(relations: string[]): Promise<WorkShiftEntity[]> {
     throw new Error('Method not implemented.');
   }
