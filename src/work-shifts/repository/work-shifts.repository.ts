@@ -10,10 +10,13 @@ import {
   FindOptionsWhere,
   DeleteResult,
   In,
+  UpdateResult,
 } from 'typeorm';
 import {
   FailedRemoveException,
   EntityNotFoundException,
+  FailedSoftDeleteException,
+  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
@@ -120,12 +123,42 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return count > 0;
   }
 
-  softDelete(id: string): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+  async softDelete(workShiftId: string): Promise<WorkShiftEntity> {
+    await this.findOneById(workShiftId);
+
+    const result: UpdateResult = await this.workShiftsRepository.update(
+      workShiftId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedSoftDeleteException('work-shift');
+    }
+
+    return this.findOneById(workShiftId);
   }
-  restore(id: string): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
+
+  async restore(workShiftId: string): Promise<WorkShiftEntity> {
+    await this.findOneById(workShiftId);
+
+    const result: UpdateResult = await this.workShiftsRepository.update(
+      workShiftId,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('work-shift');
+    }
+
+    return this.findOneById(workShiftId);
   }
+
   bulkSave(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
     throw new Error('Method not implemented.');
   }
