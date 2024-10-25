@@ -1,9 +1,9 @@
-import { plainToInstance } from 'class-transformer';
-import { WorkShiftResponseDto } from './dto/response';
 import { WorkShiftsRepository } from './repository/work-shifts.repository';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { Injectable } from '@nestjs/common';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { HandleRpcExceptions } from 'src/common/decorators';
+import { WorkShiftResponseDto } from './dto/response';
+import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class WorkShiftsService {
@@ -46,8 +46,8 @@ export class WorkShiftsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(workShiftId: string): Promise<WorkShiftResponseDto> {
-    const workShift = await this.workShiftsRepository.deleteById(workShiftId);
+  async remove(workShiftId: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.remove(workShiftId);
 
     return plainToInstance(WorkShiftResponseDto, workShift, {
       excludeExtraneousValues: true,
