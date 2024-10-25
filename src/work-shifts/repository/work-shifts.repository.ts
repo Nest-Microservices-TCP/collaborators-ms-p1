@@ -108,15 +108,22 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   paginate(page: number, limit: number): Promise<[WorkShiftEntity[], number]> {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
+
+  async exists(criteria: FindOptionsWhere<WorkShiftEntity>): Promise<boolean> {
+    const count = await this.workShiftsRepository.count({ where: criteria });
+
+    return count > 0;
+  }
+
   softDelete(id: string): Promise<WorkShiftEntity> {
     throw new Error('Method not implemented.');
   }
   restore(id: string): Promise<WorkShiftEntity> {
-    throw new Error('Method not implemented.');
-  }
-  exists(criteria: FindOptionsWhere<WorkShiftEntity>): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
   bulkSave(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
