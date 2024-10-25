@@ -159,12 +159,14 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.findOneById(workShiftId);
   }
 
-  bulkSave(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
-    throw new Error('Method not implemented.');
+  bulkSave(workShifts: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
+    return this.workShiftsRepository.save(workShifts);
   }
-  bulkUpdate(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
-    throw new Error('Method not implemented.');
+
+  bulkUpdate(workShifts: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
+    return this.workShiftsRepository.save(workShifts);
   }
+
   customQuery(query: string, params: any[]): Promise<any> {
     throw new Error('Method not implemented.');
   }
