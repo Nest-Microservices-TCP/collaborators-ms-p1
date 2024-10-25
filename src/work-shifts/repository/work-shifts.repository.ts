@@ -5,18 +5,18 @@ import { WorkShiftEntity } from '../entity/work-shift.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';
 import {
+  In,
   Repository,
   QueryRunner,
-  FindOptionsWhere,
   DeleteResult,
-  In,
   UpdateResult,
+  FindOptionsWhere,
 } from 'typeorm';
 import {
   FailedRemoveException,
+  FailedRestoreException,
   EntityNotFoundException,
   FailedSoftDeleteException,
-  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
