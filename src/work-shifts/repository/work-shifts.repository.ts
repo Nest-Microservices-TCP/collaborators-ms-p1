@@ -1,13 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
+import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
+import { WorkShiftEntity } from '../entity/work-shift.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Status } from 'src/common/enums';
 import {
-  FailedDeleteException,
+  Repository,
+  QueryRunner,
+  FindOptionsWhere,
+  DeleteResult,
+} from 'typeorm';
+import {
+  FailedRemoveException,
   EntityNotFoundException,
 } from 'src/common/exceptions/custom';
-import { Status } from 'src/common/enums';
-import { InjectRepository } from '@nestjs/typeorm';
-import { WorkShiftEntity } from '../entity/work-shift.entity';
-import { QueryRunner, Repository, UpdateResult } from 'typeorm';
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
-import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShiftEntity>;
@@ -51,7 +57,6 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   save(request: CreateWorkShiftDto): Promise<WorkShiftEntity> {
-    //TODO: En lugar de validar duplicados, definir restricciones unique en la entidad
     return this.workShiftsRepository.save(request);
   }
 
@@ -65,21 +70,53 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(workShift);
   }
 
-  async deleteById(workShiftId: string): Promise<WorkShiftEntity> {
+  async remove(workShiftId: string): Promise<WorkShiftEntity> {
     const workShift = await this.findOneById(workShiftId);
 
-    const result: UpdateResult = await this.workShiftsRepository.update(
+    const result: DeleteResult = await this.workShiftsRepository.delete(
       workShift.workShiftId,
-      {
-        status: Status.DELETED,
-        deletedAt: new Date(),
-      },
     );
 
     if (result.affected !== 1) {
-      throw new FailedDeleteException('work-shift');
+      throw new FailedRemoveException('work-shift');
     }
 
     return this.findOneById(workShiftId);
+  }
+
+  findByIds(ids: string[]): Promise<WorkShiftEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  findByCriteria(
+    criteria: FindOptionsWhere<WorkShiftEntity>,
+  ): Promise<WorkShiftEntity> {
+    throw new Error('Method not implemented.');
+  }
+  findWithRelations(relations: string[]): Promise<WorkShiftEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  count(criteria: FindOptionsWhere<WorkShiftEntity>): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  paginate(page: number, limit: number): Promise<[WorkShiftEntity[], number]> {
+    throw new Error('Method not implemented.');
+  }
+  softDelete(id: string): Promise<WorkShiftEntity> {
+    throw new Error('Method not implemented.');
+  }
+  restore(id: string): Promise<WorkShiftEntity> {
+    throw new Error('Method not implemented.');
+  }
+  exists(criteria: FindOptionsWhere<WorkShiftEntity>): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  bulkSave(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  bulkUpdate(entities: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
+    throw new Error('Method not implemented.');
+  }
+  customQuery(query: string, params: any[]): Promise<any> {
+    throw new Error('Method not implemented.');
   }
 }
