@@ -1,9 +1,9 @@
 import { PositionsRepository } from './repository/positions.repository';
-import { Injectable } from '@nestjs/common';
-import { HandleRpcExceptions } from 'src/common/decorators';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { HandleRpcExceptions } from 'src/common/decorators';
 import { PositionResponseDto } from './dto/response';
 import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PositionsService {
@@ -46,8 +46,8 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  async deleteById(positionId: string): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.deleteById(positionId);
+  async remove(positionId: string): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.remove(positionId);
 
     return plainToInstance(PositionResponseDto, position, {
       excludeExtraneousValues: true,
