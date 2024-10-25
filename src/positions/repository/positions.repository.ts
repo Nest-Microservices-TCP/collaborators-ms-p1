@@ -9,14 +9,14 @@ import {
   Repository,
   QueryRunner,
   DeleteResult,
-  FindOptionsWhere,
   UpdateResult,
+  FindOptionsWhere,
 } from 'typeorm';
 import {
   FailedRemoveException,
+  FailedRestoreException,
   EntityNotFoundException,
   FailedSoftDeleteException,
-  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 
 export class PositionsRepository implements IPositionsRepository {
@@ -169,6 +169,6 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   customQuery(query: string, params: any[]): Promise<any> {
-    throw new Error('Method not implemented.');
+    return this.positionsRepository.query(query, params);
   }
 }
