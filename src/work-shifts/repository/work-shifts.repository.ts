@@ -100,11 +100,13 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   findWithRelations(relations: string[]): Promise<WorkShiftEntity[]> {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.find({ relations });
   }
+
   count(criteria: FindOptionsWhere<WorkShiftEntity>): Promise<number> {
-    throw new Error('Method not implemented.');
+    return this.workShiftsRepository.count({ where: criteria });
   }
+
   paginate(page: number, limit: number): Promise<[WorkShiftEntity[], number]> {
     throw new Error('Method not implemented.');
   }
