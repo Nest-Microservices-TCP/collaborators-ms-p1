@@ -53,4 +53,13 @@ export class WorkShiftsService {
       excludeExtraneousValues: true,
     });
   }
+
+  @HandleRpcExceptions()
+  async findByIds(workShiftsIds: string[]): Promise<WorkShiftResponseDto[]> {
+    const workShifts = await this.workShiftsRepository.findByIds(workShiftsIds);
+
+    return plainToInstance(WorkShiftResponseDto, workShifts, {
+      excludeExtraneousValues: true,
+    });
+  }
 }
