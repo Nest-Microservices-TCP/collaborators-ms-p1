@@ -32,10 +32,10 @@ export class WorkShiftsController {
     return this.workShiftsService.update(request);
   }
 
-  @MessagePattern({ cmd: 'delete.work.shift.by.id' })
-  deleteById(
+  @MessagePattern({ cmd: 'remove.work.shift.by.id' })
+  remove(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.deleteById(workShiftId);
+    return this.workShiftsService.remove(workShiftId);
   }
 }
