@@ -38,4 +38,11 @@ export class WorkShiftsController {
   ): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.remove(workShiftId);
   }
+
+  @MessagePattern({ cmd: 'find.work.shifts.by.ids' })
+  findByIds(
+    @Payload() workShiftsIds: string[],
+  ): Promise<WorkShiftResponseDto[]> {
+    return this.workShiftsService.findByIds(workShiftsIds);
+  }
 }
