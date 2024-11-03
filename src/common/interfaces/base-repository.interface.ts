@@ -1,4 +1,5 @@
 import { FindOptionsWhere, QueryRunner } from 'typeorm';
+import { DeleteResultResponse } from '../dto/response';
 
 export interface IBaseRepository<T, CreateDto, UpdateDto> {
   setQueryRunner(queryRunner: QueryRunner): void;
@@ -7,7 +8,7 @@ export interface IBaseRepository<T, CreateDto, UpdateDto> {
   create(request: Partial<T>): T;
   save(request: CreateDto): Promise<T>;
   update(request: UpdateDto): Promise<T>;
-  remove(id: string): Promise<T>;
+  remove(id: string): Promise<DeleteResultResponse>;
 
   findByIds(ids: string[]): Promise<T[]>;
   findByCriteria(criteria: FindOptionsWhere<T>): Promise<T>;
