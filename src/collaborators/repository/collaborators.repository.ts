@@ -1,6 +1,7 @@
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
 import { CollaboratorEntity } from '../entity/collaborator.entity';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';
 import {
@@ -9,6 +10,7 @@ import {
   QueryRunner,
   UpdateResult,
   FindOptionsWhere,
+  DeleteResult,
 } from 'typeorm';
 import {
   FailedRemoveException,
@@ -74,22 +76,17 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return await this.collaboratorsRepository.save(collaborator);
   }
 
-  async remove(collaboratorId: string): Promise<CollaboratorEntity> {
+  async remove(collaboratorId: string): Promise<DeleteResultResponse> {
     await this.findOneById(collaboratorId);
 
-    const result: UpdateResult = await this.collaboratorsRepository.update(
-      collaboratorId,
-      {
-        status: Status.DELETED,
-        deletedAt: new Date(),
-      },
-    );
+    const result: DeleteResult =
+      await this.collaboratorsRepository.delete(collaboratorId);
 
-    if (result.affected !== 1) {
+    if (result?.affected === 0) {
       throw new FailedRemoveException('collaborator');
     }
 
-    return this.findOneById(collaboratorId);
+    return { deleted: true, affected: result.affected };
   }
 
   findByIds(collaboratorsIds: string[]): Promise<CollaboratorEntity[]> {
