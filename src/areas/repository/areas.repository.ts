@@ -1,3 +1,9 @@
+import { IAreasRepository } from './interfaces/areas.repository.interface';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
+import { Status } from 'src/common/enums/status.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AreaEntity } from '../entity/area.entity';
 import {
   In,
   Repository,
@@ -12,11 +18,6 @@ import {
   EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AreaEntity } from '../entity/area.entity';
-import { Status } from 'src/common/enums/status.enum';
-import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
-import { IAreasRepository } from './interfaces/areas.repository.interface';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<AreaEntity>;
@@ -74,7 +75,7 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(area);
   }
 
-  async remove(areaId: string): Promise<AreaEntity> {
+  async remove(areaId: string): Promise<DeleteResultResponse> {
     await this.findOneById(areaId);
 
     const result: DeleteResult = await this.areasRepository.delete(areaId);
@@ -83,7 +84,10 @@ export class AreasRepository implements IAreasRepository {
       throw new FailedRemoveException('area');
     }
 
-    return this.findOneById(areaId);
+    return {
+      deleted: true,
+      affected: result.affected,
+    };
   }
 
   findByIds(areasIds: string[]): Promise<AreaEntity[]> {
