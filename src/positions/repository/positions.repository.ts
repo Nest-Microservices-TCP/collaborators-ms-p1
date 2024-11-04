@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { PositionEntity } from '../entity/position.entity';
 import { Status } from 'src/common/enums/status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -76,7 +77,7 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(position);
   }
 
-  async remove(positionId: string): Promise<PositionEntity> {
+  async remove(positionId: string): Promise<DeleteResultResponse> {
     await this.findOneById(positionId);
 
     const result: DeleteResult =
@@ -86,7 +87,7 @@ export class PositionsRepository implements IPositionsRepository {
       throw new FailedRemoveException('position');
     }
 
-    return this.findOneById(positionId);
+    return { deleted: true, affected: result.affected };
   }
 
   findByIds(positionsIds: string[]): Promise<PositionEntity[]> {
