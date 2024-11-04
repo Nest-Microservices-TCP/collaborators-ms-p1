@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { WorkShiftEntity } from '../entity/work-shift.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';
@@ -74,18 +74,18 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(workShift);
   }
 
-  async remove(workShiftId: string): Promise<WorkShiftEntity> {
+  async remove(workShiftId: string): Promise<DeleteResultResponse> {
     const workShift = await this.findOneById(workShiftId);
 
     const result: DeleteResult = await this.workShiftsRepository.delete(
       workShift.workShiftId,
     );
 
-    if (result.affected !== 1) {
+    if (result?.affected === 0) {
       throw new FailedRemoveException('work-shift');
     }
 
-    return this.findOneById(workShiftId);
+    return { deleted: true, affected: result.affected };
   }
 
   findByIds(workShiftsIds: string[]): Promise<WorkShiftEntity[]> {
