@@ -1,1 +1,1 @@
-export * from './area-response.dto';
+export * from './area.response.dto';
