@@ -1,1 +1,1 @@
-export * from './work-shift-response.dto';
+export * from './work-shift.response.dto';
