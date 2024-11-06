@@ -1,1 +1,1 @@
-export * from './collaborator-response.dto';
+export * from './collaborator.response.dto';
