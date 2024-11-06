@@ -1,1 +1,1 @@
-export * from './position-response.dto';
+export * from './position.response.dto';
