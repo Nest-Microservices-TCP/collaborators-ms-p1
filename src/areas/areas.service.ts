@@ -1,4 +1,5 @@
 import { AreasRepository } from './repository/areas.repository';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { plainToInstance } from 'class-transformer';
@@ -46,10 +47,10 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async remove(areaId: string): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.remove(areaId);
+  async remove(areaId: string): Promise<DeleteResultResponse> {
+    const deleteResult = await this.areasRepository.remove(areaId);
 
-    return plainToInstance(AreaResponseDto, area, {
+    return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
   }
