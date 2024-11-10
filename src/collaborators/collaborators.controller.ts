@@ -1,12 +1,13 @@
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CollaboratorsService } from './collaborators.service';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CollaboratorResponseDto } from './dto/response';
+import { Controller } from '@nestjs/common';
 import {
   CreateCollaboratorDto,
   UpdateCollaboratorDto,
   FindOneCollaboratorById,
 } from './dto/request';
-import { Controller } from '@nestjs/common';
-import { CollaboratorResponseDto } from './dto/response';
-import { CollaboratorsService } from './collaborators.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class CollaboratorsController {
@@ -41,7 +42,7 @@ export class CollaboratorsController {
   @MessagePattern({ cmd: 'remove.collaborator.by.id' })
   async remove(
     @Payload('collaboratorId') collaboratorId: string,
-  ): Promise<CollaboratorResponseDto> {
+  ): Promise<DeleteResultResponse> {
     return this.collaboratorsService.remove(collaboratorId);
   }
 
