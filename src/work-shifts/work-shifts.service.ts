@@ -1,5 +1,6 @@
 import { WorkShiftsRepository } from './repository/work-shifts.repository';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { WorkShiftResponseDto } from './dto/response';
 import { plainToInstance } from 'class-transformer';
@@ -46,10 +47,10 @@ export class WorkShiftsService {
   }
 
   @HandleRpcExceptions()
-  async remove(workShiftId: string): Promise<WorkShiftResponseDto> {
-    const workShift = await this.workShiftsRepository.remove(workShiftId);
+  async remove(workShiftId: string): Promise<DeleteResultResponse> {
+    const deleteResult = await this.workShiftsRepository.remove(workShiftId);
 
-    return plainToInstance(WorkShiftResponseDto, workShift, {
+    return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
   }
