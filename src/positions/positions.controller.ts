@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
-import { PositionsService } from './positions.service';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { PositionsService } from './positions.service';
 import { PositionResponseDto } from './dto/response';
+import { Controller } from '@nestjs/common';
 
 @Controller()
 export class PositionsController {
@@ -33,7 +34,7 @@ export class PositionsController {
   @MessagePattern({ cmd: 'remove.position.by.id' })
   remove(
     @Payload('positionId') positionId: string,
-  ): Promise<PositionResponseDto> {
+  ): Promise<DeleteResultResponse> {
     return this.positionsService.remove(positionId);
   }
 }
