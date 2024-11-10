@@ -1,5 +1,6 @@
 import { PositionsRepository } from './repository/positions.repository';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { PositionResponseDto } from './dto/response';
 import { plainToInstance } from 'class-transformer';
@@ -46,10 +47,10 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  async remove(positionId: string): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.remove(positionId);
+  async remove(positionId: string): Promise<DeleteResultResponse> {
+    const deleteResult = await this.positionsRepository.remove(positionId);
 
-    return plainToInstance(PositionResponseDto, position, {
+    return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
   }
