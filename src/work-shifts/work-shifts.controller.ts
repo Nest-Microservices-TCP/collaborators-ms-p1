@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
-import { WorkShiftResponseDto } from './dto/response';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { WorkShiftsService } from './work-shifts.service';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { WorkShiftsService } from './work-shifts.service';
+import { WorkShiftResponseDto } from './dto/response';
+import { Controller } from '@nestjs/common';
 
 @Controller()
 export class WorkShiftsController {
@@ -35,7 +36,7 @@ export class WorkShiftsController {
   @MessagePattern({ cmd: 'remove.work.shift.by.id' })
   remove(
     @Payload('workShiftId') workShiftId: string,
-  ): Promise<WorkShiftResponseDto> {
+  ): Promise<DeleteResultResponse> {
     return this.workShiftsService.remove(workShiftId);
   }
 
