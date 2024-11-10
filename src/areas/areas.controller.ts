@@ -1,4 +1,5 @@
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { AreaResponseDto } from './dto/response';
 import { AreasService } from './areas.service';
@@ -31,7 +32,9 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'remove.area.by.id' })
-  async remove(@Payload('areaId') areaId: string): Promise<AreaResponseDto> {
+  async remove(
+    @Payload('areaId') areaId: string,
+  ): Promise<DeleteResultResponse> {
     return this.areasService.remove(areaId);
   }
 
