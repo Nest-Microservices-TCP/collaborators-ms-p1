@@ -1,4 +1,5 @@
 import { CollaboratorsRepository } from './repository/collaborators.repository';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { HandleRpcExceptions } from 'src/common/decorators';
 import { CollaboratorResponseDto } from './dto/response';
 import { plainToInstance } from 'class-transformer';
@@ -59,11 +60,11 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async remove(collaboratorId: string): Promise<CollaboratorResponseDto> {
-    const collaborator =
+  async remove(collaboratorId: string): Promise<DeleteResultResponse> {
+    const deleteResult =
       await this.collaboratorsRepository.remove(collaboratorId);
 
-    return plainToInstance(CollaboratorResponseDto, collaborator, {
+    return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
   }
