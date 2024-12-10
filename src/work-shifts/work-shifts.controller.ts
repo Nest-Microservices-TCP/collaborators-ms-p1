@@ -14,11 +14,11 @@ export class WorkShiftsController {
     return this.workShiftsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.work.shift.by.id' })
-  findOneById(
+  @MessagePattern({ cmd: 'find.one.work.shift' })
+  findOne(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.findOneById(workShiftId);
+    return this.workShiftsService.findOne(workShiftId);
   }
 
   @MessagePattern({ cmd: 'save.work.shift' })

@@ -20,8 +20,8 @@ export class WorkShiftsService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(workShiftId: string): Promise<WorkShiftResponseDto> {
-    const workShift = await this.workShiftsRepository.findOneById(workShiftId);
+  async findOne(workShiftId: string): Promise<WorkShiftResponseDto> {
+    const workShift = await this.workShiftsRepository.findOne(workShiftId);
 
     return plainToInstance(WorkShiftResponseDto, workShift, {
       excludeExtraneousValues: true,

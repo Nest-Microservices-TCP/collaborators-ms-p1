@@ -44,7 +44,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     });
   }
 
-  async findOneById(workShiftId: string): Promise<WorkShiftEntity> {
+  async findOne(workShiftId: string): Promise<WorkShiftEntity> {
     const workShift = await this.workShiftsRepository.findOne({
       where: { workShiftId },
     });
@@ -67,7 +67,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   async update(request: UpdateWorkShiftDto): Promise<WorkShiftEntity> {
     const { workShiftId } = request;
 
-    const workShift = await this.findOneById(workShiftId);
+    const workShift = await this.findOne(workShiftId);
 
     Object.assign(workShift, request);
 
@@ -75,7 +75,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   async remove(workShiftId: string): Promise<DeleteResultResponse> {
-    const workShift = await this.findOneById(workShiftId);
+    const workShift = await this.findOne(workShiftId);
 
     const result: DeleteResult = await this.workShiftsRepository.delete(
       workShift.workShiftId,
@@ -124,7 +124,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   }
 
   async softDelete(workShiftId: string): Promise<WorkShiftEntity> {
-    await this.findOneById(workShiftId);
+    await this.findOne(workShiftId);
 
     const result: UpdateResult = await this.workShiftsRepository.update(
       workShiftId,
@@ -138,11 +138,11 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
       throw new FailedSoftDeleteException('work-shift');
     }
 
-    return this.findOneById(workShiftId);
+    return this.findOne(workShiftId);
   }
 
   async restore(workShiftId: string): Promise<WorkShiftEntity> {
-    await this.findOneById(workShiftId);
+    await this.findOne(workShiftId);
 
     const result: UpdateResult = await this.workShiftsRepository.update(
       workShiftId,
@@ -156,7 +156,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
       throw new FailedRestoreException('work-shift');
     }
 
-    return this.findOneById(workShiftId);
+    return this.findOne(workShiftId);
   }
 
   bulkSave(workShifts: WorkShiftEntity[]): Promise<WorkShiftEntity[]> {
