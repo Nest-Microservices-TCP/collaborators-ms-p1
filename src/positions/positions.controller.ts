@@ -21,6 +21,13 @@ export class PositionsController {
     return this.positionsService.findOneById(positionId);
   }
 
+  @MessagePattern({ cmd: 'find.positions.by.ids' })
+  findByIds(
+    @Payload('positionsIds') positionsIds: string[],
+  ): Promise<PositionResponseDto[]> {
+    return this.positionsService.findByIds(positionsIds);
+  }
+
   @MessagePattern({ cmd: 'save.position' })
   save(@Payload() request: CreatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.save(request);
