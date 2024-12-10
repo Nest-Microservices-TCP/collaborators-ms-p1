@@ -39,7 +39,9 @@ export class AreasController {
   }
 
   @MessagePattern({ cmd: 'find.areas.by.ids' })
-  async findByIds(@Payload() areasIds: string[]): Promise<AreaResponseDto[]> {
+  async findByIds(
+    @Payload('areasIds') areasIds: string[],
+  ): Promise<AreaResponseDto[]> {
     return this.areasService.findByIds(areasIds);
   }
 }

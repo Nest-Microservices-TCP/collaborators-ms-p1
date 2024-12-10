@@ -48,7 +48,7 @@ export class CollaboratorsController {
 
   @MessagePattern({ cmd: 'find.collaborators.by.ids' })
   async findByIds(
-    @Payload() collaboratorsIds: string[],
+    @Payload('collaboratorsIds') collaboratorsIds: string[],
   ): Promise<CollaboratorResponseDto[]> {
     return this.collaboratorsService.findByIds(collaboratorsIds);
   }

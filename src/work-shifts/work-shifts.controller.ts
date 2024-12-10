@@ -42,7 +42,7 @@ export class WorkShiftsController {
 
   @MessagePattern({ cmd: 'find.work.shifts.by.ids' })
   findByIds(
-    @Payload() workShiftsIds: string[],
+    @Payload('workShiftsIds') workShiftsIds: string[],
   ): Promise<WorkShiftResponseDto[]> {
     return this.workShiftsService.findByIds(workShiftsIds);
   }
