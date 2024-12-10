@@ -1,8 +1,8 @@
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { PositionEntity } from '../entity/position.entity';
 import { Status } from 'src/common/enums/status.enum';
+import { Position } from '../entity/position.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   In,
@@ -20,25 +20,24 @@ import {
 } from 'src/common/exceptions/custom';
 
 export class PositionsRepository implements IPositionsRepository {
-  private positionsRepository: Repository<PositionEntity>;
+  private positionsRepository: Repository<Position>;
 
   constructor(
-    @InjectRepository(PositionEntity)
-    private readonly defaultRepository: Repository<PositionEntity>,
+    @InjectRepository(Position)
+    private readonly defaultRepository: Repository<Position>,
   ) {
     this.positionsRepository = this.defaultRepository;
   }
 
   setQueryRunner(queryRunner: QueryRunner): void {
     if (queryRunner) {
-      this.positionsRepository =
-        queryRunner.manager.getRepository(PositionEntity);
+      this.positionsRepository = queryRunner.manager.getRepository(Position);
     } else {
       this.positionsRepository = this.defaultRepository;
     }
   }
 
-  findAll(): Promise<PositionEntity[]> {
+  findAll(): Promise<Position[]> {
     return this.positionsRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -46,7 +45,7 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  async findOne(positionId: string): Promise<PositionEntity> {
+  async findOne(positionId: string): Promise<Position> {
     const position = await this.positionsRepository.findOne({
       where: { positionId },
     });
@@ -58,15 +57,15 @@ export class PositionsRepository implements IPositionsRepository {
     return position;
   }
 
-  create(request: Partial<PositionEntity>): PositionEntity {
+  create(request: Partial<Position>): Position {
     return this.positionsRepository.create(request);
   }
 
-  async save(request: CreatePositionDto): Promise<PositionEntity> {
+  async save(request: CreatePositionDto): Promise<Position> {
     return this.positionsRepository.save(request);
   }
 
-  async update(request: UpdatePositionDto): Promise<PositionEntity> {
+  async update(request: UpdatePositionDto): Promise<Position> {
     const { positionId } = request;
 
     const position = await this.findOne(positionId);
@@ -89,7 +88,7 @@ export class PositionsRepository implements IPositionsRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(positionsIds: string[]): Promise<PositionEntity[]> {
+  findByIds(positionsIds: string[]): Promise<Position[]> {
     return this.positionsRepository.find({
       where: {
         positionId: In(positionsIds),
@@ -97,34 +96,32 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  findByCriteria(
-    criteria: FindOptionsWhere<PositionEntity>,
-  ): Promise<PositionEntity> {
+  findByCriteria(criteria: FindOptionsWhere<Position>): Promise<Position> {
     return this.positionsRepository.findOne({ where: criteria });
   }
 
-  findWithRelations(relations: string[]): Promise<PositionEntity[]> {
+  findWithRelations(relations: string[]): Promise<Position[]> {
     return this.positionsRepository.find({ relations });
   }
 
-  count(criteria: FindOptionsWhere<PositionEntity>): Promise<number> {
+  count(criteria: FindOptionsWhere<Position>): Promise<number> {
     return this.positionsRepository.count({ where: criteria });
   }
 
-  paginate(page: number, limit: number): Promise<[PositionEntity[], number]> {
+  paginate(page: number, limit: number): Promise<[Position[], number]> {
     return this.positionsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
   }
 
-  async exists(criteria: FindOptionsWhere<PositionEntity>): Promise<boolean> {
+  async exists(criteria: FindOptionsWhere<Position>): Promise<boolean> {
     const count = await this.positionsRepository.count({ where: criteria });
 
     return count > 0;
   }
 
-  async softDelete(positionId: string): Promise<PositionEntity> {
+  async softDelete(positionId: string): Promise<Position> {
     await this.findOne(positionId);
 
     const result: UpdateResult = await this.positionsRepository.update(
@@ -142,7 +139,7 @@ export class PositionsRepository implements IPositionsRepository {
     return this.findOne(positionId);
   }
 
-  async restore(positionId: string): Promise<PositionEntity> {
+  async restore(positionId: string): Promise<Position> {
     await this.findOne(positionId);
 
     const result: UpdateResult = await this.positionsRepository.update(
@@ -160,11 +157,11 @@ export class PositionsRepository implements IPositionsRepository {
     return this.findOne(positionId);
   }
 
-  bulkSave(positions: PositionEntity[]): Promise<PositionEntity[]> {
+  bulkSave(positions: Position[]): Promise<Position[]> {
     return this.positionsRepository.save(positions);
   }
 
-  bulkUpdate(positions: PositionEntity[]): Promise<PositionEntity[]> {
+  bulkUpdate(positions: Position[]): Promise<Position[]> {
     return this.positionsRepository.save(positions);
   }
 
