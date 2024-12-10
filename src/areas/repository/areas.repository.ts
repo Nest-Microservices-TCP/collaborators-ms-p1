@@ -45,7 +45,7 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findOneById(areaId: string): Promise<AreaEntity> {
+  async findOne(areaId: string): Promise<AreaEntity> {
     const area = await this.areasRepository.findOne({
       where: { areaId },
     });
@@ -68,7 +68,7 @@ export class AreasRepository implements IAreasRepository {
   async update(request: UpdateAreaDto): Promise<AreaEntity> {
     const { areaId } = request;
 
-    const area = await this.findOneById(areaId);
+    const area = await this.findOne(areaId);
 
     Object.assign(area, request);
 
@@ -76,7 +76,7 @@ export class AreasRepository implements IAreasRepository {
   }
 
   async remove(areaId: string): Promise<DeleteResultResponse> {
-    await this.findOneById(areaId);
+    await this.findOne(areaId);
 
     const result: DeleteResult = await this.areasRepository.delete(areaId);
 
@@ -135,7 +135,7 @@ export class AreasRepository implements IAreasRepository {
   }
 
   async softDelete(areaId: string): Promise<AreaEntity> {
-    const area = await this.findOneById(areaId);
+    const area = await this.findOne(areaId);
 
     const result: UpdateResult = await this.areasRepository.update(
       area.areaId,
@@ -149,11 +149,11 @@ export class AreasRepository implements IAreasRepository {
       throw new FailedSoftDeleteException('area');
     }
 
-    return this.findOneById(area.areaId);
+    return this.findOne(area.areaId);
   }
 
   async restore(areaId: string): Promise<AreaEntity> {
-    const area = await this.findOneById(areaId);
+    const area = await this.findOne(areaId);
 
     const result: UpdateResult = await this.areasRepository.update(
       area?.areaId,
@@ -167,7 +167,7 @@ export class AreasRepository implements IAreasRepository {
       throw new FailedRestoreException('area');
     }
 
-    return this.findOneById(areaId);
+    return this.findOne(areaId);
   }
 
   async exists(criteria: FindOptionsWhere<AreaEntity>): Promise<boolean> {

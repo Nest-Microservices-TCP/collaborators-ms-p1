@@ -19,11 +19,9 @@ export class AreasController {
     return this.areasService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.area.by.id' })
-  async findOneById(
-    @Payload('areaId') areaId: string,
-  ): Promise<AreaResponseDto> {
-    return this.areasService.findOneById(areaId);
+  @MessagePattern({ cmd: 'find.one.area' })
+  async findOne(@Payload('areaId') areaId: string): Promise<AreaResponseDto> {
+    return this.areasService.findOne(areaId);
   }
 
   @MessagePattern({ cmd: 'update.area' })

@@ -29,8 +29,8 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(areaId: string): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.findOneById(areaId);
+  async findOne(areaId: string): Promise<AreaResponseDto> {
+    const area = await this.areasRepository.findOne(areaId);
 
     return plainToInstance(AreaResponseDto, area, {
       excludeExtraneousValues: true,
