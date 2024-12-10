@@ -26,13 +26,13 @@ export class CollaboratorsService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(
+  async findOne(
     request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
     const { collaboratorId } = request;
 
     const collaborator =
-      await this.collaboratorsRepository.findOneById(collaboratorId);
+      await this.collaboratorsRepository.findOne(collaboratorId);
 
     return plainToInstance(CollaboratorResponseDto, collaborator, {
       excludeExtraneousValues: true,

@@ -8,9 +8,9 @@ import {
   In,
   Repository,
   QueryRunner,
+  DeleteResult,
   UpdateResult,
   FindOptionsWhere,
-  DeleteResult,
 } from 'typeorm';
 import {
   FailedRemoveException,
@@ -46,7 +46,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  async findOneById(collaboratorId: string): Promise<CollaboratorEntity> {
+  async findOne(collaboratorId: string): Promise<CollaboratorEntity> {
     const collaborator = await this.collaboratorsRepository.findOne({
       where: { collaboratorId },
     });
@@ -69,7 +69,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   async update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
     const { collaboratorId } = request;
 
-    const collaborator = await this.findOneById(collaboratorId);
+    const collaborator = await this.findOne(collaboratorId);
 
     Object.assign(collaborator, request);
 
@@ -77,7 +77,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   }
 
   async remove(collaboratorId: string): Promise<DeleteResultResponse> {
-    await this.findOneById(collaboratorId);
+    await this.findOne(collaboratorId);
 
     const result: DeleteResult =
       await this.collaboratorsRepository.delete(collaboratorId);
@@ -132,7 +132,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   }
 
   async softDelete(collaboratorId: string): Promise<CollaboratorEntity> {
-    await this.findOneById(collaboratorId);
+    await this.findOne(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
       collaboratorId,
@@ -146,11 +146,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       throw new FailedSoftDeleteException('collaborator');
     }
 
-    return this.findOneById(collaboratorId);
+    return this.findOne(collaboratorId);
   }
 
   async restore(collaboratorId: string): Promise<CollaboratorEntity> {
-    await this.findOneById(collaboratorId);
+    await this.findOne(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
       collaboratorId,
@@ -164,7 +164,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       throw new FailedRestoreException('collaborator');
     }
 
-    return this.findOneById(collaboratorId);
+    return this.findOne(collaboratorId);
   }
 
   bulkSave(collaborators: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {

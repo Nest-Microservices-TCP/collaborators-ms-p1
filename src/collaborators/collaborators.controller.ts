@@ -18,11 +18,11 @@ export class CollaboratorsController {
     return this.collaboratorsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.collaborator.by.id' })
-  async findOneById(
+  @MessagePattern({ cmd: 'find.one.collaborator' })
+  async findOne(
     @Payload() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
-    return this.collaboratorsService.findOneById(request);
+    return this.collaboratorsService.findOne(request);
   }
 
   @MessagePattern({ cmd: 'save.collaborator' })
