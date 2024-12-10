@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
 import { DeleteResultResponse } from 'src/common/dto/response';
@@ -47,7 +46,7 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  async findOneById(positionId: string): Promise<PositionEntity> {
+  async findOne(positionId: string): Promise<PositionEntity> {
     const position = await this.positionsRepository.findOne({
       where: { positionId },
     });
@@ -70,7 +69,7 @@ export class PositionsRepository implements IPositionsRepository {
   async update(request: UpdatePositionDto): Promise<PositionEntity> {
     const { positionId } = request;
 
-    const position = await this.findOneById(positionId);
+    const position = await this.findOne(positionId);
 
     Object.assign(position, request);
 
@@ -78,7 +77,7 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   async remove(positionId: string): Promise<DeleteResultResponse> {
-    await this.findOneById(positionId);
+    await this.findOne(positionId);
 
     const result: DeleteResult =
       await this.positionsRepository.delete(positionId);
@@ -126,7 +125,7 @@ export class PositionsRepository implements IPositionsRepository {
   }
 
   async softDelete(positionId: string): Promise<PositionEntity> {
-    await this.findOneById(positionId);
+    await this.findOne(positionId);
 
     const result: UpdateResult = await this.positionsRepository.update(
       positionId,
@@ -140,11 +139,11 @@ export class PositionsRepository implements IPositionsRepository {
       throw new FailedSoftDeleteException('position');
     }
 
-    return this.findOneById(positionId);
+    return this.findOne(positionId);
   }
 
   async restore(positionId: string): Promise<PositionEntity> {
-    await this.findOneById(positionId);
+    await this.findOne(positionId);
 
     const result: UpdateResult = await this.positionsRepository.update(
       positionId,
@@ -158,7 +157,7 @@ export class PositionsRepository implements IPositionsRepository {
       throw new FailedRestoreException('position');
     }
 
-    return this.findOneById(positionId);
+    return this.findOne(positionId);
   }
 
   bulkSave(positions: PositionEntity[]): Promise<PositionEntity[]> {

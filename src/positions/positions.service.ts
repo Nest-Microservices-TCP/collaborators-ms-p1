@@ -20,8 +20,8 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
-  async findOneById(positionId: string): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.findOneById(positionId);
+  async findOne(positionId: string): Promise<PositionResponseDto> {
+    const position = await this.positionsRepository.findOne(positionId);
 
     return plainToInstance(PositionResponseDto, position, {
       excludeExtraneousValues: true,

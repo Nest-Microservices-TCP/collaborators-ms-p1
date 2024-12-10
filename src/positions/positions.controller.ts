@@ -14,11 +14,11 @@ export class PositionsController {
     return this.positionsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.position.by.id' })
-  findOneById(
+  @MessagePattern({ cmd: 'find.one.position' })
+  findOne(
     @Payload('positionId') positionId: string,
   ): Promise<PositionResponseDto> {
-    return this.positionsService.findOneById(positionId);
+    return this.positionsService.findOne(positionId);
   }
 
   @MessagePattern({ cmd: 'find.positions.by.ids' })
