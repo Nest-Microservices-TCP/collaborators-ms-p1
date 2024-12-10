@@ -29,6 +29,15 @@ export class PositionsService {
   }
 
   @HandleRpcExceptions()
+  async findByIds(positionsIds: string[]): Promise<PositionResponseDto[]> {
+    const positions = await this.positionsRepository.findByIds(positionsIds);
+
+    return plainToInstance(PositionResponseDto, positions, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  @HandleRpcExceptions()
   async save(request: CreatePositionDto): Promise<PositionResponseDto> {
     const position = await this.positionsRepository.save(request);
 
