@@ -1,7 +1,7 @@
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
-import { CollaboratorEntity } from '../entity/collaborator.entity';
 import { DeleteResultResponse } from 'src/common/dto/response';
+import { Collaborator } from '../entity/collaborator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/common/enums';
 import {
@@ -20,11 +20,11 @@ import {
 } from 'src/common/exceptions/custom';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
-  private collaboratorsRepository: Repository<CollaboratorEntity>;
+  private collaboratorsRepository: Repository<Collaborator>;
 
   constructor(
-    @InjectRepository(CollaboratorEntity)
-    private readonly defaultRepository: Repository<CollaboratorEntity>,
+    @InjectRepository(Collaborator)
+    private readonly defaultRepository: Repository<Collaborator>,
   ) {
     this.collaboratorsRepository = this.defaultRepository;
   }
@@ -32,13 +32,13 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   setQueryRunner(queryRunner: QueryRunner): void {
     if (queryRunner) {
       this.collaboratorsRepository =
-        queryRunner.manager.getRepository(CollaboratorEntity);
+        queryRunner.manager.getRepository(Collaborator);
     } else {
       this.collaboratorsRepository = this.defaultRepository;
     }
   }
 
-  findAll(): Promise<CollaboratorEntity[]> {
+  findAll(): Promise<Collaborator[]> {
     return this.collaboratorsRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -46,7 +46,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  async findOne(collaboratorId: string): Promise<CollaboratorEntity> {
+  async findOne(collaboratorId: string): Promise<Collaborator> {
     const collaborator = await this.collaboratorsRepository.findOne({
       where: { collaboratorId },
     });
@@ -58,15 +58,15 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return collaborator;
   }
 
-  create(request: Partial<CollaboratorEntity>): CollaboratorEntity {
+  create(request: Partial<Collaborator>): Collaborator {
     return this.collaboratorsRepository.create(request);
   }
 
-  save(request: CreateCollaboratorDto): Promise<CollaboratorEntity> {
+  save(request: CreateCollaboratorDto): Promise<Collaborator> {
     return this.collaboratorsRepository.save(request);
   }
 
-  async update(request: UpdateCollaboratorDto): Promise<CollaboratorEntity> {
+  async update(request: UpdateCollaboratorDto): Promise<Collaborator> {
     const { collaboratorId } = request;
 
     const collaborator = await this.findOne(collaboratorId);
@@ -89,7 +89,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(collaboratorsIds: string[]): Promise<CollaboratorEntity[]> {
+  findByIds(collaboratorsIds: string[]): Promise<Collaborator[]> {
     return this.collaboratorsRepository.find({
       where: {
         collaboratorId: In(collaboratorsIds),
@@ -98,40 +98,35 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
   }
 
   findByCriteria(
-    criteria: FindOptionsWhere<CollaboratorEntity>,
-  ): Promise<CollaboratorEntity> {
+    criteria: FindOptionsWhere<Collaborator>,
+  ): Promise<Collaborator> {
     return this.collaboratorsRepository.findOne({ where: criteria });
   }
 
-  findWithRelations(relations: string[]): Promise<CollaboratorEntity[]> {
+  findWithRelations(relations: string[]): Promise<Collaborator[]> {
     return this.collaboratorsRepository.find({
       relations,
     });
   }
 
-  count(criteria: FindOptionsWhere<CollaboratorEntity>): Promise<number> {
+  count(criteria: FindOptionsWhere<Collaborator>): Promise<number> {
     return this.collaboratorsRepository.count({ where: criteria });
   }
 
-  paginate(
-    page: number,
-    limit: number,
-  ): Promise<[CollaboratorEntity[], number]> {
+  paginate(page: number, limit: number): Promise<[Collaborator[], number]> {
     return this.collaboratorsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
   }
 
-  async exists(
-    criteria: FindOptionsWhere<CollaboratorEntity>,
-  ): Promise<boolean> {
+  async exists(criteria: FindOptionsWhere<Collaborator>): Promise<boolean> {
     const count = await this.collaboratorsRepository.count({ where: criteria });
 
     return count > 0;
   }
 
-  async softDelete(collaboratorId: string): Promise<CollaboratorEntity> {
+  async softDelete(collaboratorId: string): Promise<Collaborator> {
     await this.findOne(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
@@ -149,7 +144,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.findOne(collaboratorId);
   }
 
-  async restore(collaboratorId: string): Promise<CollaboratorEntity> {
+  async restore(collaboratorId: string): Promise<Collaborator> {
     await this.findOne(collaboratorId);
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
@@ -167,13 +162,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.findOne(collaboratorId);
   }
 
-  bulkSave(collaborators: CollaboratorEntity[]): Promise<CollaboratorEntity[]> {
+  bulkSave(collaborators: Collaborator[]): Promise<Collaborator[]> {
     return this.collaboratorsRepository.save(collaborators);
   }
 
-  bulkUpdate(
-    collaborators: CollaboratorEntity[],
-  ): Promise<CollaboratorEntity[]> {
+  bulkUpdate(collaborators: Collaborator[]): Promise<Collaborator[]> {
     return this.collaboratorsRepository.save(collaborators);
   }
 
