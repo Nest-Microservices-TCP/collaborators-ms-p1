@@ -3,7 +3,7 @@ import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
 import { Status } from 'src/common/enums/status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AreaEntity } from '../entity/area.entity';
+import { Area } from '../entity/area.entity';
 import {
   In,
   Repository,
@@ -20,24 +20,24 @@ import {
 } from 'src/common/exceptions/custom';
 
 export class AreasRepository implements IAreasRepository {
-  private areasRepository: Repository<AreaEntity>;
+  private areasRepository: Repository<Area>;
 
   constructor(
-    @InjectRepository(AreaEntity)
-    private readonly defaultRepository: Repository<AreaEntity>,
+    @InjectRepository(Area)
+    private readonly defaultRepository: Repository<Area>,
   ) {
     this.areasRepository = this.defaultRepository;
   }
 
   setQueryRunner(queryRunner: QueryRunner) {
     if (queryRunner) {
-      this.areasRepository = queryRunner.manager.getRepository(AreaEntity);
+      this.areasRepository = queryRunner.manager.getRepository(Area);
     } else {
       this.areasRepository = this.defaultRepository;
     }
   }
 
-  findAll(): Promise<AreaEntity[]> {
+  findAll(): Promise<Area[]> {
     return this.areasRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -45,7 +45,7 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findOne(areaId: string): Promise<AreaEntity> {
+  async findOne(areaId: string): Promise<Area> {
     const area = await this.areasRepository.findOne({
       where: { areaId },
     });
@@ -57,15 +57,15 @@ export class AreasRepository implements IAreasRepository {
     return area;
   }
 
-  create(request: Partial<AreaEntity>): AreaEntity {
+  create(request: Partial<Area>): Area {
     return this.areasRepository.create(request);
   }
 
-  async save(request: CreateAreaDto): Promise<AreaEntity> {
+  async save(request: CreateAreaDto): Promise<Area> {
     return this.areasRepository.save(request);
   }
 
-  async update(request: UpdateAreaDto): Promise<AreaEntity> {
+  async update(request: UpdateAreaDto): Promise<Area> {
     const { areaId } = request;
 
     const area = await this.findOne(areaId);
@@ -90,7 +90,7 @@ export class AreasRepository implements IAreasRepository {
     };
   }
 
-  findByIds(areasIds: string[]): Promise<AreaEntity[]> {
+  findByIds(areasIds: string[]): Promise<Area[]> {
     return this.areasRepository.find({
       where: {
         areaId: In(areasIds),
@@ -98,9 +98,7 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findByCriteria(
-    criteria: FindOptionsWhere<AreaEntity>,
-  ): Promise<AreaEntity> {
+  async findByCriteria(criteria: FindOptionsWhere<Area>): Promise<Area> {
     const area = await this.areasRepository.findOne({ where: criteria });
 
     if (!area) {
@@ -117,24 +115,24 @@ export class AreasRepository implements IAreasRepository {
   //   });
   // }
 
-  findWithRelations(relations: string[]): Promise<AreaEntity[]> {
+  findWithRelations(relations: string[]): Promise<Area[]> {
     return this.areasRepository.find({
       relations, // { relations: ['employees'] }
     });
   }
 
-  count(criteria: FindOptionsWhere<AreaEntity>): Promise<number> {
+  count(criteria: FindOptionsWhere<Area>): Promise<number> {
     return this.areasRepository.count({ where: criteria });
   }
 
-  paginate(page: number, limit: number): Promise<[AreaEntity[], number]> {
+  paginate(page: number, limit: number): Promise<[Area[], number]> {
     return this.areasRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
   }
 
-  async softDelete(areaId: string): Promise<AreaEntity> {
+  async softDelete(areaId: string): Promise<Area> {
     const area = await this.findOne(areaId);
 
     const result: UpdateResult = await this.areasRepository.update(
@@ -152,7 +150,7 @@ export class AreasRepository implements IAreasRepository {
     return this.findOne(area.areaId);
   }
 
-  async restore(areaId: string): Promise<AreaEntity> {
+  async restore(areaId: string): Promise<Area> {
     const area = await this.findOne(areaId);
 
     const result: UpdateResult = await this.areasRepository.update(
@@ -170,17 +168,17 @@ export class AreasRepository implements IAreasRepository {
     return this.findOne(areaId);
   }
 
-  async exists(criteria: FindOptionsWhere<AreaEntity>): Promise<boolean> {
+  async exists(criteria: FindOptionsWhere<Area>): Promise<boolean> {
     const count = await this.areasRepository.count({ where: criteria });
 
     return count > 0;
   }
 
-  bulkSave(entities: AreaEntity[]): Promise<AreaEntity[]> {
+  bulkSave(entities: Area[]): Promise<Area[]> {
     return this.areasRepository.save(entities);
   }
 
-  bulkUpdate(entities: AreaEntity[]): Promise<AreaEntity[]> {
+  bulkUpdate(entities: Area[]): Promise<Area[]> {
     return this.areasRepository.save(entities);
   }
 

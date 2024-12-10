@@ -1,8 +1,8 @@
-import { BaseEntity } from 'src/common/entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'areas' })
-export class AreaEntity extends BaseEntity {
+export class Area extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'area_id',
   })
