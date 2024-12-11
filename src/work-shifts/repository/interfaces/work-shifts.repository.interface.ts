@@ -1,4 +1,4 @@
-import { WorkShiftEntity } from 'src/work-shifts/entity/work-shift.entity';
+import { WorkShift } from 'src/work-shifts/entity/work-shift.entity';
 import { IBaseRepository } from 'src/common/interfaces';
 import {
   CreateWorkShiftDto,
@@ -6,8 +6,4 @@ import {
 } from 'src/work-shifts/dto/request';
 
 export interface IWorkShiftsRepository
-  extends IBaseRepository<
-    WorkShiftEntity,
-    CreateWorkShiftDto,
-    UpdateWorkShiftDto
-  > {}
+  extends IBaseRepository<WorkShift, CreateWorkShiftDto, UpdateWorkShiftDto> {}

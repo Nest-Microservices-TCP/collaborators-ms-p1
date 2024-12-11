@@ -1,8 +1,8 @@
-import { BaseEntity } from 'src/common/entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'work_shifts' })
-export class WorkShiftEntity extends BaseEntity {
+export class WorkShift extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'work_shift_id',
   })
