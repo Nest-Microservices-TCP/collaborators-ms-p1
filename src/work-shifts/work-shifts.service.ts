@@ -10,6 +10,12 @@ import { Injectable } from '@nestjs/common';
 export class WorkShiftsService {
   constructor(private readonly workShiftsRepository: WorkShiftsRepository) {}
 
+  private plainToInstanceDto(data: unknown): any {
+    return plainToInstance(WorkShiftResponseDto, data, {
+      excludeExtraneousValues: true,
+    });
+  }
+
   @HandleRpcExceptions()
   async findAll(): Promise<WorkShiftResponseDto[]> {
     const workShifts = await this.workShiftsRepository.findAll();
