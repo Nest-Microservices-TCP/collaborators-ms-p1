@@ -17,39 +17,38 @@ export class AreasService {
   }
 
   @HandleRpcExceptions()
-  async save(request: CreateAreaDto): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.save(request);
-
-    return plainToInstance(AreaResponseDto, area, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  @HandleRpcExceptions()
   async findAll(): Promise<AreaResponseDto[]> {
     const areas = await this.areasRepository.findAll();
 
-    return plainToInstance(AreaResponseDto, areas, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(areas);
   }
 
   @HandleRpcExceptions()
   async findOne(areaId: string): Promise<AreaResponseDto> {
     const area = await this.areasRepository.findOne(areaId);
 
-    return plainToInstance(AreaResponseDto, area, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(area);
+  }
+
+  @HandleRpcExceptions()
+  async findByIds(areasIds: string[]): Promise<AreaResponseDto[]> {
+    const areas = await this.areasRepository.findByIds(areasIds);
+
+    return this.plainToInstanceDto(areas);
+  }
+
+  @HandleRpcExceptions()
+  async save(request: CreateAreaDto): Promise<AreaResponseDto> {
+    const newArea = await this.areasRepository.save(request);
+
+    return this.plainToInstanceDto(newArea);
   }
 
   @HandleRpcExceptions()
   async update(request: UpdateAreaDto): Promise<AreaResponseDto> {
-    const area = await this.areasRepository.update(request);
+    const updatedArea = await this.areasRepository.update(request);
 
-    return plainToInstance(AreaResponseDto, area, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(updatedArea);
   }
 
   @HandleRpcExceptions()
@@ -57,15 +56,6 @@ export class AreasService {
     const deleteResult = await this.areasRepository.remove(areaId);
 
     return plainToInstance(DeleteResultResponse, deleteResult, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  @HandleRpcExceptions()
-  async findByIds(areasIds: string[]): Promise<AreaResponseDto[]> {
-    const areas = await this.areasRepository.findByIds(areasIds);
-
-    return plainToInstance(AreaResponseDto, areas, {
       excludeExtraneousValues: true,
     });
   }
