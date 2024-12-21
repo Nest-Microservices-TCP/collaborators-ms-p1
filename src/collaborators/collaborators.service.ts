@@ -16,7 +16,7 @@ export class CollaboratorsService {
     private readonly collaboratorsRepository: CollaboratorsRepository,
   ) {}
 
-  private plainToInstance(data: unknown): any {
+  private plainToInstanceDto(data: unknown): any {
     return plainToInstance(CollaboratorResponseDto, data, {
       excludeExtraneousValues: true,
     });
@@ -26,9 +26,7 @@ export class CollaboratorsService {
   async findAll(): Promise<CollaboratorResponseDto[]> {
     const collaborators = await this.collaboratorsRepository.findAll();
 
-    return plainToInstance(CollaboratorResponseDto, collaborators, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(collaborators);
   }
 
   @HandleRpcExceptions()
@@ -40,39 +38,7 @@ export class CollaboratorsService {
     const collaborator =
       await this.collaboratorsRepository.findOne(collaboratorId);
 
-    return plainToInstance(CollaboratorResponseDto, collaborator, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  @HandleRpcExceptions()
-  async save(request: CreateCollaboratorDto): Promise<CollaboratorResponseDto> {
-    const collaborator = await this.collaboratorsRepository.save(request);
-
-    return plainToInstance(CollaboratorResponseDto, collaborator, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  @HandleRpcExceptions()
-  async update(
-    request: UpdateCollaboratorDto,
-  ): Promise<CollaboratorResponseDto> {
-    const collaborator = await this.collaboratorsRepository.update(request);
-
-    return plainToInstance(CollaboratorResponseDto, collaborator, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  @HandleRpcExceptions()
-  async remove(collaboratorId: string): Promise<DeleteResultResponse> {
-    const deleteResult =
-      await this.collaboratorsRepository.remove(collaboratorId);
-
-    return plainToInstance(DeleteResultResponse, deleteResult, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(collaborator);
   }
 
   @HandleRpcExceptions()
@@ -82,7 +48,32 @@ export class CollaboratorsService {
     const collaborators =
       await this.collaboratorsRepository.findByIds(collaboratorsIds);
 
-    return plainToInstance(CollaboratorResponseDto, collaborators, {
+    return this.plainToInstanceDto(collaborators);
+  }
+
+  @HandleRpcExceptions()
+  async save(request: CreateCollaboratorDto): Promise<CollaboratorResponseDto> {
+    const newCollaborator = await this.collaboratorsRepository.save(request);
+
+    return this.plainToInstanceDto(newCollaborator);
+  }
+
+  @HandleRpcExceptions()
+  async update(
+    request: UpdateCollaboratorDto,
+  ): Promise<CollaboratorResponseDto> {
+    const updatedCollaborator =
+      await this.collaboratorsRepository.update(request);
+
+    return this.plainToInstanceDto(updatedCollaborator);
+  }
+
+  @HandleRpcExceptions()
+  async remove(collaboratorId: string): Promise<DeleteResultResponse> {
+    const deleteResult =
+      await this.collaboratorsRepository.remove(collaboratorId);
+
+    return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
   }
