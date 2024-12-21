@@ -16,6 +16,12 @@ export class CollaboratorsService {
     private readonly collaboratorsRepository: CollaboratorsRepository,
   ) {}
 
+  private plainToInstance(data: unknown): any {
+    return plainToInstance(CollaboratorResponseDto, data, {
+      excludeExtraneousValues: true,
+    });
+  }
+
   @HandleRpcExceptions()
   async findAll(): Promise<CollaboratorResponseDto[]> {
     const collaborators = await this.collaboratorsRepository.findAll();
