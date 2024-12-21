@@ -20,45 +20,35 @@ export class PositionsService {
   async findAll(): Promise<PositionResponseDto[]> {
     const positions = await this.positionsRepository.findAll();
 
-    return plainToInstance(PositionResponseDto, positions, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(positions);
   }
 
   @HandleRpcExceptions()
   async findOne(positionId: string): Promise<PositionResponseDto> {
     const position = await this.positionsRepository.findOne(positionId);
 
-    return plainToInstance(PositionResponseDto, position, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(position);
   }
 
   @HandleRpcExceptions()
   async findByIds(positionsIds: string[]): Promise<PositionResponseDto[]> {
     const positions = await this.positionsRepository.findByIds(positionsIds);
 
-    return plainToInstance(PositionResponseDto, positions, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(positions);
   }
 
   @HandleRpcExceptions()
   async save(request: CreatePositionDto): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.save(request);
+    const newPosition = await this.positionsRepository.save(request);
 
-    return plainToInstance(PositionResponseDto, position, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(newPosition);
   }
 
   @HandleRpcExceptions()
   async update(request: UpdatePositionDto): Promise<PositionResponseDto> {
-    const position = await this.positionsRepository.update(request);
+    const updatedPosition = await this.positionsRepository.update(request);
 
-    return plainToInstance(PositionResponseDto, position, {
-      excludeExtraneousValues: true,
-    });
+    return this.plainToInstanceDto(updatedPosition);
   }
 
   @HandleRpcExceptions()
