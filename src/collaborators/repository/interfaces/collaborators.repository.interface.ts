@@ -1,12 +1,12 @@
-import { Collaborator } from 'src/collaborators/entity/collaborator.entity';
-import { IBaseRepository } from 'src/common/interfaces';
 import {
   CreateCollaboratorDto,
   UpdateCollaboratorDto,
 } from 'src/collaborators/dto/request';
+import { Collaborator } from 'src/collaborators/entity/collaborator.entity';
+import { IRepository } from 'src/common/repository';
 
 export interface ICollaboratorsRepository
-  extends IBaseRepository<
+  extends IRepository<
     Collaborator,
     CreateCollaboratorDto,
     UpdateCollaboratorDto
