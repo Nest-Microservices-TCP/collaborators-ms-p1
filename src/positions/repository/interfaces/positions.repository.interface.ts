@@ -1,9 +1,9 @@
-import { Position } from 'src/positions/entity/position.entity';
-import { IBaseRepository } from 'src/common/interfaces';
+import { IRepository } from 'src/common/repository';
 import {
   CreatePositionDto,
   UpdatePositionDto,
 } from 'src/positions/dto/request';
+import { Position } from 'src/positions/entity/position.entity';
 
 export interface IPositionsRepository
-  extends IBaseRepository<Position, CreatePositionDto, UpdatePositionDto> {}
+  extends IRepository<Position, CreatePositionDto, UpdatePositionDto> {}
