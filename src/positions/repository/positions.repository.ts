@@ -1,23 +1,26 @@
-import { IPositionsRepository } from './interfaces/positions.repository.interface';
-import { CreatePositionDto, UpdatePositionDto } from '../dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { Status } from 'src/common/enums/status.enum';
-import { Position } from '../entity/position.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  In,
-  Repository,
-  QueryRunner,
-  DeleteResult,
-  UpdateResult,
-  FindOptionsWhere,
-} from 'typeorm';
-import {
+  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
-  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  QueryRunner,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
+
+import { Status } from 'src/common/enums/status.enum';
+import { Position } from '../entity/position.entity';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreatePositionDto } from '../dto/request';
+
+import { IPositionsRepository } from './interfaces/positions.repository.interface';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<Position>;
@@ -65,10 +68,11 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(request);
   }
 
-  async update(request: UpdatePositionDto): Promise<Position> {
-    const { positionId } = request;
-
-    const position = await this.findOne(positionId);
+  async update(
+    conditions: FindOptionsWhere<Position>,
+    request: Partial<Position>,
+  ): Promise<Position> {
+    const position = await this.findByCriteria(conditions);
 
     Object.assign(position, request);
 
@@ -96,8 +100,18 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  findByCriteria(criteria: FindOptionsWhere<Position>): Promise<Position> {
-    return this.positionsRepository.findOne({ where: criteria });
+  async findByCriteria(
+    criteria: FindOptionsWhere<Position>,
+  ): Promise<Position> {
+    const position = await this.positionsRepository.findOne({
+      where: criteria,
+    });
+
+    if (!position) {
+      throw new EntityNotFoundException('position');
+    }
+
+    return position;
   }
 
   findWithRelations(relations: string[]): Promise<Position[]> {
