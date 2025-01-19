@@ -1,23 +1,26 @@
-import { IAreasRepository } from './interfaces/areas.repository.interface';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateAreaDto } from '../dto/request';
-import { Status } from 'src/common/enums/status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Area } from '../entity/area.entity';
 import {
-  In,
-  Repository,
-  QueryRunner,
-  UpdateResult,
-  DeleteResult,
-  FindOptionsWhere,
-} from 'typeorm';
-import {
+  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
-  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  QueryRunner,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
+
+import { Status } from 'src/common/enums/status.enum';
+import { Area } from '../entity/area.entity';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateAreaDto } from '../dto/request';
+
+import { IAreasRepository } from './interfaces/areas.repository.interface';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<Area>;
