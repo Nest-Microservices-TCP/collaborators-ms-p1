@@ -1,9 +1,11 @@
-import { PositionsRepository } from './repository/positions.repository';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { Position } from './entity/position.entity';
+
 import { PositionsController } from './positions.controller';
 import { PositionsService } from './positions.service';
-import { Position } from './entity/position.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { PositionsRepository } from './repository/positions.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Position])],
