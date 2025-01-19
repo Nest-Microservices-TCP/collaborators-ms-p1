@@ -1,6 +1,6 @@
 import { IAreasRepository } from './interfaces/areas.repository.interface';
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateAreaDto, UpdateAreaDto } from '../dto/request';
+import { CreateAreaDto } from '../dto/request';
 import { Status } from 'src/common/enums/status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Area } from '../entity/area.entity';
@@ -65,10 +65,11 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(request);
   }
 
-  async update(request: UpdateAreaDto): Promise<Area> {
-    const { areaId } = request;
-
-    const area = await this.findOne(areaId);
+  async update(
+    conditions: FindOptionsWhere<Area>,
+    request: Partial<Area>,
+  ): Promise<Area> {
+    const area = await this.findByCriteria(conditions);
 
     Object.assign(area, request);
 
