@@ -1,9 +1,11 @@
-import { AreasRepository } from './repository/areas.repository';
-import { AreasController } from './areas.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AreasService } from './areas.service';
-import { Area } from './entity/area.entity';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { Area } from './entity/area.entity';
+
+import { AreasController } from './areas.controller';
+import { AreasService } from './areas.service';
+import { AreasRepository } from './repository/areas.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Area])],
