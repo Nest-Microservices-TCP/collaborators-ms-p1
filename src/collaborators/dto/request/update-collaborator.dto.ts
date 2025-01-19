@@ -39,7 +39,7 @@ export class UpdateCollaboratorDto {
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  salary?: string;
+  salary?: number;
 
   @IsUrl()
   @IsString()
