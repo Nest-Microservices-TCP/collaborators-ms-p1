@@ -46,7 +46,9 @@ export class AreasService {
 
   @HandleRpcExceptions()
   async update(request: UpdateAreaDto): Promise<AreaResponseDto> {
-    const updatedArea = await this.areasRepository.update(request);
+    const { areaId, ...rest } = request;
+
+    const updatedArea = await this.areasRepository.update({ areaId }, rest);
 
     return this.plainToInstanceDto(updatedArea);
   }
