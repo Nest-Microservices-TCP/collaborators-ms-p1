@@ -1,5 +1,5 @@
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
-import { CreateCollaboratorDto, UpdateCollaboratorDto } from '../dto/request';
+import { CreateCollaboratorDto } from '../dto/request';
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { Collaborator } from '../entity/collaborator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -66,10 +66,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.collaboratorsRepository.save(request);
   }
 
-  async update(request: UpdateCollaboratorDto): Promise<Collaborator> {
-    const { collaboratorId } = request;
-
-    const collaborator = await this.findOne(collaboratorId);
+  async update(
+    conditions: FindOptionsWhere<Collaborator>,
+    request: Partial<Collaborator>,
+  ): Promise<Collaborator> {
+    const collaborator = await this.findByCriteria(conditions);
 
     Object.assign(collaborator, request);
 
