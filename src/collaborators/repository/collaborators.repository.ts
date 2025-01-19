@@ -1,23 +1,26 @@
-import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
-import { CreateCollaboratorDto } from '../dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { Collaborator } from '../entity/collaborator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Status } from 'src/common/enums';
 import {
-  In,
-  Repository,
-  QueryRunner,
-  DeleteResult,
-  UpdateResult,
-  FindOptionsWhere,
-} from 'typeorm';
-import {
+  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
-  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  QueryRunner,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
+
+import { Status } from 'src/common/enums';
+import { Collaborator } from '../entity/collaborator.entity';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateCollaboratorDto } from '../dto/request';
+
+import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<Collaborator>;
@@ -98,10 +101,18 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  findByCriteria(
+  async findByCriteria(
     criteria: FindOptionsWhere<Collaborator>,
   ): Promise<Collaborator> {
-    return this.collaboratorsRepository.findOne({ where: criteria });
+    const collaborator = await this.collaboratorsRepository.findOne({
+      where: criteria,
+    });
+
+    if (!collaborator) {
+      throw new EntityNotFoundException('collaborator');
+    }
+
+    return collaborator;
   }
 
   findWithRelations(relations: string[]): Promise<Collaborator[]> {
