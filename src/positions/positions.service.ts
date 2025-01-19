@@ -1,10 +1,13 @@
-import { PositionsRepository } from './repository/positions.repository';
-import { CreatePositionDto, UpdatePositionDto } from './dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { PositionResponseDto } from './dto/response';
-import { plainToInstance } from 'class-transformer';
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+
+import { HandleRpcExceptions } from 'src/common/decorators';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { PositionResponseDto } from './dto/response';
+
+import { PositionsRepository } from './repository/positions.repository';
 
 @Injectable()
 export class PositionsService {
@@ -46,7 +49,12 @@ export class PositionsService {
 
   @HandleRpcExceptions()
   async update(request: UpdatePositionDto): Promise<PositionResponseDto> {
-    const updatedPosition = await this.positionsRepository.update(request);
+    const { positionId, ...rest } = request;
+
+    const updatedPosition = await this.positionsRepository.update(
+      { positionId },
+      rest,
+    );
 
     return this.plainToInstanceDto(updatedPosition);
   }
