@@ -1,9 +1,11 @@
-import { CreatePositionDto, UpdatePositionDto } from './dto/request';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { PositionsService } from './positions.service';
-import { PositionResponseDto } from './dto/response';
 import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { PositionResponseDto } from './dto/response';
+
+import { PositionsService } from './positions.service';
 
 @Controller()
 export class PositionsController {
