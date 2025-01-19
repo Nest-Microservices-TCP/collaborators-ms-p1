@@ -1,13 +1,15 @@
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CollaboratorsService } from './collaborators.service';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CollaboratorResponseDto } from './dto/response';
 import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
 import {
   CreateCollaboratorDto,
-  UpdateCollaboratorDto,
   FindOneCollaboratorById,
+  UpdateCollaboratorDto,
 } from './dto/request';
+import { CollaboratorResponseDto } from './dto/response';
+
+import { CollaboratorsService } from './collaborators.service';
 
 @Controller()
 export class CollaboratorsController {
