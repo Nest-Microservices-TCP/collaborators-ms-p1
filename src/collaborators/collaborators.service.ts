@@ -1,14 +1,17 @@
-import { CollaboratorsRepository } from './repository/collaborators.repository';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { CollaboratorResponseDto } from './dto/response';
-import { plainToInstance } from 'class-transformer';
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+
+import { HandleRpcExceptions } from 'src/common/decorators';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
 import {
   CreateCollaboratorDto,
-  UpdateCollaboratorDto,
   FindOneCollaboratorById,
+  UpdateCollaboratorDto,
 } from './dto/request';
+import { CollaboratorResponseDto } from './dto/response';
+
+import { CollaboratorsRepository } from './repository/collaborators.repository';
 
 @Injectable()
 export class CollaboratorsService {
@@ -62,8 +65,12 @@ export class CollaboratorsService {
   async update(
     request: UpdateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
-    const updatedCollaborator =
-      await this.collaboratorsRepository.update(request);
+    const { collaboratorId, ...rest } = request;
+
+    const updatedCollaborator = await this.collaboratorsRepository.update(
+      { collaboratorId },
+      rest,
+    );
 
     return this.plainToInstanceDto(updatedCollaborator);
   }
