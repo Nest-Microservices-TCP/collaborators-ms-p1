@@ -1,9 +1,11 @@
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { WorkShiftsService } from './work-shifts.service';
-import { WorkShiftResponseDto } from './dto/response';
 import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { WorkShiftResponseDto } from './dto/response';
+
+import { WorkShiftsService } from './work-shifts.service';
 
 @Controller()
 export class WorkShiftsController {
