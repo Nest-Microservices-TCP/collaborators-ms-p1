@@ -1,23 +1,26 @@
-import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from '../dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { WorkShift } from '../entity/work-shift.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Status } from 'src/common/enums';
 import {
-  In,
-  Repository,
-  QueryRunner,
-  DeleteResult,
-  UpdateResult,
-  FindOptionsWhere,
-} from 'typeorm';
-import {
+  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
-  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  QueryRunner,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
+
+import { Status } from 'src/common/enums';
+import { WorkShift } from '../entity/work-shift.entity';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateWorkShiftDto } from '../dto/request';
+
+import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShift>;
@@ -63,10 +66,11 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(request);
   }
 
-  async update(request: UpdateWorkShiftDto): Promise<WorkShift> {
-    const { workShiftId } = request;
-
-    const workShift = await this.findOne(workShiftId);
+  async update(
+    conditions: FindOptionsWhere<WorkShift>,
+    request: Partial<WorkShift>,
+  ): Promise<WorkShift> {
+    const workShift = await this.findByCriteria(conditions);
 
     Object.assign(workShift, request);
 
@@ -95,8 +99,18 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     });
   }
 
-  findByCriteria(criteria: FindOptionsWhere<WorkShift>): Promise<WorkShift> {
-    return this.workShiftsRepository.findOne({ where: criteria });
+  async findByCriteria(
+    criteria: FindOptionsWhere<WorkShift>,
+  ): Promise<WorkShift> {
+    const workShift = await this.workShiftsRepository.findOne({
+      where: criteria,
+    });
+
+    if (!workShift) {
+      throw new EntityNotFoundException('work-shift');
+    }
+
+    return workShift;
   }
 
   findWithRelations(relations: string[]): Promise<WorkShift[]> {
