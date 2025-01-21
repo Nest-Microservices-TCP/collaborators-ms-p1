@@ -1,10 +1,13 @@
-import { WorkShiftsRepository } from './repository/work-shifts.repository';
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { HandleRpcExceptions } from 'src/common/decorators';
-import { WorkShiftResponseDto } from './dto/response';
-import { plainToInstance } from 'class-transformer';
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+
+import { HandleRpcExceptions } from 'src/common/decorators';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { WorkShiftResponseDto } from './dto/response';
+
+import { WorkShiftsRepository } from './repository/work-shifts.repository';
 
 @Injectable()
 export class WorkShiftsService {
@@ -46,7 +49,12 @@ export class WorkShiftsService {
 
   @HandleRpcExceptions()
   async update(request: UpdateWorkShiftDto): Promise<WorkShiftResponseDto> {
-    const updatedWorkShift = await this.workShiftsRepository.update(request);
+    const { workShiftId, ...rest } = request;
+
+    const updatedWorkShift = await this.workShiftsRepository.update(
+      { workShiftId },
+      rest,
+    );
 
     return this.plainToInstanceDto(updatedWorkShift);
   }
