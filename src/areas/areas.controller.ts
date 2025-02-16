@@ -16,7 +16,7 @@ export class AreasController {
     return this.areasService.save(request);
   }
 
-  @MessagePattern({ cmd: 'find.all.areas' })
+  @MessagePattern('collaborators.find.all.areas')
   async findAll(): Promise<AreaResponseDto[]> {
     return this.areasService.findAll();
   }
