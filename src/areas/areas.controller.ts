@@ -31,7 +31,7 @@ export class AreasController {
     return this.areasService.update(request);
   }
 
-  @MessagePattern({ cmd: 'remove.area.by.id' })
+  @MessagePattern('collaborators.remove.area.by.id')
   async remove(
     @Payload('areaId') areaId: string,
   ): Promise<DeleteResultResponse> {
