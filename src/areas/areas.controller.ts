@@ -11,7 +11,7 @@ import { AreasService } from './areas.service';
 export class AreasController {
   constructor(private readonly areasService: AreasService) {}
 
-  @MessagePattern({ cmd: 'save.area' })
+  @MessagePattern('collaborators.save.area')
   async save(@Payload() request: CreateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.save(request);
   }
