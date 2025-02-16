@@ -34,7 +34,7 @@ export class CollaboratorsController {
     return this.collaboratorsService.save(request);
   }
 
-  @MessagePattern({ cmd: 'update.collaborator' })
+  @MessagePattern('collaborators.update.collaborator')
   async update(
     @Payload() request: UpdateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
