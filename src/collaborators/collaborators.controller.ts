@@ -15,7 +15,7 @@ import { CollaboratorsService } from './collaborators.service';
 export class CollaboratorsController {
   constructor(private readonly collaboratorsService: CollaboratorsService) {}
 
-  @MessagePattern({ cmd: 'find.all.collaborators' })
+  @MessagePattern('collaborators.find.all.collaborators')
   async findAll(): Promise<CollaboratorResponseDto[]> {
     return this.collaboratorsService.findAll();
   }
