@@ -26,7 +26,7 @@ export class AreasController {
     return this.areasService.findOne(areaId);
   }
 
-  @MessagePattern('rooms.update.area')
+  @MessagePattern('collaborators.update.area')
   async update(@Payload() request: UpdateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.update(request);
   }
