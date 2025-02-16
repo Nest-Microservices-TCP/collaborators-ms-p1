@@ -20,7 +20,7 @@ export class CollaboratorsController {
     return this.collaboratorsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.collaborator' })
+  @MessagePattern('collaborators.find.one.collaborator')
   async findOne(
     @Payload() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
