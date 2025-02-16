@@ -38,7 +38,7 @@ export class AreasController {
     return this.areasService.remove(areaId);
   }
 
-  @MessagePattern({ cmd: 'find.areas.by.ids' })
+  @MessagePattern('collaborators.find.areas.by.ids')
   async findByIds(
     @Payload('areasIds') areasIds: string[],
   ): Promise<AreaResponseDto[]> {
