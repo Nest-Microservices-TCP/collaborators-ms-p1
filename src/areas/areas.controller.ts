@@ -21,7 +21,7 @@ export class AreasController {
     return this.areasService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.area' })
+  @MessagePattern('collaborators.find.one.area')
   async findOne(@Payload('areaId') areaId: string): Promise<AreaResponseDto> {
     return this.areasService.findOne(areaId);
   }
