@@ -41,7 +41,7 @@ export class CollaboratorsController {
     return this.collaboratorsService.update(request);
   }
 
-  @MessagePattern({ cmd: 'remove.collaborator.by.id' })
+  @MessagePattern('collaborators.remove.collaborator.by.id')
   async remove(
     @Payload('collaboratorId') collaboratorId: string,
   ): Promise<DeleteResultResponse> {
