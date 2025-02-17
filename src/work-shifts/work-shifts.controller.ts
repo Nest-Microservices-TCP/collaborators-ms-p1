@@ -11,7 +11,7 @@ import { WorkShiftsService } from './work-shifts.service';
 export class WorkShiftsController {
   constructor(private readonly workShiftsService: WorkShiftsService) {}
 
-  @MessagePattern({ cmd: 'find.all.work.shifts' })
+  @MessagePattern('collaborators.find.all.workShifts')
   findAll(): Promise<WorkShiftResponseDto[]> {
     return this.workShiftsService.findAll();
   }
