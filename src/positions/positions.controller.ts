@@ -11,7 +11,7 @@ import { PositionsService } from './positions.service';
 export class PositionsController {
   constructor(private readonly positionsService: PositionsService) {}
 
-  @MessagePattern({ cmd: 'find.all.positions' })
+  @MessagePattern('positions.find.all.positions')
   findAll(): Promise<PositionResponseDto[]> {
     return this.positionsService.findAll();
   }
