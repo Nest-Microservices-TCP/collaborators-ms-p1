@@ -35,7 +35,7 @@ export class PositionsController {
     return this.positionsService.save(request);
   }
 
-  @MessagePattern({ cmd: 'update.position' })
+  @MessagePattern('positions.update.position')
   update(@Payload() request: UpdatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.update(request);
   }
