@@ -40,7 +40,7 @@ export class PositionsController {
     return this.positionsService.update(request);
   }
 
-  @MessagePattern({ cmd: 'remove.position.by.id' })
+  @MessagePattern('positions.remove.position')
   remove(
     @Payload('positionId') positionId: string,
   ): Promise<DeleteResultResponse> {
