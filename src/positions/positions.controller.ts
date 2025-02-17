@@ -30,7 +30,7 @@ export class PositionsController {
     return this.positionsService.findByIds(positionsIds);
   }
 
-  @MessagePattern({ cmd: 'save.position' })
+  @MessagePattern('positions.save.position')
   save(@Payload() request: CreatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.save(request);
   }
