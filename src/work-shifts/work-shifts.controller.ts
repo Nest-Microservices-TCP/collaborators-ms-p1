@@ -16,7 +16,7 @@ export class WorkShiftsController {
     return this.workShiftsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.work.shift' })
+  @MessagePattern('collaborators.find.one.workShift')
   findOne(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<WorkShiftResponseDto> {
