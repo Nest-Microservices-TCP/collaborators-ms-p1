@@ -23,7 +23,7 @@ export class PositionsController {
     return this.positionsService.findOne(positionId);
   }
 
-  @MessagePattern({ cmd: 'find.positions.by.ids' })
+  @MessagePattern('positions.find.positions.by.ids')
   findByIds(
     @Payload('positionsIds') positionsIds: string[],
   ): Promise<PositionResponseDto[]> {
