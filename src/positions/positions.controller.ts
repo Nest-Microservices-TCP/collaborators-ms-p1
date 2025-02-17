@@ -11,36 +11,36 @@ import { PositionsService } from './positions.service';
 export class PositionsController {
   constructor(private readonly positionsService: PositionsService) {}
 
-  @MessagePattern('positions.find.all.positions')
+  @MessagePattern('collaborators.find.all.positions')
   findAll(): Promise<PositionResponseDto[]> {
     return this.positionsService.findAll();
   }
 
-  @MessagePattern('positions.find.one.position')
+  @MessagePattern('collaborators.find.one.position')
   findOne(
     @Payload('positionId') positionId: string,
   ): Promise<PositionResponseDto> {
     return this.positionsService.findOne(positionId);
   }
 
-  @MessagePattern('positions.find.positions.by.ids')
+  @MessagePattern('collaborators.find.positions.by.ids')
   findByIds(
     @Payload('positionsIds') positionsIds: string[],
   ): Promise<PositionResponseDto[]> {
     return this.positionsService.findByIds(positionsIds);
   }
 
-  @MessagePattern('positions.save.position')
+  @MessagePattern('collaborators.save.position')
   save(@Payload() request: CreatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.save(request);
   }
 
-  @MessagePattern('positions.update.position')
+  @MessagePattern('collaborators.update.position')
   update(@Payload() request: UpdatePositionDto): Promise<PositionResponseDto> {
     return this.positionsService.update(request);
   }
 
-  @MessagePattern('positions.remove.position')
+  @MessagePattern('collaborators.remove.position')
   remove(
     @Payload('positionId') positionId: string,
   ): Promise<DeleteResultResponse> {
