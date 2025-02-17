@@ -16,7 +16,7 @@ export class PositionsController {
     return this.positionsService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find.one.position' })
+  @MessagePattern('positions.find.one.position')
   findOne(
     @Payload('positionId') positionId: string,
   ): Promise<PositionResponseDto> {
