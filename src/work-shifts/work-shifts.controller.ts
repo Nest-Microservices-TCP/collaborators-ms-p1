@@ -35,7 +35,7 @@ export class WorkShiftsController {
     return this.workShiftsService.update(request);
   }
 
-  @MessagePattern({ cmd: 'remove.work.shift.by.id' })
+  @MessagePattern('collaborators.remove.workShift')
   remove(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<DeleteResultResponse> {
