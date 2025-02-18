@@ -23,7 +23,7 @@ export class WorkShiftsController {
     return this.workShiftsService.findOne(workShiftId);
   }
 
-  @MessagePattern({ cmd: 'save.work.shift' })
+  @MessagePattern('collaborators.save.workShift')
   save(@Payload() request: CreateWorkShiftDto): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.save(request);
   }
