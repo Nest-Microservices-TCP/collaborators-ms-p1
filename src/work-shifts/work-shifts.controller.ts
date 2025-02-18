@@ -28,7 +28,7 @@ export class WorkShiftsController {
     return this.workShiftsService.save(request);
   }
 
-  @MessagePattern({ cmd: 'update.work.shift' })
+  @MessagePattern('collaborators.update.workShift')
   update(
     @Payload() request: UpdateWorkShiftDto,
   ): Promise<WorkShiftResponseDto> {
