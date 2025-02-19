@@ -12,36 +12,40 @@ export class PositionsController {
   constructor(private readonly positionsService: PositionsService) {}
 
   @MessagePattern('collaborators.find.all.positions')
-  findAll(): Promise<PositionResponseDto[]> {
+  async findAll(): Promise<PositionResponseDto[]> {
     return this.positionsService.findAll();
   }
 
   @MessagePattern('collaborators.find.one.position')
-  findOne(
+  async findOne(
     @Payload('positionId') positionId: string,
   ): Promise<PositionResponseDto> {
     return this.positionsService.findOne(positionId);
   }
 
   @MessagePattern('collaborators.find.positions.by.ids')
-  findByIds(
+  async findByIds(
     @Payload('positionsIds') positionsIds: string[],
   ): Promise<PositionResponseDto[]> {
     return this.positionsService.findByIds(positionsIds);
   }
 
   @MessagePattern('collaborators.save.position')
-  save(@Payload() request: CreatePositionDto): Promise<PositionResponseDto> {
+  async save(
+    @Payload() request: CreatePositionDto,
+  ): Promise<PositionResponseDto> {
     return this.positionsService.save(request);
   }
 
   @MessagePattern('collaborators.update.position')
-  update(@Payload() request: UpdatePositionDto): Promise<PositionResponseDto> {
+  async update(
+    @Payload() request: UpdatePositionDto,
+  ): Promise<PositionResponseDto> {
     return this.positionsService.update(request);
   }
 
   @MessagePattern('collaborators.remove.position')
-  remove(
+  async remove(
     @Payload('positionId') positionId: string,
   ): Promise<DeleteResultResponse> {
     return this.positionsService.remove(positionId);

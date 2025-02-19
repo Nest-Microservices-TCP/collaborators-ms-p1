@@ -12,38 +12,40 @@ export class WorkShiftsController {
   constructor(private readonly workShiftsService: WorkShiftsService) {}
 
   @MessagePattern('collaborators.find.all.workShifts')
-  findAll(): Promise<WorkShiftResponseDto[]> {
+  async findAll(): Promise<WorkShiftResponseDto[]> {
     return this.workShiftsService.findAll();
   }
 
   @MessagePattern('collaborators.find.one.workShift')
-  findOne(
+  async findOne(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.findOne(workShiftId);
   }
 
   @MessagePattern('collaborators.save.workShift')
-  save(@Payload() request: CreateWorkShiftDto): Promise<WorkShiftResponseDto> {
+  async save(
+    @Payload() request: CreateWorkShiftDto,
+  ): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.save(request);
   }
 
   @MessagePattern('collaborators.update.workShift')
-  update(
+  async update(
     @Payload() request: UpdateWorkShiftDto,
   ): Promise<WorkShiftResponseDto> {
     return this.workShiftsService.update(request);
   }
 
   @MessagePattern('collaborators.remove.workShift')
-  remove(
+  async remove(
     @Payload('workShiftId') workShiftId: string,
   ): Promise<DeleteResultResponse> {
     return this.workShiftsService.remove(workShiftId);
   }
 
   @MessagePattern('collaborators.find.workShifts.by.ids')
-  findByIds(
+  async findByIds(
     @Payload('workShiftsIds') workShiftsIds: string[],
   ): Promise<WorkShiftResponseDto[]> {
     return this.workShiftsService.findByIds(workShiftsIds);
