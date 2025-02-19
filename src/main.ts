@@ -11,10 +11,16 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.KAFKA,
       options: {
-        host: envs.collaboratorsHostMS,
-        port: envs.collaboratorsPortMS,
+        client: {
+          clientId: envs.kafkaClientId,
+          brokers: [envs.kafkaBroker],
+        },
+        consumer: {
+          groupId: envs.kafkaGroupId,
+          allowAutoTopicCreation: true,
+        },
       },
     },
   );
@@ -28,6 +34,6 @@ async function bootstrap() {
 
   await app.listen();
 
-  logger.log(`Collaborators Microservice listen on port ${envs.port}`);
+  logger.log(`Collaborators Microservice connected to Kafka`);
 }
 bootstrap();
