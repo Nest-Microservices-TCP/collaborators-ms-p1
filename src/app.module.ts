@@ -8,11 +8,11 @@ import { WorkShiftsModule } from './work-shifts/work-shifts.module';
 
 @Module({
   imports: [
-    PostgresDBModule,
     CollaboratorsModule,
-    AreasModule,
-    PositionsModule,
+    PostgresDBModule,
     WorkShiftsModule,
+    PositionsModule,
+    AreasModule,
   ],
   controllers: [],
   providers: [],
