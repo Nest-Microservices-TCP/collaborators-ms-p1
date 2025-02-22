@@ -11,34 +11,34 @@ import { AreasService } from './areas.service';
 export class AreasController {
   constructor(private readonly areasService: AreasService) {}
 
-  @MessagePattern('collaborators.save.area')
+  @MessagePattern('areas.save')
   async save(@Payload() request: CreateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.save(request);
   }
 
-  @MessagePattern('collaborators.find.all.areas')
+  @MessagePattern('areas.find.all')
   async findAll(): Promise<AreaResponseDto[]> {
     return this.areasService.findAll();
   }
 
-  @MessagePattern('collaborators.find.one.area')
+  @MessagePattern('areas.find.one')
   async findOne(@Payload('areaId') areaId: string): Promise<AreaResponseDto> {
     return this.areasService.findOne(areaId);
   }
 
-  @MessagePattern('collaborators.update.area')
+  @MessagePattern('areas.update')
   async update(@Payload() request: UpdateAreaDto): Promise<AreaResponseDto> {
     return this.areasService.update(request);
   }
 
-  @MessagePattern('collaborators.remove.area.by.id')
+  @MessagePattern('areas.remove')
   async remove(
     @Payload('areaId') areaId: string,
   ): Promise<DeleteResultResponse> {
     return this.areasService.remove(areaId);
   }
 
-  @MessagePattern('collaborators.find.areas.by.ids')
+  @MessagePattern('areas.find.by.ids')
   async findByIds(
     @Payload('areasIds') areasIds: string[],
   ): Promise<AreaResponseDto[]> {
