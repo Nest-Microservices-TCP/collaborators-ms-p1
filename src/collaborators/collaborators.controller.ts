@@ -15,40 +15,40 @@ import { CollaboratorsService } from './collaborators.service';
 export class CollaboratorsController {
   constructor(private readonly collaboratorsService: CollaboratorsService) {}
 
-  @MessagePattern('collaborators.find.all.collaborators')
+  @MessagePattern('collaborators.find.all')
   async findAll(): Promise<CollaboratorResponseDto[]> {
     return this.collaboratorsService.findAll();
   }
 
-  @MessagePattern('collaborators.find.one.collaborator')
+  @MessagePattern('collaborators.find.one')
   async findOne(
     @Payload() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.findOne(request);
   }
 
-  @MessagePattern('collaborators.save.collaborator')
+  @MessagePattern('collaborators.save')
   async save(
     @Payload() request: CreateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.save(request);
   }
 
-  @MessagePattern('collaborators.update.collaborator')
+  @MessagePattern('collaborators.update')
   async update(
     @Payload() request: UpdateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return this.collaboratorsService.update(request);
   }
 
-  @MessagePattern('collaborators.remove.collaborator.by.id')
+  @MessagePattern('collaborators.remove')
   async remove(
     @Payload('collaboratorId') collaboratorId: string,
   ): Promise<DeleteResultResponse> {
     return this.collaboratorsService.remove(collaboratorId);
   }
 
-  @MessagePattern('collaborators.find.collaborators.by.ids')
+  @MessagePattern('collaborators.find.by.ids')
   async findByIds(
     @Payload('collaboratorsIds') collaboratorsIds: string[],
   ): Promise<CollaboratorResponseDto[]> {
