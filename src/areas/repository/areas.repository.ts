@@ -1,26 +1,30 @@
+import {
+  In,
+  Repository,
+  QueryRunner,
+  DeleteResult,
+  UpdateResult,
+  FindOptionsWhere,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
+  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+
+import { IAreasRepository } from './interfaces/areas.repository.interface';
+
 import {
-  DeleteResult,
-  FindOptionsWhere,
-  In,
-  QueryRunner,
-  Repository,
-  UpdateResult,
-} from 'typeorm';
+  CreateAreaRequest,
+  FindOneAreaRequest,
+} from 'src/grpc/proto/collaborators/areas.pb';
 
 import { Status } from 'src/common/enums/status.enum';
 import { Area } from '../entity/area.entity';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateAreaDto } from '../dto/request';
-
-import { IAreasRepository } from './interfaces/areas.repository.interface';
 
 export class AreasRepository implements IAreasRepository {
   private areasRepository: Repository<Area>;
@@ -40,7 +44,7 @@ export class AreasRepository implements IAreasRepository {
     }
   }
 
-  findAll(): Promise<Area[]> {
+  find(): Promise<Area[]> {
     return this.areasRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -48,9 +52,11 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async findOne(areaId: string): Promise<Area> {
+  async findOne(request: FindOneAreaRequest): Promise<Area> {
+    const { area_id } = request;
+
     const area = await this.areasRepository.findOne({
-      where: { areaId },
+      where: { area_id },
     });
 
     if (!area) {
@@ -64,7 +70,7 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.create(request);
   }
 
-  async save(request: CreateAreaDto): Promise<Area> {
+  async save(request: CreateAreaRequest): Promise<Area> {
     return this.areasRepository.save(request);
   }
 
@@ -79,10 +85,10 @@ export class AreasRepository implements IAreasRepository {
     return this.areasRepository.save(area);
   }
 
-  async remove(areaId: string): Promise<DeleteResultResponse> {
-    await this.findOne(areaId);
+  async remove(area_id: string): Promise<DeleteResultResponse> {
+    await this.findOne({ area_id });
 
-    const result: DeleteResult = await this.areasRepository.delete(areaId);
+    const result: DeleteResult = await this.areasRepository.delete(area_id);
 
     if (result?.affected === 0) {
       throw new FailedRemoveException('area');
@@ -94,10 +100,10 @@ export class AreasRepository implements IAreasRepository {
     };
   }
 
-  findByIds(areasIds: string[]): Promise<Area[]> {
+  findByIds(areas_ids: string[]): Promise<Area[]> {
     return this.areasRepository.find({
       where: {
-        areaId: In(areasIds),
+        area_id: In(areas_ids),
       },
     });
   }
@@ -136,11 +142,11 @@ export class AreasRepository implements IAreasRepository {
     });
   }
 
-  async softDelete(areaId: string): Promise<Area> {
-    const area = await this.findOne(areaId);
+  async softDelete(area_id: string): Promise<Area> {
+    const area = await this.findOne({ area_id });
 
     const result: UpdateResult = await this.areasRepository.update(
-      area.areaId,
+      area.area_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -151,14 +157,14 @@ export class AreasRepository implements IAreasRepository {
       throw new FailedSoftDeleteException('area');
     }
 
-    return this.findOne(area.areaId);
+    return this.findOne({ area_id: area.area_id });
   }
 
-  async restore(areaId: string): Promise<Area> {
-    const area = await this.findOne(areaId);
+  async restore(area_id: string): Promise<Area> {
+    const area = await this.findOne({ area_id });
 
     const result: UpdateResult = await this.areasRepository.update(
-      area?.areaId,
+      area?.area_id,
       {
         status: Status.ACTIVE,
         deletedAt: null,
@@ -169,7 +175,7 @@ export class AreasRepository implements IAreasRepository {
       throw new FailedRestoreException('area');
     }
 
-    return this.findOne(areaId);
+    return this.findOne({ area_id });
   }
 
   async exists(criteria: FindOptionsWhere<Area>): Promise<boolean> {
