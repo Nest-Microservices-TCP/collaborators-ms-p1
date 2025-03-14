@@ -1,12 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Area as IArea } from 'src/grpc/proto/collaborators/areas.pb';
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'areas' })
-export class Area extends BaseEntity {
+export class Area extends BaseEntity implements IArea {
   @PrimaryGeneratedColumn('uuid', {
     name: 'area_id',
   })
-  areaId: string;
+  area_id: string;
 
   @Column({
     name: 'name',
