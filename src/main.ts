@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app.module';
@@ -9,7 +9,25 @@ import { envs } from './config';
 async function bootstrap() {
   const logger = new Logger('Collaborators-MS');
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  // Iniciar la comunicación con gRPC
+  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.GRPC,
+      options: {
+        url: `${envs.host}:${envs.port}`,
+        package: [],
+        protoPath: [],
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
+      },
+    },
+  );
+
+  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
       transport: Transport.KAFKA,
@@ -26,15 +44,12 @@ async function bootstrap() {
     },
   );
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
+  await grpcApp.listen();
+  logger.log(
+    `Collaborators Microservice running with gRPC on ${envs.host}:${envs.port}`,
   );
 
-  await app.listen();
-
+  await kafkaApp.listen();
   logger.log(`Collaborators Microservice connected to Kafka`);
 }
 bootstrap();
