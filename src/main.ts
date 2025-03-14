@@ -6,6 +6,10 @@ import { AppModule } from './app.module';
 
 import { envs } from './config';
 
+import { COLLABORATORS_AREAS_PACKAGE_NAME } from './grpc/proto/collaborators/areas.pb';
+import { COLLABORATORS_POSITIONS_PACKAGE_NAME } from './grpc/proto/collaborators/positions.pb';
+import { COLLABORATORS_COLLABORATORS_PACKAGE_NAME } from './grpc/proto/collaborators/collaborators.pb';
+
 async function bootstrap() {
   const logger = new Logger('Collaborators-MS');
 
@@ -16,8 +20,16 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         url: `${envs.host}:${envs.port}`,
-        package: [],
-        protoPath: [],
+        package: [
+          COLLABORATORS_AREAS_PACKAGE_NAME,
+          COLLABORATORS_POSITIONS_PACKAGE_NAME,
+          COLLABORATORS_COLLABORATORS_PACKAGE_NAME,
+        ],
+        protoPath: [
+          './proto/collaborators/areas.proto',
+          './proto/collaborators/positions.proto',
+          './proto/collaborators/collaborators.proto',
+        ],
         loader: {
           keepCase: true,
           enums: String,
