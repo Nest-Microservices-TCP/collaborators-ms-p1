@@ -1,12 +1,14 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Collaborator as ICollaborator } from 'src/grpc/proto/collaborators/collaborators.pb';
+
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'collaborators' })
-export class Collaborator extends BaseEntity {
+export class Collaborator extends BaseEntity implements ICollaborator {
   @PrimaryGeneratedColumn('uuid', {
     name: 'collaborator_id',
   })
-  collaboratorId: string;
+  collaborator_id: string;
 
   @Column({
     name: 'name',
@@ -22,14 +24,14 @@ export class Collaborator extends BaseEntity {
     length: 255,
     nullable: false,
   })
-  lastName: string;
+  last_name: string;
 
   @Column({
     name: 'in_turn',
     type: 'boolean',
     default: false,
   })
-  inTurn: boolean;
+  in_turn: boolean;
 
   @Column({
     name: 'phone',
@@ -83,5 +85,5 @@ export class Collaborator extends BaseEntity {
     type: 'text',
     nullable: true,
   })
-  profilePhoto: string;
+  profile_photo: string;
 }
