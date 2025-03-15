@@ -1,6 +1,13 @@
-import { CreateCollaboratorDto } from 'src/collaborators/dto/request';
-import { Collaborator } from 'src/collaborators/entity/collaborator.entity';
 import { IRepository } from 'src/common/repository';
+import {
+  CreateCollaboratorRequest,
+  FindOneCollaboratorRequest,
+} from 'src/grpc/proto/collaborators/collaborators.pb';
+import { Collaborator } from 'src/collaborators/entity/collaborator.entity';
 
 export interface ICollaboratorsRepository
-  extends IRepository<Collaborator, CreateCollaboratorDto> {}
+  extends IRepository<
+    Collaborator,
+    CreateCollaboratorRequest,
+    FindOneCollaboratorRequest
+  > {}
