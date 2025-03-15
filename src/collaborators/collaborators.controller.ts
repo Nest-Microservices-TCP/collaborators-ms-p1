@@ -1,57 +1,34 @@
+import { Observable } from 'rxjs';
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
 import {
-  CreateCollaboratorDto,
-  FindOneCollaboratorById,
-  UpdateCollaboratorDto,
-} from './dto/request';
-import { CollaboratorResponseDto } from './dto/response';
+  Collaborator,
+  FindCollaboratorsResponse,
+  CreateCollaboratorRequest,
+  FindOneCollaboratorRequest,
+  CollaboratorsServiceController,
+  CollaboratorsServiceControllerMethods,
+} from 'src/grpc/proto/collaborators/collaborators.pb';
 
 import { CollaboratorsService } from './collaborators.service';
 
 @Controller()
-export class CollaboratorsController {
+@CollaboratorsServiceControllerMethods()
+export class CollaboratorsController implements CollaboratorsServiceController {
   constructor(private readonly collaboratorsService: CollaboratorsService) {}
 
-  @MessagePattern('collaborators.find.all')
-  async findAll(): Promise<CollaboratorResponseDto[]> {
-    return this.collaboratorsService.findAll();
+  save(request: CreateCollaboratorRequest): void {
+    this.collaboratorsService.save(request);
   }
-
-  @MessagePattern('collaborators.find.one')
-  async findOne(
-    @Payload() request: FindOneCollaboratorById,
-  ): Promise<CollaboratorResponseDto> {
+  findOne(
+    request: FindOneCollaboratorRequest,
+  ): Promise<Collaborator> | Observable<Collaborator> | Collaborator {
     return this.collaboratorsService.findOne(request);
   }
-
-  @MessagePattern('collaborators.save')
-  async save(
-    @Payload() request: CreateCollaboratorDto,
-  ): Promise<CollaboratorResponseDto> {
-    return this.collaboratorsService.save(request);
-  }
-
-  @MessagePattern('collaborators.update')
-  async update(
-    @Payload() request: UpdateCollaboratorDto,
-  ): Promise<CollaboratorResponseDto> {
-    return this.collaboratorsService.update(request);
-  }
-
-  @MessagePattern('collaborators.remove')
-  async remove(
-    @Payload('collaboratorId') collaboratorId: string,
-  ): Promise<DeleteResultResponse> {
-    return this.collaboratorsService.remove(collaboratorId);
-  }
-
-  @MessagePattern('collaborators.find.by.ids')
-  async findByIds(
-    @Payload('collaboratorsIds') collaboratorsIds: string[],
-  ): Promise<CollaboratorResponseDto[]> {
-    return this.collaboratorsService.findByIds(collaboratorsIds);
+  find():
+    | Promise<FindCollaboratorsResponse>
+    | Observable<FindCollaboratorsResponse>
+    | FindCollaboratorsResponse {
+    return this.collaboratorsService.find();
   }
 }
