@@ -1,26 +1,31 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import {
-  EntityNotFoundException,
-  FailedRemoveException,
-  FailedRestoreException,
-  FailedSoftDeleteException,
-} from 'src/common/exceptions/custom';
-import {
+  In,
+  Repository,
+  QueryRunner,
+  UpdateResult,
   DeleteResult,
   FindOptionsWhere,
-  In,
-  QueryRunner,
-  Repository,
-  UpdateResult,
 } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import {
+  FailedRemoveException,
+  FailedRestoreException,
+  EntityNotFoundException,
+  FailedSoftDeleteException,
+} from 'src/common/exceptions/custom';
+
+import {
+  CreateCollaboratorRequest,
+  FindOneCollaboratorRequest,
+} from 'src/grpc/proto/collaborators/collaborators.pb';
+
+import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
 import { Status } from 'src/common/enums';
 import { Collaborator } from '../entity/collaborator.entity';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateCollaboratorDto } from '../dto/request';
-
-import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 
 export class CollaboratorsRepository implements ICollaboratorsRepository {
   private collaboratorsRepository: Repository<Collaborator>;
@@ -41,7 +46,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     }
   }
 
-  findAll(): Promise<Collaborator[]> {
+  find(): Promise<Collaborator[]> {
     return this.collaboratorsRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -49,9 +54,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     });
   }
 
-  async findOne(collaboratorId: string): Promise<Collaborator> {
+  async findOne(request: FindOneCollaboratorRequest): Promise<Collaborator> {
+    const { collaborator_id } = request;
+
     const collaborator = await this.collaboratorsRepository.findOne({
-      where: { collaboratorId },
+      where: { collaborator_id },
     });
 
     if (!collaborator) {
@@ -65,7 +72,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return this.collaboratorsRepository.create(request);
   }
 
-  save(request: CreateCollaboratorDto): Promise<Collaborator> {
+  save(request: CreateCollaboratorRequest): Promise<Collaborator> {
     return this.collaboratorsRepository.save(request);
   }
 
@@ -80,11 +87,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return await this.collaboratorsRepository.save(collaborator);
   }
 
-  async remove(collaboratorId: string): Promise<DeleteResultResponse> {
-    await this.findOne(collaboratorId);
+  async remove(collaborator_id: string): Promise<DeleteResultResponse> {
+    await this.findOne({ collaborator_id });
 
     const result: DeleteResult =
-      await this.collaboratorsRepository.delete(collaboratorId);
+      await this.collaboratorsRepository.delete(collaborator_id);
 
     if (result?.affected === 0) {
       throw new FailedRemoveException('collaborator');
@@ -93,10 +100,10 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(collaboratorsIds: string[]): Promise<Collaborator[]> {
+  findByIds(collaborators_ids: string[]): Promise<Collaborator[]> {
     return this.collaboratorsRepository.find({
       where: {
-        collaboratorId: In(collaboratorsIds),
+        collaborator_id: In(collaborators_ids),
       },
     });
   }
@@ -138,11 +145,11 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
     return count > 0;
   }
 
-  async softDelete(collaboratorId: string): Promise<Collaborator> {
-    await this.findOne(collaboratorId);
+  async softDelete(collaborator_id: string): Promise<Collaborator> {
+    await this.findOne({ collaborator_id });
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
-      collaboratorId,
+      collaborator_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -153,14 +160,14 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       throw new FailedSoftDeleteException('collaborator');
     }
 
-    return this.findOne(collaboratorId);
+    return this.findOne({ collaborator_id });
   }
 
-  async restore(collaboratorId: string): Promise<Collaborator> {
-    await this.findOne(collaboratorId);
+  async restore(collaborator_id: string): Promise<Collaborator> {
+    await this.findOne({ collaborator_id });
 
     const result: UpdateResult = await this.collaboratorsRepository.update(
-      collaboratorId,
+      collaborator_id,
       {
         status: Status.ACTIVE,
         deletedAt: null,
@@ -171,7 +178,7 @@ export class CollaboratorsRepository implements ICollaboratorsRepository {
       throw new FailedRestoreException('collaborator');
     }
 
-    return this.findOne(collaboratorId);
+    return this.findOne({ collaborator_id });
   }
 
   bulkSave(collaborators: Collaborator[]): Promise<Collaborator[]> {
