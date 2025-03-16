@@ -1,26 +1,31 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import {
-  EntityNotFoundException,
-  FailedRemoveException,
-  FailedRestoreException,
-  FailedSoftDeleteException,
-} from 'src/common/exceptions/custom';
-import {
+  In,
+  Repository,
+  QueryRunner,
+  UpdateResult,
   DeleteResult,
   FindOptionsWhere,
-  In,
-  QueryRunner,
-  Repository,
-  UpdateResult,
 } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import {
+  FailedRemoveException,
+  FailedRestoreException,
+  EntityNotFoundException,
+  FailedSoftDeleteException,
+} from 'src/common/exceptions/custom';
+
+import {
+  CreatePositionRequest,
+  FindOnePositionRequest,
+} from 'src/grpc/proto/collaborators/positions.pb';
+
+import { IPositionsRepository } from './interfaces/positions.repository.interface';
 
 import { Status } from 'src/common/enums/status.enum';
 import { Position } from '../entity/position.entity';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreatePositionDto } from '../dto/request';
-
-import { IPositionsRepository } from './interfaces/positions.repository.interface';
 
 export class PositionsRepository implements IPositionsRepository {
   private positionsRepository: Repository<Position>;
@@ -40,7 +45,7 @@ export class PositionsRepository implements IPositionsRepository {
     }
   }
 
-  findAll(): Promise<Position[]> {
+  find(): Promise<Position[]> {
     return this.positionsRepository.find({
       where: {
         status: Status.ACTIVE,
@@ -48,9 +53,11 @@ export class PositionsRepository implements IPositionsRepository {
     });
   }
 
-  async findOne(positionId: string): Promise<Position> {
+  async findOne(request: FindOnePositionRequest): Promise<Position> {
+    const { position_id } = request;
+
     const position = await this.positionsRepository.findOne({
-      where: { positionId },
+      where: { position_id },
     });
 
     if (!position) {
@@ -64,7 +71,7 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.create(request);
   }
 
-  async save(request: CreatePositionDto): Promise<Position> {
+  async save(request: CreatePositionRequest): Promise<Position> {
     return this.positionsRepository.save(request);
   }
 
@@ -79,11 +86,12 @@ export class PositionsRepository implements IPositionsRepository {
     return this.positionsRepository.save(position);
   }
 
-  async remove(positionId: string): Promise<DeleteResultResponse> {
-    await this.findOne(positionId);
+  async remove(position_id: string): Promise<DeleteResultResponse> {
+    await this.findOne({ position_id });
 
-    const result: DeleteResult =
-      await this.positionsRepository.delete(positionId);
+    const result: DeleteResult = await this.positionsRepository.delete({
+      position_id,
+    });
 
     if (result?.affected === 0) {
       throw new FailedRemoveException('position');
@@ -92,10 +100,10 @@ export class PositionsRepository implements IPositionsRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(positionsIds: string[]): Promise<Position[]> {
+  findByIds(positions_ids: string[]): Promise<Position[]> {
     return this.positionsRepository.find({
       where: {
-        positionId: In(positionsIds),
+        position_id: In(positions_ids),
       },
     });
   }
@@ -135,11 +143,11 @@ export class PositionsRepository implements IPositionsRepository {
     return count > 0;
   }
 
-  async softDelete(positionId: string): Promise<Position> {
-    await this.findOne(positionId);
+  async softDelete(position_id: string): Promise<Position> {
+    await this.findOne({ position_id });
 
     const result: UpdateResult = await this.positionsRepository.update(
-      positionId,
+      position_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -150,14 +158,14 @@ export class PositionsRepository implements IPositionsRepository {
       throw new FailedSoftDeleteException('position');
     }
 
-    return this.findOne(positionId);
+    return this.findOne({ position_id });
   }
 
-  async restore(positionId: string): Promise<Position> {
-    await this.findOne(positionId);
+  async restore(position_id: string): Promise<Position> {
+    await this.findOne({ position_id });
 
     const result: UpdateResult = await this.positionsRepository.update(
-      positionId,
+      position_id,
       {
         status: Status.ACTIVE,
         deletedAt: null,
@@ -168,7 +176,7 @@ export class PositionsRepository implements IPositionsRepository {
       throw new FailedRestoreException('position');
     }
 
-    return this.findOne(positionId);
+    return this.findOne({ position_id });
   }
 
   bulkSave(positions: Position[]): Promise<Position[]> {
