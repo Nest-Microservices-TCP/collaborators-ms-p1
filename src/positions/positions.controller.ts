@@ -1,53 +1,34 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreatePositionDto, UpdatePositionDto } from './dto/request';
-import { PositionResponseDto } from './dto/response';
+import {
+  Position,
+  FindPositionsResponse,
+  CreatePositionRequest,
+  FindOnePositionRequest,
+  PositionsServiceController,
+  PositionsServiceControllerMethods,
+} from 'src/grpc/proto/collaborators/positions.pb';
 
 import { PositionsService } from './positions.service';
 
 @Controller()
-export class PositionsController {
+@PositionsServiceControllerMethods()
+export class PositionsController implements PositionsServiceController {
   constructor(private readonly positionsService: PositionsService) {}
 
-  @MessagePattern('positions.find.all')
-  async findAll(): Promise<PositionResponseDto[]> {
-    return this.positionsService.findAll();
+  save(request: CreatePositionRequest): void {
+    this.positionsService.save(request);
   }
-
-  @MessagePattern('positions.find.one')
-  async findOne(
-    @Payload('positionId') positionId: string,
-  ): Promise<PositionResponseDto> {
-    return this.positionsService.findOne(positionId);
+  find():
+    | Promise<FindPositionsResponse>
+    | Observable<FindPositionsResponse>
+    | FindPositionsResponse {
+    return this.positionsService.find();
   }
-
-  @MessagePattern('positions.find.by.ids')
-  async findByIds(
-    @Payload('positionsIds') positionsIds: string[],
-  ): Promise<PositionResponseDto[]> {
-    return this.positionsService.findByIds(positionsIds);
-  }
-
-  @MessagePattern('positions.save')
-  async save(
-    @Payload() request: CreatePositionDto,
-  ): Promise<PositionResponseDto> {
-    return this.positionsService.save(request);
-  }
-
-  @MessagePattern('positions.update')
-  async update(
-    @Payload() request: UpdatePositionDto,
-  ): Promise<PositionResponseDto> {
-    return this.positionsService.update(request);
-  }
-
-  @MessagePattern('positions.remove')
-  async remove(
-    @Payload('positionId') positionId: string,
-  ): Promise<DeleteResultResponse> {
-    return this.positionsService.remove(positionId);
+  findOne(
+    request: FindOnePositionRequest,
+  ): Promise<Position> | Observable<Position> | Position {
+    return this.positionsService.findOne(request);
   }
 }
