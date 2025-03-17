@@ -33,8 +33,7 @@ export class WorkShiftsController implements WorkShiftsServiceController {
   }
   findOne(
     request: FindOneWorkShiftRequest,
-    metadata?: Metadata,
   ): Promise<WorkShift> | Observable<WorkShift> | WorkShift {
-    throw new Error('Method not implemented.');
+    return this.workShiftsService.findOne(request);
   }
 }
