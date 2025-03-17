@@ -1,26 +1,31 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import {
-  EntityNotFoundException,
+  In,
+  Repository,
+  QueryRunner,
+  DeleteResult,
+  UpdateResult,
+  FindOptionsWhere,
+} from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import {
   FailedRemoveException,
   FailedRestoreException,
+  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
+
 import {
-  DeleteResult,
-  FindOptionsWhere,
-  In,
-  QueryRunner,
-  Repository,
-  UpdateResult,
-} from 'typeorm';
+  CreateWorkShiftRequest,
+  FindOneWorkShiftRequest,
+} from 'src/grpc/proto/collaborators/work_shifts.pb';
+
+import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 
 import { Status } from 'src/common/enums';
 import { WorkShift } from '../entity/work-shift.entity';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateWorkShiftDto } from '../dto/request';
-
-import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 
 export class WorkShiftsRepository implements IWorkShiftsRepository {
   private workShiftsRepository: Repository<WorkShift>;
@@ -40,15 +45,17 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     }
   }
 
-  findAll(): Promise<WorkShift[]> {
+  find(): Promise<WorkShift[]> {
     return this.workShiftsRepository.find({
       where: { status: Status.ACTIVE },
     });
   }
 
-  async findOne(workShiftId: string): Promise<WorkShift> {
+  async findOne(request: FindOneWorkShiftRequest): Promise<WorkShift> {
+    const { work_shift_id } = request;
+
     const workShift = await this.workShiftsRepository.findOne({
-      where: { workShiftId },
+      where: { work_shift_id },
     });
 
     if (!workShift) {
@@ -62,7 +69,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.create(request);
   }
 
-  save(request: CreateWorkShiftDto): Promise<WorkShift> {
+  save(request: CreateWorkShiftRequest): Promise<WorkShift> {
     return this.workShiftsRepository.save(request);
   }
 
@@ -77,11 +84,11 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return this.workShiftsRepository.save(workShift);
   }
 
-  async remove(workShiftId: string): Promise<DeleteResultResponse> {
-    const workShift = await this.findOne(workShiftId);
+  async remove(work_shift_id: string): Promise<DeleteResultResponse> {
+    const workShift = await this.findOne({ work_shift_id });
 
     const result: DeleteResult = await this.workShiftsRepository.delete(
-      workShift.workShiftId,
+      workShift.work_shift_id,
     );
 
     if (result?.affected === 0) {
@@ -94,7 +101,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
   findByIds(workShiftsIds: string[]): Promise<WorkShift[]> {
     return this.workShiftsRepository.find({
       where: {
-        workShiftId: In(workShiftsIds),
+        work_shift_id: In(workShiftsIds),
       },
     });
   }
@@ -134,11 +141,11 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
     return count > 0;
   }
 
-  async softDelete(workShiftId: string): Promise<WorkShift> {
-    await this.findOne(workShiftId);
+  async softDelete(work_shift_id: string): Promise<WorkShift> {
+    await this.findOne({ work_shift_id });
 
     const result: UpdateResult = await this.workShiftsRepository.update(
-      workShiftId,
+      work_shift_id,
       {
         status: Status.DELETED,
         deletedAt: new Date(),
@@ -149,14 +156,14 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
       throw new FailedSoftDeleteException('work-shift');
     }
 
-    return this.findOne(workShiftId);
+    return this.findOne({ work_shift_id });
   }
 
-  async restore(workShiftId: string): Promise<WorkShift> {
-    await this.findOne(workShiftId);
+  async restore(work_shift_id: string): Promise<WorkShift> {
+    await this.findOne({ work_shift_id });
 
     const result: UpdateResult = await this.workShiftsRepository.update(
-      workShiftId,
+      work_shift_id,
       {
         status: Status.ACTIVE,
         deletedAt: null,
@@ -167,7 +174,7 @@ export class WorkShiftsRepository implements IWorkShiftsRepository {
       throw new FailedRestoreException('work-shift');
     }
 
-    return this.findOne(workShiftId);
+    return this.findOne({ work_shift_id });
   }
 
   bulkSave(workShifts: WorkShift[]): Promise<WorkShift[]> {
