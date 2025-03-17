@@ -1,53 +1,40 @@
+import { Observable } from 'rxjs';
+import { Metadata } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
-import { WorkShiftResponseDto } from './dto/response';
+import {
+  WorkShift,
+  CreateWorkShiftRequest,
+  FindWorkShiftsResponse,
+  FindOneWorkShiftRequest,
+  WorkShiftsServiceController,
+  WorkShiftsServiceControllerMethods,
+} from 'src/grpc/proto/collaborators/work_shifts.pb';
+import { Empty } from 'src/grpc/google/protobuf/empty.pb';
 
 import { WorkShiftsService } from './work-shifts.service';
 
 @Controller()
-export class WorkShiftsController {
+@WorkShiftsServiceControllerMethods()
+export class WorkShiftsController implements WorkShiftsServiceController {
   constructor(private readonly workShiftsService: WorkShiftsService) {}
 
-  @MessagePattern('workShifts.find.all')
-  async findAll(): Promise<WorkShiftResponseDto[]> {
-    return this.workShiftsService.findAll();
+  save(request: CreateWorkShiftRequest): void {
+    this.workShiftsService.save(request);
   }
-
-  @MessagePattern('workShifts.find.one')
-  async findOne(
-    @Payload('workShiftId') workShiftId: string,
-  ): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.findOne(workShiftId);
+  find(
+    request: Empty,
+    metadata?: Metadata,
+  ):
+    | Promise<FindWorkShiftsResponse>
+    | Observable<FindWorkShiftsResponse>
+    | FindWorkShiftsResponse {
+    throw new Error('Method not implemented.');
   }
-
-  @MessagePattern('workShifts.save')
-  async save(
-    @Payload() request: CreateWorkShiftDto,
-  ): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.save(request);
-  }
-
-  @MessagePattern('workShifts.update')
-  async update(
-    @Payload() request: UpdateWorkShiftDto,
-  ): Promise<WorkShiftResponseDto> {
-    return this.workShiftsService.update(request);
-  }
-
-  @MessagePattern('workShifts.remove')
-  async remove(
-    @Payload('workShiftId') workShiftId: string,
-  ): Promise<DeleteResultResponse> {
-    return this.workShiftsService.remove(workShiftId);
-  }
-
-  @MessagePattern('workShifts.find.by.ids')
-  async findByIds(
-    @Payload('workShiftsIds') workShiftsIds: string[],
-  ): Promise<WorkShiftResponseDto[]> {
-    return this.workShiftsService.findByIds(workShiftsIds);
+  findOne(
+    request: FindOneWorkShiftRequest,
+    metadata?: Metadata,
+  ): Promise<WorkShift> | Observable<WorkShift> | WorkShift {
+    throw new Error('Method not implemented.');
   }
 }
