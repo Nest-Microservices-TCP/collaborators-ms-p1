@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { Metadata } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 
 import {
@@ -10,7 +9,6 @@ import {
   WorkShiftsServiceController,
   WorkShiftsServiceControllerMethods,
 } from 'src/grpc/proto/collaborators/work_shifts.pb';
-import { Empty } from 'src/grpc/google/protobuf/empty.pb';
 
 import { WorkShiftsService } from './work-shifts.service';
 
@@ -22,14 +20,11 @@ export class WorkShiftsController implements WorkShiftsServiceController {
   save(request: CreateWorkShiftRequest): void {
     this.workShiftsService.save(request);
   }
-  find(
-    request: Empty,
-    metadata?: Metadata,
-  ):
+  find():
     | Promise<FindWorkShiftsResponse>
     | Observable<FindWorkShiftsResponse>
     | FindWorkShiftsResponse {
-    throw new Error('Method not implemented.');
+    return this.workShiftsService.find();
   }
   findOne(
     request: FindOneWorkShiftRequest,

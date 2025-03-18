@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HandleRpcExceptions } from 'src/common/decorators';
 
 import {
+  FindWorkShiftsResponse,
   CreateWorkShiftRequest,
   FindOneWorkShiftRequest,
 } from 'src/grpc/proto/collaborators/work_shifts.pb';
@@ -22,5 +23,12 @@ export class WorkShiftsService {
   @HandleRpcExceptions()
   async findOne(request: FindOneWorkShiftRequest): Promise<WorkShift> {
     return this.workShiftsRepository.findOne(request);
+  }
+
+  @HandleRpcExceptions()
+  async find(): Promise<FindWorkShiftsResponse> {
+    const work_shifts = await this.workShiftsRepository.find();
+
+    return { work_shifts };
   }
 }
