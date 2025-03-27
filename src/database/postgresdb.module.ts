@@ -6,13 +6,13 @@ import { envs } from 'src/config';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: envs.postgresDBHost,
-      port: envs.postgresDBPort,
-      username: envs.postgresDBUsername,
-      password: envs.postgresDBPassword,
-      database: envs.postgresDatabase,
+      host: envs.dbHost,
+      port: envs.dbPort,
+      username: envs.dbUsername,
+      password: envs.dbPassword,
+      database: envs.dbName,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: envs.postgresDBSynchronize,
+      synchronize: envs.dbSynchronize,
     }),
   ],
 })
