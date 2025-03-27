@@ -1,5 +1,5 @@
-import { Controller } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { Controller } from '@nestjs/common';
 
 import {
   Position,
