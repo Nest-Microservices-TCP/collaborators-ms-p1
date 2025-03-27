@@ -10,6 +10,7 @@ interface EnvVars {
   DB_USERNAME: string;
   DB_PASSWORD: string;
   DB_NAME: string;
+  DB_SYNCHRONIZE: boolean;
 
   KAFKA_BROKER: string;
   KAFKA_CLIENT_ID: string;
@@ -26,6 +27,7 @@ const envSchema = joi
     DB_USERNAME: joi.string().required(),
     DB_PASSWORD: joi.string().required(),
     DB_NAME: joi.string().required(),
+    DB_SYNCHRONIZE: joi.boolean().required(),
 
     KAFKA_BROKER: joi.string().required(),
     KAFKA_CLIENT_ID: joi.string().required(),
@@ -50,6 +52,7 @@ export const envs = {
   dbUsername: envVars.DB_USERNAME,
   dbPassword: envVars.DB_PASSWORD,
   dbName: envVars.DB_NAME,
+  dbSynchronize: envVars.DB_SYNCHRONIZE,
 
   kafkaBroker: envVars.KAFKA_BROKER,
   kafkaClientId: envVars.KAFKA_CLIENT_ID,
