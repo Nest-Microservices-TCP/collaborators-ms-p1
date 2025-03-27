@@ -1,4 +1,4 @@
-import { Status } from '../enums';
+import { Status } from 'src/common/enums';
 
 export abstract class BaseResponseDto {
   id: string;
