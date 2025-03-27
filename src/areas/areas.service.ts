@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { HandleRpcExceptions } from 'src/common/decorators';
 
 import {
   CreateAreaRequest,
@@ -13,16 +14,19 @@ import { Area } from './entity/area.entity';
 export class AreasService {
   constructor(private readonly areasRepository: AreasRepository) {}
 
+  @HandleRpcExceptions()
   async save(request: CreateAreaRequest): Promise<void> {
     this.areasRepository.save(request);
   }
 
+  @HandleRpcExceptions()
   async find(): Promise<FindAreasResponse> {
     const areas = await this.areasRepository.find();
 
     return { areas };
   }
 
+  @HandleRpcExceptions()
   async findOne(request: FindOneAreaRequest): Promise<Area> {
     return this.areasRepository.findOne(request);
   }
