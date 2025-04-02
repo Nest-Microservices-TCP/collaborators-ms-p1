@@ -30,4 +30,11 @@ export class AreasService {
   async findOne(request: FindOneAreaRequest): Promise<Area> {
     return this.areasRepository.findOne(request);
   }
+
+  @HandleRpcExceptions()
+  async softDelete(request: { area_id: string }): Promise<Area> {
+    const { area_id } = request;
+
+    return this.areasRepository.softDelete(area_id);
+  }
 }
