@@ -8,7 +8,6 @@ import {
 } from 'src/grpc/proto/collaborators/positions.pb';
 
 import { PositionsRepository } from './repository/positions.repository';
-
 import { Position } from './entity/position.entity';
 
 @Injectable()
@@ -30,5 +29,12 @@ export class PositionsService {
   @HandleRpcExceptions()
   async findOne(request: FindOnePositionRequest): Promise<Position> {
     return this.positionsRepository.findOne(request);
+  }
+
+  @HandleRpcExceptions()
+  async softDelete(request: { position_id: string }): Promise<Position> {
+    const { position_id } = request;
+
+    return this.positionsRepository.softDelete(position_id);
   }
 }
