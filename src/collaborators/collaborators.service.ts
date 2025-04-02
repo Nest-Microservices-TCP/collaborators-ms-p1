@@ -32,4 +32,13 @@ export class CollaboratorsService {
   async save(request: CreateCollaboratorRequest): Promise<void> {
     this.collaboratorsRepository.save(request);
   }
+
+  @HandleRpcExceptions()
+  async softDelete(request: {
+    collaborator_id: string;
+  }): Promise<Collaborator> {
+    const { collaborator_id } = request;
+
+    return this.collaboratorsRepository.softDelete(collaborator_id);
+  }
 }
