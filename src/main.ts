@@ -38,29 +38,9 @@ async function bootstrap() {
     },
   );
 
-  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: envs.kafkaClientId,
-          brokers: [envs.kafkaBroker],
-        },
-        consumer: {
-          groupId: envs.kafkaGroupId,
-          allowAutoTopicCreation: true,
-        },
-      },
-    },
-  );
-
   await grpcApp.listen();
   logger.log(
     `Collaborators Microservice running with gRPC on ${envs.host}:${envs.port}`,
   );
-
-  await kafkaApp.listen();
-  logger.log(`Collaborators Microservice connected to Kafka`);
 }
 bootstrap();
