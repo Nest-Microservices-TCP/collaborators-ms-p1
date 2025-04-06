@@ -25,9 +25,9 @@ async function bootstrap() {
           COLLABORATORS_COLLABORATORS_PACKAGE_NAME,
         ],
         protoPath: [
-          './proto/collaborators/areas.proto',
-          './proto/collaborators/positions.proto',
-          './proto/collaborators/collaborators.proto',
+          './proto-files/collaborators/areas.proto',
+          './proto-files/collaborators/positions.proto',
+          './proto-files/collaborators/collaborators.proto',
         ],
         loader: {
           keepCase: true,
