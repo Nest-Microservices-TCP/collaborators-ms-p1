@@ -5,7 +5,7 @@ import {
   FindWorkShiftsResponse,
   CreateWorkShiftRequest,
   FindOneWorkShiftRequest,
-} from 'src/grpc/proto/collaborators/work_shifts.pb';
+} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
 
 import { WorkShiftsRepository } from './repository/work-shifts.repository';
 

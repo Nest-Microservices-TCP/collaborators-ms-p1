@@ -8,7 +8,7 @@ import {
   FindOneWorkShiftRequest,
   WorkShiftsServiceController,
   WorkShiftsServiceControllerMethods,
-} from 'src/grpc/proto/collaborators/work_shifts.pb';
+} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
 
 import { WorkShiftsService } from './work-shifts.service';
 
