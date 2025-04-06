@@ -18,7 +18,7 @@ import {
 import {
   CreateCollaboratorRequest,
   FindOneCollaboratorRequest,
-} from 'src/grpc/proto/collaborators/collaborators.pb';
+} from 'src/grpc/proto-files/collaborators/collaborators.pb';
 
 import { ICollaboratorsRepository } from './interfaces/collaborators.repository.interface';
 

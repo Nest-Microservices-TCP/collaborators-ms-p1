@@ -8,7 +8,7 @@ import {
   FindOneCollaboratorRequest,
   CollaboratorsServiceController,
   CollaboratorsServiceControllerMethods,
-} from 'src/grpc/proto/collaborators/collaborators.pb';
+} from 'src/grpc/proto-files/collaborators/collaborators.pb';
 
 import { CollaboratorsService } from './collaborators.service';
 

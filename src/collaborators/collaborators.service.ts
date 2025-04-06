@@ -5,7 +5,7 @@ import {
   CreateCollaboratorRequest,
   FindCollaboratorsResponse,
   FindOneCollaboratorRequest,
-} from 'src/grpc/proto/collaborators/collaborators.pb';
+} from 'src/grpc/proto-files/collaborators/collaborators.pb';
 
 import { CollaboratorsRepository } from './repository/collaborators.repository';
 import { Collaborator } from './entity/collaborator.entity';
