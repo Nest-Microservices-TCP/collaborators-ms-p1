@@ -5,7 +5,7 @@ import {
   FindPositionsResponse,
   CreatePositionRequest,
   FindOnePositionRequest,
-} from 'src/grpc/proto/collaborators/positions.pb';
+} from 'src/grpc/proto-files/collaborators/positions.pb';
 
 import { PositionsRepository } from './repository/positions.repository';
 import { Position } from './entity/position.entity';

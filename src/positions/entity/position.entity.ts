@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Position as IPosition } from 'src/grpc/proto/collaborators/positions.pb';
+import { Position as IPosition } from 'src/grpc/proto-files/collaborators/positions.pb';
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'positions' })

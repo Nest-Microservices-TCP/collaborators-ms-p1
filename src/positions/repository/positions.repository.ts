@@ -18,7 +18,7 @@ import {
 import {
   CreatePositionRequest,
   FindOnePositionRequest,
-} from 'src/grpc/proto/collaborators/positions.pb';
+} from 'src/grpc/proto-files/collaborators/positions.pb';
 
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 

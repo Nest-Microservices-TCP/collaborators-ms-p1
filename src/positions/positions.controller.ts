@@ -8,7 +8,7 @@ import {
   FindOnePositionRequest,
   PositionsServiceController,
   PositionsServiceControllerMethods,
-} from 'src/grpc/proto/collaborators/positions.pb';
+} from 'src/grpc/proto-files/collaborators/positions.pb';
 
 import { PositionsService } from './positions.service';
 
