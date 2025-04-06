@@ -5,9 +5,9 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { envs } from './config';
 
-import { COLLABORATORS_AREAS_PACKAGE_NAME } from './grpc/proto/collaborators/areas.pb';
-import { COLLABORATORS_POSITIONS_PACKAGE_NAME } from './grpc/proto/collaborators/positions.pb';
-import { COLLABORATORS_COLLABORATORS_PACKAGE_NAME } from './grpc/proto/collaborators/collaborators.pb';
+import { COLLABORATORS_AREAS_PACKAGE_NAME } from './grpc/proto-files/collaborators/areas.pb';
+import { COLLABORATORS_POSITIONS_PACKAGE_NAME } from './grpc/proto-files/collaborators/positions.pb';
+import { COLLABORATORS_COLLABORATORS_PACKAGE_NAME } from './grpc/proto-files/collaborators/collaborators.pb';
 
 async function bootstrap() {
   const logger = new Logger('Collaborators-MS');
