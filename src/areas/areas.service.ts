@@ -5,7 +5,7 @@ import {
   CreateAreaRequest,
   FindAreasResponse,
   FindOneAreaRequest,
-} from 'src/grpc/proto/collaborators/areas.pb';
+} from 'src/grpc/proto-files/collaborators/areas.pb';
 
 import { AreasRepository } from './repository/areas.repository';
 import { Area } from './entity/area.entity';

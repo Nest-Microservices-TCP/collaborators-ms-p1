@@ -19,7 +19,7 @@ import { IAreasRepository } from './interfaces/areas.repository.interface';
 import {
   CreateAreaRequest,
   FindOneAreaRequest,
-} from 'src/grpc/proto/collaborators/areas.pb';
+} from 'src/grpc/proto-files/collaborators/areas.pb';
 
 import { Status } from 'src/common/enums/status.enum';
 import { Area } from '../entity/area.entity';

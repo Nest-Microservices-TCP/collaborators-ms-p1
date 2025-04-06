@@ -8,7 +8,7 @@ import {
   FindOneAreaRequest,
   AreasServiceController,
   AreasServiceControllerMethods,
-} from 'src/grpc/proto/collaborators/areas.pb';
+} from 'src/grpc/proto-files/collaborators/areas.pb';
 
 import { AreasService } from './areas.service';
 

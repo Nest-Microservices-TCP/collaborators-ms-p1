@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Area as IArea } from 'src/grpc/proto/collaborators/areas.pb';
+import { Area as IArea } from 'src/grpc/proto-files/collaborators/areas.pb';
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'areas' })
