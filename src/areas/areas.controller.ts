@@ -6,6 +6,7 @@ import {
   CreateAreaRequest,
   FindAreasResponse,
   FindOneAreaRequest,
+  FindAreasByIdsRequest,
   AreasServiceController,
   AreasServiceControllerMethods,
 } from 'src/grpc/proto-files/collaborators/areas.pb';
@@ -30,5 +31,13 @@ export class AreasController implements AreasServiceController {
     request: FindOneAreaRequest,
   ): Promise<Area> | Observable<Area> | Area {
     return this.areasService.findOne(request);
+  }
+  findByIds(
+    request: FindAreasByIdsRequest,
+  ):
+    | Promise<FindAreasResponse>
+    | Observable<FindAreasResponse>
+    | FindAreasResponse {
+    return this.areasService.findByIds(request);
   }
 }
