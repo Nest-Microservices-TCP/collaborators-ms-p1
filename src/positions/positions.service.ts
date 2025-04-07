@@ -5,6 +5,7 @@ import {
   FindPositionsResponse,
   CreatePositionRequest,
   FindOnePositionRequest,
+  FindPositionsByIdsRequest,
 } from 'src/grpc/proto-files/collaborators/positions.pb';
 
 import { PositionsRepository } from './repository/positions.repository';
@@ -29,6 +30,17 @@ export class PositionsService {
   @HandleRpcExceptions()
   async findOne(request: FindOnePositionRequest): Promise<Position> {
     return this.positionsRepository.findOne(request);
+  }
+
+  @HandleRpcExceptions()
+  async findByIds(
+    request: FindPositionsByIdsRequest,
+  ): Promise<FindPositionsResponse> {
+    const { positions_ids } = request;
+
+    const positions = await this.positionsRepository.findByIds(positions_ids);
+
+    return { positions };
   }
 
   @HandleRpcExceptions()
