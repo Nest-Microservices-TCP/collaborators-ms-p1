@@ -6,6 +6,7 @@ import {
   FindCollaboratorsResponse,
   CreateCollaboratorRequest,
   FindOneCollaboratorRequest,
+  FindCollaboratorsByIdsRequest,
   CollaboratorsServiceController,
   CollaboratorsServiceControllerMethods,
 } from 'src/grpc/proto-files/collaborators/collaborators.pb';
@@ -30,5 +31,13 @@ export class CollaboratorsController implements CollaboratorsServiceController {
     | Observable<FindCollaboratorsResponse>
     | FindCollaboratorsResponse {
     return this.collaboratorsService.find();
+  }
+  findByIds(
+    request: FindCollaboratorsByIdsRequest,
+  ):
+    | Promise<FindCollaboratorsResponse>
+    | Observable<FindCollaboratorsResponse>
+    | FindCollaboratorsResponse {
+    return this.collaboratorsService.findByIds(request);
   }
 }
