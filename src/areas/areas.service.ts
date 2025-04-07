@@ -5,6 +5,7 @@ import {
   CreateAreaRequest,
   FindAreasResponse,
   FindOneAreaRequest,
+  FindAreasByIdsRequest,
 } from 'src/grpc/proto-files/collaborators/areas.pb';
 
 import { AreasRepository } from './repository/areas.repository';
@@ -29,6 +30,15 @@ export class AreasService {
   @HandleRpcExceptions()
   async findOne(request: FindOneAreaRequest): Promise<Area> {
     return this.areasRepository.findOne(request);
+  }
+
+  @HandleRpcExceptions()
+  async findByIds(request: FindAreasByIdsRequest): Promise<FindAreasResponse> {
+    const { areas_ids } = request;
+
+    const areas = await this.areasRepository.findByIds(areas_ids);
+
+    return { areas };
   }
 
   @HandleRpcExceptions()
