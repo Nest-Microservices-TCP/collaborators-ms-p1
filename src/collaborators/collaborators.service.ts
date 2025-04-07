@@ -5,6 +5,7 @@ import {
   CreateCollaboratorRequest,
   FindCollaboratorsResponse,
   FindOneCollaboratorRequest,
+  FindCollaboratorsByIdsRequest,
 } from 'src/grpc/proto-files/collaborators/collaborators.pb';
 
 import { CollaboratorsRepository } from './repository/collaborators.repository';
@@ -26,6 +27,18 @@ export class CollaboratorsService {
   @HandleRpcExceptions()
   async findOne(request: FindOneCollaboratorRequest): Promise<Collaborator> {
     return this.collaboratorsRepository.findOne(request);
+  }
+
+  @HandleRpcExceptions()
+  async findByIds(
+    request: FindCollaboratorsByIdsRequest,
+  ): Promise<FindCollaboratorsResponse> {
+    const { collaborators_ids } = request;
+
+    const collaborators =
+      await this.collaboratorsRepository.findByIds(collaborators_ids);
+
+    return { collaborators };
   }
 
   @HandleRpcExceptions()
