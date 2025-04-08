@@ -6,6 +6,7 @@ import {
   CreateWorkShiftRequest,
   FindWorkShiftsResponse,
   FindOneWorkShiftRequest,
+  FindWorkShiftsByIdsRequest,
   WorkShiftsServiceController,
   WorkShiftsServiceControllerMethods,
 } from 'src/grpc/proto-files/collaborators/work_shifts.pb';
@@ -30,5 +31,13 @@ export class WorkShiftsController implements WorkShiftsServiceController {
     request: FindOneWorkShiftRequest,
   ): Promise<WorkShift> | Observable<WorkShift> | WorkShift {
     return this.workShiftsService.findOne(request);
+  }
+  findByIds(
+    request: FindWorkShiftsByIdsRequest,
+  ):
+    | Promise<FindWorkShiftsResponse>
+    | Observable<FindWorkShiftsResponse>
+    | FindWorkShiftsResponse {
+    return this.workShiftsService.findByIds(request);
   }
 }
