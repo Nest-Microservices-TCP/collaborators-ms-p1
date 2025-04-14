@@ -6,9 +6,10 @@ import {
   FindAreasResponse,
   FindOneAreaRequest,
   FindAreasByIdsRequest,
-} from 'src/grpc/proto-files/collaborators/areas.pb';
+} from 'src/grpc/collaborators/areas.pb';
 
 import { AreasRepository } from './repository/areas.repository';
+
 import { Area } from './entity/area.entity';
 
 @Injectable()
