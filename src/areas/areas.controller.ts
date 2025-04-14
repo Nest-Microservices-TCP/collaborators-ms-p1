@@ -9,7 +9,7 @@ import {
   FindAreasByIdsRequest,
   AreasServiceController,
   AreasServiceControllerMethods,
-} from 'src/grpc/proto-files/collaborators/areas.pb';
+} from 'src/grpc/collaborators/areas.pb';
 
 import { AreasService } from './areas.service';
 
