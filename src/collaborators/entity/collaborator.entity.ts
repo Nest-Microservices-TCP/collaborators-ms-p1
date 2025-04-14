@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Collaborator as ICollaborator } from 'src/grpc/proto-files/collaborators/collaborators.pb';
+import { Collaborator as ICollaborator } from 'src/grpc/collaborators/collaborators.pb';
 
 import { BaseEntity } from 'src/common/entity';
 
