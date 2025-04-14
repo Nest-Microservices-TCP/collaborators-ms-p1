@@ -7,6 +7,7 @@ import {
   FindOptionsWhere,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import {
   FailedRemoveException,
   FailedRestoreException,
@@ -19,10 +20,10 @@ import { IAreasRepository } from './interfaces/areas.repository.interface';
 import {
   CreateAreaRequest,
   FindOneAreaRequest,
-} from 'src/grpc/proto-files/collaborators/areas.pb';
+} from 'src/grpc/collaborators/areas.pb';
 
-import { Status } from 'src/common/enums/status.enum';
 import { Area } from '../entity/area.entity';
+import { Status } from 'src/common/enums/status.enum';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
 
