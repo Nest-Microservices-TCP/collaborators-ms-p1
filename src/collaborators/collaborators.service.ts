@@ -6,9 +6,10 @@ import {
   FindCollaboratorsResponse,
   FindOneCollaboratorRequest,
   FindCollaboratorsByIdsRequest,
-} from 'src/grpc/proto-files/collaborators/collaborators.pb';
+} from 'src/grpc/collaborators/collaborators.pb';
 
 import { CollaboratorsRepository } from './repository/collaborators.repository';
+
 import { Collaborator } from './entity/collaborator.entity';
 
 @Injectable()
