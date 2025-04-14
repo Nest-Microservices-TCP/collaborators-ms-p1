@@ -9,7 +9,7 @@ import {
   FindCollaboratorsByIdsRequest,
   CollaboratorsServiceController,
   CollaboratorsServiceControllerMethods,
-} from 'src/grpc/proto-files/collaborators/collaborators.pb';
+} from 'src/grpc/collaborators/collaborators.pb';
 
 import { CollaboratorsService } from './collaborators.service';
 
