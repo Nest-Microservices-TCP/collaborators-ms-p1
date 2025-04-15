@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { WorkShift as IWorkShift } from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+import { WorkShift as IWorkShift } from 'src/grpc/collaborators/work_shifts.pb';
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'work_shifts' })

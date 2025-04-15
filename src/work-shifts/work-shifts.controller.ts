@@ -9,7 +9,7 @@ import {
   FindWorkShiftsByIdsRequest,
   WorkShiftsServiceController,
   WorkShiftsServiceControllerMethods,
-} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+} from 'src/grpc/collaborators/work_shifts.pb';
 
 import { WorkShiftsService } from './work-shifts.service';
 

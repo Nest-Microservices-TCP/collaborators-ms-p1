@@ -6,9 +6,10 @@ import {
   CreateWorkShiftRequest,
   FindOneWorkShiftRequest,
   FindWorkShiftsByIdsRequest,
-} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+} from 'src/grpc/collaborators/work_shifts.pb';
 
 import { WorkShiftsRepository } from './repository/work-shifts.repository';
+
 import { WorkShift } from './entity/work-shift.entity';
 
 @Injectable()

@@ -18,7 +18,7 @@ import {
 import {
   CreateWorkShiftRequest,
   FindOneWorkShiftRequest,
-} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+} from 'src/grpc/collaborators/work_shifts.pb';
 
 import { IWorkShiftsRepository } from './interfaces/work-shifts.repository.interface';
 
