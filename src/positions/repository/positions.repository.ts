@@ -18,12 +18,12 @@ import {
 import {
   CreatePositionRequest,
   FindOnePositionRequest,
-} from 'src/grpc/proto-files/collaborators/positions.pb';
+} from 'src/grpc/collaborators/positions.pb';
 
 import { IPositionsRepository } from './interfaces/positions.repository.interface';
 
-import { Status } from 'src/common/enums/status.enum';
 import { Position } from '../entity/position.entity';
+import { Status } from 'src/common/enums/status.enum';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
 

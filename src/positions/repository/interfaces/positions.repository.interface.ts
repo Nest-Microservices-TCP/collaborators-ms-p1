@@ -2,7 +2,7 @@ import { IRepository } from 'src/common/repository';
 import {
   CreatePositionRequest,
   FindOnePositionRequest,
-} from 'src/grpc/proto-files/collaborators/positions.pb';
+} from 'src/grpc/collaborators/positions.pb';
 import { Position } from 'src/positions/entity/position.entity';
 
 export interface IPositionsRepository

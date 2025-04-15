@@ -9,7 +9,7 @@ import {
   FindPositionsByIdsRequest,
   PositionsServiceController,
   PositionsServiceControllerMethods,
-} from 'src/grpc/proto-files/collaborators/positions.pb';
+} from 'src/grpc/collaborators/positions.pb';
 
 import { PositionsService } from './positions.service';
 
