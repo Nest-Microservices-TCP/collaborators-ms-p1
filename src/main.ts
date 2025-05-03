@@ -3,6 +3,11 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
+import {
+  HttpExceptionsFilter,
+  TypeORMExceptionsFilter,
+} from './common/exceptions/filters';
+
 import { envs } from './config';
 
 import { COLLABORATORS_AREAS_PACKAGE_NAME } from './grpc/collaborators/areas.pb';
@@ -36,6 +41,11 @@ async function bootstrap() {
         },
       },
     },
+  );
+
+  grpcApp.useGlobalFilters(
+    new HttpExceptionsFilter(),
+    new TypeORMExceptionsFilter(),
   );
 
   await grpcApp.listen();
